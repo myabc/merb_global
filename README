@@ -1,0 +1,5 @@
+= merb_global
+
+merb_global is a gem providing Localization (L10n) and Internationalization 
+(i18n) support for the Merb MVC Framework.
+
