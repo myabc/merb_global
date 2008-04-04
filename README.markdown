@@ -60,9 +60,13 @@ of this project.
 Getting the Source
 ------------------
 
-    git clone git://github.com/myabc/merb_global.git
+Performing a git clone on either of the following repositories will get you 
+the latest source:
 
-The following mirrors are also available:
+    git clone git://github.com/myabc/merb_global.git
+    git clone git://gitorious.org/merb_global/mainline.git (on gitorious)
+
+The following additional mirrors are available:
 
     git://repo.or.cz/merb_global.git
     http://repo.or.cz/r/merb_global.git
@@ -91,7 +95,7 @@ list:
 
  * **MerbGlobal Wiki** (this is its temporary residence):
     http://github.com/myabc/merb_global/wikis
- * **MerbGlobal mailing list**: _coming soon_
+ * **MerbGlobal mailing list**: <http://groups.google.com/group/merb_global>
  * **MerbGlobal homepage**: _coming soon_
  * Contact the developers directly:
     - <alex@alexcolesportfolio.com> | myabc on #datamapper, #merb IRC
