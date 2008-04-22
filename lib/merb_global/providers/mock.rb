@@ -1,7 +1,7 @@
 module Merb
   module Global
     module Providers
-      class Mock
+      class Mock #:nodoc:
         def translate_to string, lang
           string
         end

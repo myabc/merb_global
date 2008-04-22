@@ -44,3 +44,9 @@ desc "Install merb_global"
 task :install => [:package] do
   sh %{#{SUDO} gem install pkg/#{NAME}-#{VERSION}}
 end
+
+Rake::RDocTask.new do |rd|
+  rd.rdoc_dir = "doc"
+  rd.rdoc_files.include "lib/**/*.rb"
+end
+
