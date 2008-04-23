@@ -13,13 +13,21 @@ module Merb
     # Translate a string.
     # ==== Parameters
     # cstring<String>:: A string to translate.
-    # lang<String>:: A language to which the cstring should be translated.
+    # opts<Hash>:: An options hash (see below)
+    #
+    # ==== Options (opts)
+    # :lang<String>:: A language to translate on
+    # 
     # ==== Returns
     # String:: A translated string
+    #
     # ==== Example
     # <tt>render _("Error %d has occured") % error.errno</tt>
-    def _ cstring, lang = self.lang
-      self.provider.translate_to cstring, lang
+    def _ cstring *args
+      defaults = {:lang => self.lang}
+      defaults.merge! args.pop if args.last.is_a? Hash
+      args.push defaults
+      self.provider.translate_to cstring, *args
     end
   end
 end
