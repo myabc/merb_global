@@ -1,3 +1,4 @@
+require 'merb_global/plural.rb'
 require 'merb_global/providers.rb'
 
 module Merb
