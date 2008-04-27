@@ -1,4 +1,5 @@
-require 'merb_global/providers/mock.rb'
+require 'merb_global/providers/mock'
+require 'merb_global/providers/datamapper'
 
 module Merb
   module Global
