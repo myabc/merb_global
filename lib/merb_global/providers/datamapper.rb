@@ -6,7 +6,7 @@ module Merb
       class Datamapper #:nodoc:
         def translate_to singular, plural, opts
           language = Language[:name => opts[:lang]] # I hope it's from MemCache
-          n = Plural.which_form n, language.plural
+          n = Plural.which_form opts[:n], language.plural
           Translation[language.pk, singular.hash, n].msgstr
         end
         # When table structure becomes stable it *should* be documented

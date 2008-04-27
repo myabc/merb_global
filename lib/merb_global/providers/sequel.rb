@@ -6,7 +6,7 @@ module Merb
       class Sequel #:nodoc:
         def translate_to singular, plural, opts
           language = Language[:name => opts[:lang]] # I hope it's from MemCache
-          n = Plural.which_form n, language.plural
+          n = Plural.which_form opts[:n], language.plural
           Translation[language.pk, singular.hash, n].msgstr
         end
         class Language < Sequel::Model
