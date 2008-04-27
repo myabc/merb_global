@@ -11,11 +11,13 @@ module Merb
         end
         # When table structure becomes stable it *should* be documented
         class Language < DataMapper::Base
+          set_table_name :merb_global_languages
           property :name, :string, :index => true # It should be unique
           property :plural, :text, :lazy => false
           validates_uniqueness_of :name
         end
         class Translation < DataMapper::Base
+          set_table_name :merb_global_translations
           property :language_id, :integer, :nullable => false, :key => true
           # Sould it be propery :msgid, :text?
           # This form should be faster. However:

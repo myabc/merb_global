@@ -15,8 +15,10 @@ module Merb
           Translation.find [language.pk, singular.hash, n]
         end
         class Language < ActiveRecord::Base
+          set_table_name :merb_global_languages
         end
         class Translation < ActiveRecord::Base
+          set_table_name :merb_global_translations
           set_primary_keys :language_id, :msgid_hash, :msgstr_index
         end
       end

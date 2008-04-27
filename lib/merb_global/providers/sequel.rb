@@ -9,9 +9,9 @@ module Merb
           n = Plural.which_form opts[:n], language.plural
           Translation[language.pk, singular.hash, n].msgstr
         end
-        class Language < Sequel::Model
+        class Language < Sequel::Model(:merb_global_lanuages)
         end
-        class Translation < Sequel::Model
+        class Translation < Sequel::Model(:merb_global_translations)
           set_primery_key [:language_id, :msgid_hash, :msgstr_index]
         end
       end
