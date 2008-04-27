@@ -6,16 +6,22 @@ module Merb
       class Datamapper #:nodoc:
         def translate_to singular, plural, opts
           language = Language[:name => opts[:lang]] # I hope it's from MemCache
-          n = Plural.which_form n, language.plural
-          Translation[language.pk, singular.hash, n].msgstr
+          unless language.nil?
+            n = Plural.which_form opts[:n], language.plural
+            translation = Translation[language.pk, singular.hash, n]
+            return translation.msgstr unless translation.nil?
+          end
+          return opts[:n] > 1 ? plural : singular # Fallback if not in database
         end
         # When table structure becomes stable it *should* be documented
         class Language < DataMapper::Base
+          set_table_name :merb_global_languages
           property :name, :string, :index => true # It should be unique
           property :plural, :text, :lazy => false
           validates_uniqueness_of :name
         end
         class Translation < DataMapper::Base
+          set_table_name :merb_global_translations
           property :language_id, :integer, :nullable => false, :key => true
           # Sould it be propery :msgid, :text?
           # This form should be faster. However:
