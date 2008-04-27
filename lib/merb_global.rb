@@ -1,5 +1,5 @@
-require 'merb_global/plural.rb'
-require 'merb_global/providers.rb'
+require 'merb_global/plural'
+require 'merb_global/providers'
 
 module Merb
   module Global
