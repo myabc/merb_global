@@ -11,8 +11,12 @@ module Merb
         def translate_to singular, plural, opts
           language = Language.find :first,
                                    :conditions => {:name => opts[:lanf]}
-          n = Plural.which_form n, language.plural
-          Translation.find [language.pk, singular.hash, n]
+          unless language.nil?
+            n = Plural.which_form n, language.plural
+            translation = Translation.find [language.pk, singular.hash, n]
+            return translation.msgstr unless translation.nil?
+          end
+          return opts[:n] > 1 ? plural : singular # Fallback if not in database
         end
         class Language < ActiveRecord::Base
           set_table_name :merb_global_languages
