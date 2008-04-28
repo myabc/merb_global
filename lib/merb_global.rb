@@ -8,8 +8,7 @@ module Merb
       @lang ||= (ENV['LC_ALL'] || 'C').split('.')[0]
     end
     def provider #:nodoc:
-      # @provider ||= Merb::Global::Providers::Gettext
-      @provider ||= Merb::Global::Providers::Mock.new
+      @provider ||= Merb::Global::Providers.provider
     end
     # call-seq:
     #   _(singular, opts)          => translated
