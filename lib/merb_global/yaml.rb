@@ -11,13 +11,18 @@ module Merb
           @lang = Hash.new
         end
         def translate_to singular, plural, opts
-          if @lang[opts[:lang]].nil?
-            file = File.join Merb.root, 'langs', opts[:lang]
-            @lang[opts[:lang]] = YAML.load_file file
+          unless @lang.include? opts[:lang]
+            file = File.join Merb.root, 'lang', opts[:lang] + '.yaml'
+            @lang[opts[:lang]] = YAML.load_file file if file.exist? file
           end
-          lang = @lang[opts[:lang]]
-          n = Plural.which_form opts[:n], lang[:plural]
-          lang[singular][n]
+          unless opts[:lang].nil?
+            lang = @lang[opts[:lang]]
+            n = Plural.which_form opts[:n], lang[:plural]
+            unless lang[singular].nil?
+              return lang[singular][n] unless lang[singular][n].nil?
+            end
+          end
+          return opts[:n] > 1 ? plural : singular
         end
       end
     end
