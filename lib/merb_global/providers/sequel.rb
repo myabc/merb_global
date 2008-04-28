@@ -1,4 +1,5 @@
 require 'sequel'
+require 'merb_global/plural'
 
 module Merb
   module Global

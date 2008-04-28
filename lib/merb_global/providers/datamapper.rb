@@ -1,4 +1,5 @@
 require 'data_mapper'
+require 'merb_global/plural'
 
 module Merb
   module Global

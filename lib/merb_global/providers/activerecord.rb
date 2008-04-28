@@ -3,6 +3,7 @@ require 'activerecord'
 # However it may be better idea to drop them.
 # As far I implement it in this way - then we will see
 require 'composite_primary_keys' # As far as I understend we need
+require 'merb_global/plural'
 
 module Merb
   module Global
