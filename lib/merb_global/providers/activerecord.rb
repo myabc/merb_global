@@ -19,6 +19,9 @@ module Merb
           end
           return opts[:n] > 1 ? plural : singular # Fallback if not in database
         end
+        def supported? lang
+          Language.count(:conditions => {:name => lang}) != 0
+        end
         class Language < ActiveRecord::Base
           set_table_name :merb_global_languages
         end
