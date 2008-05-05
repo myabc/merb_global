@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
-require "spec/rake/spectask"
+require 'spec/rake/spectask'
 
 PLUGIN = "merb_global"
 NAME = "merb_global"
@@ -49,4 +49,10 @@ Rake::RDocTask.new do |rd|
   rd.rdoc_dir = "doc"
   rd.rdoc_files.include "lib/**/*.rb"
 end
+
+desc "Run all specs"
+Spec::Rake::SpecTask.new('specs') do |t|
+  t.spec_files = FileList['spec/*.rb']
+end
+
 
