@@ -12,7 +12,7 @@ module Merb
         end
         def translate_to singular, plural, opts
           unless @lang.include? opts[:lang]
-            file = File.join Merb.root, 'lang', opts[:lang] + '.yaml'
+            file = File.join Merb.root, 'app', 'locale', opts[:lang] + '.yaml'
             @lang[opts[:lang]] = YAML.load_file file if file.exist? file
           end
           unless opts[:lang].nil?
