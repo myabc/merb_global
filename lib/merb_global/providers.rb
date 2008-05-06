@@ -2,8 +2,7 @@ module Merb
   module Global
     module Providers
       def self.provider
-        # provider = 'gettext'
-        provider = 'mock'
+        provider = 'gettext'
         unless Merb::Plugins.config[:merb_global].nil?
           unless Merb::Plugins.config[:merb_global][:provider].nil?
             provider = Merb::Plugins.config[:merb_global][:provider]
