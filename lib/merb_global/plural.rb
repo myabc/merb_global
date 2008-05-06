@@ -8,8 +8,7 @@ module Merb
       # ==== Returns
       # Fixnum:: Which form should be translated
       def self.which_form n, plural
-        # Mock version
-	n > 0 ? 1 : 0
+        eval plural
       end
     end
   end
