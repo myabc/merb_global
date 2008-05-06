@@ -4,7 +4,9 @@ module Merb
   class Controller #:nodoc:
     include Merb::Global
     before do
-      accept_language = self.request.env['HTTP_ACCEPT_LANGUAGE'].split(',')
+      accept_language = self.request.env['HTTP_ACCEPT_LANGUAGE']
+      return if accept_language.nil?
+      accept_language = accept_language.split(',')
       accept_language.collect! {|lang| lang.delete " " "\n" "\r" "\t"}
       accept_language.reject! {|lang| lang.empty?}
       accept_language.collect! {|lang| lang.split ';'}
