@@ -1,4 +1,5 @@
 require 'data_mapper'
+require 'merb_global/plural'
 
 module Merb
   module Global
@@ -12,6 +13,9 @@ module Merb
             return translation.msgstr unless translation.nil?
           end
           return opts[:n] > 1 ? plural : singular # Fallback if not in database
+        end
+        def supported? lang
+          Language.count(:name => lang) != 0
         end
         # When table structure becomes stable it *should* be documented
         class Language < DataMapper::Base

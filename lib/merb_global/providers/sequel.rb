@@ -1,4 +1,5 @@
 require 'sequel'
+require 'merb_global/plural'
 
 module Merb
   module Global
@@ -12,6 +13,9 @@ module Merb
             return translation.msgstr unless translation.nil?
           end
           return opts[:n] > 1 ? plural : singular # Fallback if not in database
+        end
+        def supported? lang
+          Language.filter(:name => lang).count != 0
         end
         class Language < Sequel::Model(:merb_global_lanuages)
         end
