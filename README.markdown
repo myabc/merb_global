@@ -99,3 +99,4 @@ list:
  * **MerbGlobal homepage**: _coming soon_
  * Contact the developers directly:
     - <alex@alexcolesportfolio.com> | myabc on #datamapper, #merb IRC
+    - <uzytkownik2@gmail.com> | <xmpp:uzytkownik@jid.pl>
