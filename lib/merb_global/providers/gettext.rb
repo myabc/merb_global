@@ -17,6 +17,10 @@ module Merb
           context.locale = Locale::Object.new opts[:lang]
           context.ngettext(singular, plural, opts[:n])
         end
+	def supported? lang
+          # I know it's a hack - but it should work
+	  File.directory? File.join(Merb.root, 'app', 'locale', lang)
+	end
         class GettextContext
           include GetText
           # Please change it to proper location
