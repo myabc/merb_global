@@ -24,13 +24,13 @@ module Merb
           end
           return opts[:n] > 1 ? plural : singular
         end
-	def supported? lang
+        def supported? lang
           unless @lang.include? opts[:lang]
-	    file = File.join Merb.root, 'app', 'locale', opts[:lang] + '.yaml'
-	    @lang[opts[:lang]] = YAML.load_file file if file.exist? file
-	  end
-	  not opts[:lang].nil?
-	end
+            file = File.join Merb.root, 'app', 'locale', opts[:lang] + '.yaml'
+            @lang[opts[:lang]] = YAML.load_file file if file.exist? file
+          end
+          not opts[:lang].nil?
+        end
       end
     end
   end
