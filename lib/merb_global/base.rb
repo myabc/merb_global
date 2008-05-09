@@ -15,7 +15,7 @@ module Merb
     #
     # Translate a string.
     # ==== Parameters
-    # singular<String>:: A string to translate.
+    # singular<String>:: A string to translate
     # plural<String>:: A plural form of string
     # opts<Hash>:: An options hash (see below)
     #
