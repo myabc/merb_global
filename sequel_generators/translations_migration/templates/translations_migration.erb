@@ -1,0 +1,18 @@
+class AddTranslationsMigration < Sequel::Migration
+  def up
+    create_table :merb_global_languages do
+      primary_key :id
+      varchar	  :name,         :size => 16,           :unique => true
+      varchar	  :plural,       :size => 128
+    end
+    create_table :merb_global_translations do
+      foreign_key :language_id,  :null => false,	:key => true
+      integer	  :msgid_hash,   :null => false,	:key =>	true
+      text	  :msgstr,       :null => false
+      integer	  :msgstr_index, :null => false,	:key =>	true
+    end
+  end
+  def down
+    drop_table :merb_global_languages, :merb_global_translations
+  end
+end
