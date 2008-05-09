@@ -8,7 +8,7 @@ require 'merb_global/plural'
 module Merb
   module Global
     module Providers
-      class Activerecord #:nodoc:
+      class Activerecord < Merb::Global::Provider #:nodoc: all
         def translate_to singular, plural, opts
           language = Language.find :first,
                                    :conditions => {:name => opts[:lanf]}

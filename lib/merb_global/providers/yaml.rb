@@ -3,7 +3,7 @@ require 'data_mapper'
 module Merb
   module Global
     module Providers
-      class Yaml #:nodoc:
+      class Yaml < Merb::Global::Provider #:nodoc:
         def initialize
           # Not synchronized - make GC do it's work (may be not optimal 
           # but I don't think that some problem will occure).

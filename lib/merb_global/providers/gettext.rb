@@ -11,7 +11,7 @@ end
 module Merb
   module Global
     module Providers
-      class Gettext #:nodoc:
+      class Gettext < Merb::Global::Provider #:nodoc: all
         def translate_to singular, plural, opts
           context = Thread.current.gettext_context
           context.locale = Locale::Object.new opts[:lang]

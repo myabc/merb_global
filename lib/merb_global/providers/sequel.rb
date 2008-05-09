@@ -4,7 +4,7 @@ require 'merb_global/plural'
 module Merb
   module Global
     module Providers
-      class Sequel #:nodoc:
+      class Sequel < Merb::Global::Provider #:nodoc: all
         def translate_to singular, plural, opts
           language = Language[:name => opts[:lang]] # I hope it's from MemCache
           unless language.nil?
