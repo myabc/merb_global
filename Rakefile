@@ -25,7 +25,8 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('merb-core', '>= 0.9.1')
   s.require_path = 'lib'
   s.autorequire = PLUGIN
-  s.files = %w(LICENSE README Rakefile TODO) + Dir.glob("{lib,specs}/**/*")
+  s.files = %w(LICENSE README Rakefile TODO) +
+            Dir.glob("{lib,specs,*_generators}/**/*")
   
   # rdoc
   s.has_rdoc = true
