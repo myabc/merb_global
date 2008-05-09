@@ -2,8 +2,8 @@ require 'gettext'
 
 # I'm not sure if it is the correct way of doing it.
 # As far it seems to be simpler.
-class Thread
-  def gettext_context #:nodoc:
+class Thread #:nodoc:
+  def gettext_context
     @gettext_context ||= Merb::Global::Providers::Gettext::GettextContext.new
   end
 end
