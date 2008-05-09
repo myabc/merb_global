@@ -34,7 +34,7 @@ module Merb
           # As far I'll leave it in this form. If anybody could measure the
           # speed of both methods it will be appreciate.
           property :msgid_hash, :integer, :nullable => false, :key => true
-          property :msgstr, :text, :lazy => false
+          property :msgstr, :text, :nullable => false, :lazy => false
           property :msgstr_index, :integer, :nullable => false, :key => true
           belongs_to :language
         end
