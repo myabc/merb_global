@@ -31,6 +31,9 @@ module Merb
           end
           not opts[:lang].nil?
         end
+        def create!
+          File.mkdirs File.join(Merb.root, 'app', 'locale')
+        end
       end
     end
   end

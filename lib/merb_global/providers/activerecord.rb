@@ -22,6 +22,17 @@ module Merb
         def supported? lang
           Language.count(:conditions => {:name => lang}) != 0
         end
+        def create!
+          migration_exists = Dir[File.join(Merb.root,"schema",
+                                           "migrations", "*.rb")].detect do |f|
+            f =~ /translations\.rb/
+          end
+          if migration_exists
+            puts "\nThe Translation Migration File already exists\n\n"
+          else
+            sh %{merb-gen translations_migration}
+          end
+        end
         class Language < ActiveRecord::Base
           set_table_name :merb_global_languages
         end

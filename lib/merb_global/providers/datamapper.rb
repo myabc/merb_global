@@ -17,6 +17,10 @@ module Merb
         def supported? lang
           Language.count(:name => lang) != 0
         end
+        def create!
+          Language.auto_migrate!
+          Translation.auto_migrate!
+        end
         # When table structure becomes stable it *should* be documented
         class Language < DataMapper::Base
           set_table_name :merb_global_languages

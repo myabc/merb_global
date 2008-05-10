@@ -21,6 +21,9 @@ module Merb
           # I know it's a hack - but it should work
           File.directory? File.join(Merb.root, 'app', 'locale', lang)
         end
+        def create!
+          File.mkdirs File.join(Merb.root, 'app', 'locale')
+        end
         class GettextContext
           include GetText
           # Please change it to proper location

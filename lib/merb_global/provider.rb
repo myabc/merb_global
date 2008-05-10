@@ -48,6 +48,13 @@ module Merb
       def supported? lang
         raise NoMethodError.new'method supported? has not been implemented'
       end
+      # This method creates basic files and/or directory structures
+      # (for example it adds migration) needed for provider to work.
+      #
+      # It is called from Rakefile.
+      def create!
+        raise NoMethodError.new'method create! has not been implemented'
+      end
     end
   end
 end

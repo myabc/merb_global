@@ -8,6 +8,9 @@ module Merb
         def supported? lang
           true
         end
+        def create!
+          nil # It's mock after all ;)
+        end
       end
     end
   end
