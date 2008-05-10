@@ -10,7 +10,7 @@ module Merb
         end
       end
       require 'merb_global/providers/' + provider
-      @@provider = eval("Merb::Global::Providers::#{provider.capitalize}.new")
+      @@provider = eval("Merb::Global::Providers::#{provider.camel_case}.new")
       # call-seq:
       #     provider => provider
       #

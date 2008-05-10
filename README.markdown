@@ -28,8 +28,8 @@ merb\_global will have the following feature set:
             Merb::Plugins.config[:merb_global] = {
               #:provider => "po",   # default
               :provider => 'yaml'
-              #:provider => activerecord
-              #:provider => datamapper
+              #:provider => active_record
+              #:provider => data_mapper
               #:provider => sequel
             }
             
