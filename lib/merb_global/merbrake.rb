@@ -5,6 +5,6 @@ namespace :merb_global do
   end
   desc "create migration"
   task :migration => :merb_start do
-    
+    Merb::Global::Providers.provider.create!
   end
 end
