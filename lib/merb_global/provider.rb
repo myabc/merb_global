@@ -26,9 +26,10 @@ module Merb
       #
       # ==== Raises
       # NoMethodError:: Raised by default implementation. Should not be thrown.
-      def translate_to singular, plural, opts
+      def translate_to(singular, plural, opts)
         raise NoMethodError.new('method translate_to has not been implemented')
       end
+      
       # call-seq: 
       #     supported?(lang) => supported
       #
@@ -45,9 +46,10 @@ module Merb
       # 
       # ==== Raises
       # NoMethodError:: Raised by default implementation. Should not be thrown.
-      def supported? lang
+      def supported?(lang)
         raise NoMethodError.new('method supported? has not been implemented')
       end
+      
       # This method creates basic files and/or directory structures
       # (for example it adds migration) needed for provider to work.
       #
