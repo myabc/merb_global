@@ -5,7 +5,7 @@ module Merb
   module Global
     attr_accessor :lang, :provider
     def lang #:nodoc:
-      @lang ||= (ENV['LC_ALL'] || 'C').split('.')[0]
+      @lang ||= "en"
     end
     def provider #:nodoc:
       @provider ||= Merb::Global::Providers.provider
