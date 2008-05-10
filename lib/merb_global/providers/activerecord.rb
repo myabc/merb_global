@@ -9,7 +9,7 @@ module Merb
   module Global
     module Providers
       class ActiveRecord < Merb::Global::Provider #:nodoc: all
-        def translate_to singular, plural, opts
+        def translate_to(singular, plural, opts)
           language = Language.find :first,
                                    :conditions => {:name => opts[:lanf]}
           unless language.nil?
@@ -19,7 +19,7 @@ module Merb
           end
           return opts[:n] > 1 ? plural : singular # Fallback if not in database
         end
-        def supported? lang
+        def supported?(lang)
           Language.count(:conditions => {:name => lang}) != 0
         end
         def create!

@@ -7,7 +7,7 @@ module Merb
       # plural<String>:: Expression
       # ==== Returns
       # Fixnum:: Which form should be translated
-      def self.which_form n, plural
+      def self.which_form(n, plural)
         eval plural
       end
     end

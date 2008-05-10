@@ -10,7 +10,7 @@ module Merb
           # Shouldn't it be sort of cache with some expiration limit?
           @lang = Hash.new
         end
-        def translate_to singular, plural, opts
+        def translate_to(singular, plural, opts)
           unless @lang.include? opts[:lang]
             file = File.join Merb.root, 'app', 'locale', opts[:lang] + '.yaml'
             @lang[opts[:lang]] = YAML.load_file file if file.exist? file
@@ -24,7 +24,7 @@ module Merb
           end
           return opts[:n] > 1 ? plural : singular
         end
-        def supported? lang
+        def supported?(lang)
           unless @lang.include? opts[:lang]
             file = File.join Merb.root, 'app', 'locale', opts[:lang] + '.yaml'
             @lang[opts[:lang]] = YAML.load_file file if file.exist? file

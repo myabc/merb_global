@@ -29,7 +29,7 @@ module Merb
     #
     # ==== Example
     # <tt>render _("%d file deleted", "%d files deleted", :n => del) % del</tt>
-    def _ *args
+    def _(*args)
       opts = {:lang => self.lang, :n => 1}
       opts.merge! args.pop if args.last.is_a? Hash
       if args.size == 1

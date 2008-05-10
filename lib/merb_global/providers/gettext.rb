@@ -12,12 +12,12 @@ module Merb
   module Global
     module Providers
       class Gettext < Merb::Global::Provider #:nodoc: all
-        def translate_to singular, plural, opts
+        def translate_to(singular, plural, opts)
           context = Thread.current.gettext_context
           context.locale = Locale::Object.new opts[:lang]
           context.ngettext(singular, plural, opts[:n])
         end
-        def supported? lang
+        def supported?(lang)
           # I know it's a hack - but it should work
           File.directory? File.join(Merb.root, 'app', 'locale', lang)
         end

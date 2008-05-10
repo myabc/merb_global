@@ -5,7 +5,7 @@ module Merb
   module Global
     module Providers
       class DataMapper < Merb::Global::Provider #:nodoc: all
-        def translate_to singular, plural, opts
+        def translate_to(singular, plural, opts)
           language = Language[:name => opts[:lang]] # I hope it's from MemCache
           unless language.nil?
             n = Plural.which_form opts[:n], language.plural
@@ -14,7 +14,7 @@ module Merb
           end
           return opts[:n] > 1 ? plural : singular # Fallback if not in database
         end
-        def supported? lang
+        def supported?(lang)
           Language.count(:name => lang) != 0
         end
         def create!
