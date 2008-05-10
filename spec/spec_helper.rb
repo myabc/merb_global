@@ -10,4 +10,5 @@ Merb.start_environment(:testing => true, :adapter => 'runner', :environment => E
 
 Spec::Runner.configure do |config|
   config.include(Merb::Test::ControllerHelper)
+  config.mock_with :mocha
 end
