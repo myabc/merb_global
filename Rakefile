@@ -52,8 +52,9 @@ Rake::RDocTask.new do |rd|
 end
 
 desc "Run all specs"
-Spec::Rake::SpecTask.new('specs') do |t|
-  t.spec_files = FileList['spec/*.rb']
+Spec::Rake::SpecTask.new('specs') do |st|
+  st.libs = ['lib', 'spec']
+  st.spec_files = FileList['spec/*.rb']
 end
 
 
