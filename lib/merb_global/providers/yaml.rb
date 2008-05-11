@@ -1,4 +1,4 @@
-require 'data_mapper'
+require 'yaml'
 
 module Merb
   module Global
@@ -13,11 +13,15 @@ module Merb
         def translate_to(singular, plural, opts)
           unless @lang.include? opts[:lang]
             file = File.join Merb.root, 'app', 'locale', opts[:lang] + '.yaml'
-            @lang[opts[:lang]] = YAML.load_file file if file.exist? file
+            if File.exist? file
+              @lang[opts[:lang]] = YAML.load_file file
+            else
+              @lang[opts[:lang]] = nil
+            end
           end
-          unless opts[:lang].nil?
+          unless @lang[opts[:lang]].nil?
             lang = @lang[opts[:lang]]
-            n = Plural.which_form opts[:n], lang[:plural]
+            n = Merb::Global::Plural.which_form opts[:n], lang[:plural]
             unless lang[singular].nil?
               return lang[singular][n] unless lang[singular][n].nil?
             end
@@ -25,11 +29,11 @@ module Merb
           return opts[:n] > 1 ? plural : singular
         end
         def supported?(lang)
-          unless @lang.include? opts[:lang]
-            file = File.join Merb.root, 'app', 'locale', opts[:lang] + '.yaml'
-            @lang[opts[:lang]] = YAML.load_file file if file.exist? file
+          unless @lang.include? lang
+            file = File.join Merb.root, 'app', 'locale', lang + '.yaml'
+            @lang[lang] = YAML.load_file file if File.exist? file
           end
-          not opts[:lang].nil?
+          not @lang[lang].nil?
         end
         def create!
           File.mkdirs File.join(Merb.root, 'app', 'locale')
