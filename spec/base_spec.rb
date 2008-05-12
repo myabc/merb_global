@@ -47,5 +47,9 @@ describe Merb::Global do
       end
       test_base._("a", "b", :n => 2).should == "b"
     end
+    it "should raise ArgumentException for wrong number of arguments" do
+      lambda {TestBase.new._}.should raise_error(ArgumentError)
+      lambda {TestBase.new._ "a", "b", "c"}.should raise_error(ArgumentError)
+    end
   end
 end
