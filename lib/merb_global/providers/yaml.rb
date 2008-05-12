@@ -36,6 +36,7 @@ module Merb
           not @lang[lang].nil?
         end
         def create!
+          require 'ftools'
           File.mkdirs File.join(Merb.root, 'app', 'locale')
         end
       end
