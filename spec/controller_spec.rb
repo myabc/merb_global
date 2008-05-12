@@ -40,4 +40,3 @@ describe Merb::Controller do
     controller.lang.should == 'it'
   end
 end
-

@@ -30,7 +30,7 @@ describe Merb::Global::Providers::Yaml do
       YAML.expects(:load_file).with(yaml_file).returns(nil)
       @provider.translate_to "test", "tests", :lang => 'en', :n => 1
     end
-    it 'should mark nil if file do not exists' do 
+    it 'should mark nil if file do not exists' do
       yaml_file = File.join Merb.root, 'app', 'locale', 'en.yaml'
       File.expects(:exist?).with(yaml_file).returns(false)
       @provider.translate_to "test", "tests", :lang => 'en', :n => 1

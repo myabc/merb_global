@@ -24,7 +24,7 @@ module Merb
     # ==== Options (opts)
     # :lang<String>:: A language to translate on
     # :n<Fixnum>:: A number of objects
-    # 
+    #
     # ==== Returns
     # translated<String>:: A translated string
     #

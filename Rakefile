@@ -27,7 +27,7 @@ spec = Gem::Specification.new do |s|
   s.autorequire = PLUGIN
   s.files = %w(LICENSE README Rakefile TODO) +
             Dir.glob("{lib,specs,*_generators}/**/*")
-  
+
   # rdoc
   s.has_rdoc = true
   s.extra_rdoc_files = %w( README LICENSE TODO )

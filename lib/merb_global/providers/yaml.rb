@@ -5,7 +5,7 @@ module Merb
     module Providers
       class Yaml < Merb::Global::Provider #:nodoc:
         def initialize
-          # Not synchronized - make GC do it's work (may be not optimal 
+          # Not synchronized - make GC do it's work (may be not optimal
           # but I don't think that some problem will occure).
           # Shouldn't it be sort of cache with some expiration limit?
           @lang = Hash.new

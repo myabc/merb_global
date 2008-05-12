@@ -3,8 +3,9 @@ require 'merb-core'
 
 Merb::Plugins.config[:merb_global] = {:provider=> 'mock'}
 
-require 'merb_global'
+require 'pathname'
 require 'spec'
+require Pathname(__FILE__).dirname.parent.expand_path + 'lib/merb_global'
 
 Merb.start_environment(:testing => true, :adapter => 'runner', :environment => ENV['MERB_ENV'] || 'test')
 
