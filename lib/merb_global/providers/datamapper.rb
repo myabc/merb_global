@@ -14,7 +14,7 @@ module Merb
           end
           return opts[:n] > 1 ? plural : singular # Fallback if not in database
         end
-        def supported?(lang)
+        def support?(lang)
           Language.count(:name => lang) != 0
         end
         def create!

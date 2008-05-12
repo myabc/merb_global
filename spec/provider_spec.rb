@@ -11,10 +11,10 @@ describe Merb::Global::Provider do
       end.should raise_error(NoMethodError)
     end
   end
-  describe '.supported?' do
+  describe '.support?' do
     it 'should raise NoMethodError' do
       lambda do
-        @provider.supported? "en"
+        @provider.support? "en"
       end.should raise_error(NoMethodError)
     end
   end

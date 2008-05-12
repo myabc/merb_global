@@ -9,18 +9,18 @@ describe Merb::Global::Providers::Yaml do
   before do
     @provider = Merb::Global::Providers::Yaml.new
   end
-  describe '._supported?' do
+  describe '._support?' do
     it 'should return true if file exists' do
       file = File.join Merb.root, 'app', 'locale', 'en.yaml'
       File.expects(:exist?).with(file).returns(true)
       YAML.stubs(:load_file).returns(mock)
-      @provider.supported?('en').should == true
+      @provider.support?('en').should == true
     end
     it 'should return false if file doesn\'t exist' do
       file = File.join Merb.root, 'app', 'locale', 'en.yaml'
       File.expects(:exist?).with(file).returns(false)
       YAML.stubs(:load_file).returns(mock)
-      @provider.supported?('en').should == false
+      @provider.support?('en').should == false
     end
   end
   describe '.translate_to' do

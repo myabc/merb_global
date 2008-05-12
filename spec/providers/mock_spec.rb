@@ -13,9 +13,9 @@ describe Merb::Global::Providers::Mock do
       @provider.translate_to("test", "tests", :n => 1).should == "test"
     end
   end
-  describe '.supported?' do
+  describe '.support?' do
     it 'should return true' do
-      @provider.supported?(mock) == true
+      @provider.support?(mock) == true
     end
   end
   describe '.create!' do

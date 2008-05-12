@@ -16,7 +16,7 @@ describe Merb::Controller do
   it "should set language according to the preferences" do
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'fr'
-      controller.provider = provider = stub(:supported? => true)
+      controller.provider = provider = stub(:support? => true)
     end
     controller.lang.should == 'fr'
   end
@@ -25,9 +25,9 @@ describe Merb::Controller do
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] =
         'de;q=0.8,en;q=1.0,es;q=0.6'
       controller.provider = mock "provider" do |provider|
-        provider.expects(:supported?).with("de").returns(true)
-        provider.expects(:supported?).with("en").returns(false)
-        provider.stubs(:supported?).with("es").returns(true)
+        provider.expects(:support?).with("de").returns(true)
+        provider.expects(:support?).with("en").returns(false)
+        provider.stubs(:support?).with("es").returns(true)
       end
     end
     controller.lang.should == 'de'
@@ -35,7 +35,7 @@ describe Merb::Controller do
   it "should assume 1.0 as default weight" do
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'it,en;q=0.7'
-      provider = controller.provider = stub(:supported? => true)
+      provider = controller.provider = stub(:support? => true)
     end
     controller.lang.should == 'it'
   end

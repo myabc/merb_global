@@ -31,7 +31,7 @@ module Merb
       end
       
       # call-seq: 
-      #     supported?(lang) => supported
+      #     support?(lang) => supported
       #
       # Checks if the language is supported (i.e. if the translation exists).
       #
@@ -46,8 +46,8 @@ module Merb
       # 
       # ==== Raises
       # NoMethodError:: Raised by default implementation. Should not be thrown.
-      def supported?(lang)
-        raise NoMethodError.new('method supported? has not been implemented')
+      def support?(lang)
+        raise NoMethodError.new('method support? has not been implemented')
       end
       
       # This method creates basic files and/or directory structures

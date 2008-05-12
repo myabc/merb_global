@@ -5,7 +5,7 @@ module Merb
         def translate_to(singular, plural, opts)
           opts[:n] > 1 ? plural : singular
         end
-        def supported?(lang)
+        def support?(lang)
           true
         end
         def create!
