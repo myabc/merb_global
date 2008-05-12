@@ -58,4 +58,11 @@ Spec::Rake::SpecTask.new('specs') do |st|
   st.spec_opts = ['--format specdoc', '--color']
 end
 
-
+desc "Run rcov"
+Spec::Rake::SpecTask.new('rcov') do |rct|
+  rct.libs = ['lib', 'spec']
+  rct.rcov = true
+  rct.rcov_opts = ['--include-file merb_global']
+  rct.spec_files = FileList['spec/**/*.rb']
+  rct.spec_opts = ['--format specdoc', '--color']
+end
