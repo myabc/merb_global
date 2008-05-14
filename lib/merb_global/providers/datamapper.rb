@@ -6,13 +6,17 @@ module Merb
     module Providers
       class DataMapper < Merb::Global::Provider #:nodoc: all
         def translate_to(singular, plural, opts)
-          language = Language[:name => opts[:lang]] # I hope it's from MemCache
+          # I hope it's from MemCache
+          language = Language.first :name => opts[:lang]
           unless language.nil?
             n = Plural.which_form opts[:n], language.plural
-            translation = Translation[language.pk, singular.hash, n]
+            translation = Translation.first :language_id => language.id,
+                                            :msgid_hash => singular.hash,
+                                            :msgstr_index => n
             return translation.msgstr unless translation.nil?
           end
-          return opts[:n] > 1 ? plural : singular # Fallback if not in database
+          # Fallback if not in database
+          return opts[:n] != 1 ? plural : singular
         end
         def support?(lang)
           Language.count(:name => lang) != 0
@@ -22,14 +26,14 @@ module Merb
           Translation.auto_migrate!
         end
         # When table structure becomes stable it *should* be documented
-        class Language < DataMapper::Base
-          set_table_name :merb_global_languages
+        class Language < ::DataMapper::Base
+          set_table_name 'merb_global_languages'
           property :name, :string, :index => true # It should be unique
           property :plural, :text, :lazy => false
           validates_uniqueness_of :name
         end
-        class Translation < DataMapper::Base
-          set_table_name :merb_global_translations
+        class Translation < ::DataMapper::Base
+          set_table_name 'merb_global_translations'
           property :language_id, :integer, :nullable => false, :key => true
           # Sould it be propery :msgid, :text?
           # This form should be faster. However:
@@ -40,7 +44,7 @@ module Merb
           property :msgid_hash, :integer, :nullable => false, :key => true
           property :msgstr, :text, :nullable => false, :lazy => false
           property :msgstr_index, :integer, :nullable => false, :key => true
-          belongs_to :language
+          #belongs_to :language
         end
       end
     end
