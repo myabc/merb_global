@@ -12,7 +12,8 @@ module Merb
         end
         def translate_to(singular, plural, opts)
           unless @lang.include? opts[:lang]
-            file = File.join Merb.root, 'app', 'locale', opts[:lang] + '.yaml'
+            file = File.join Merb::Global::Providers.localedir,
+                             opts[:lang] + '.yaml'
             if File.exist? file
               @lang[opts[:lang]] = YAML.load_file file
             else
@@ -30,14 +31,14 @@ module Merb
         end
         def support?(lang)
           unless @lang.include? lang
-            file = File.join Merb.root, 'app', 'locale', lang + '.yaml'
+            file = File.join Merb::Global::Providers.localedir, lang + '.yaml'
             @lang[lang] = YAML.load_file file if File.exist? file
           end
           not @lang[lang].nil?
         end
         def create!
           require 'ftools'
-          File.mkdirs File.join(Merb.root, 'app', 'locale')
+          File.mkdirs Merb::Global::Providers.localedir
         end
       end
     end

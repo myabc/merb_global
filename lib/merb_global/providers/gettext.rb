@@ -19,15 +19,15 @@ module Merb
         end
         def support?(lang)
           # I know it's a hack - but it should work
-          File.directory? File.join(Merb.root, 'app', 'locale', lang)
+          File.directory? File.join(Merb::Global::Providers.localedir, lang)
         end
         def create!
-          File.mkdirs File.join(Merb.root, 'app', 'locale')
+          File.mkdirs Merb::Global::Providers.localedir
         end
         class GettextContext
           include GetText
           # Please change it to proper location
-          bindtextdomian "merbapp", File.join(Merb.root, 'app', 'locale')
+          bindtextdomian "merbapp", Merb::Global::Providers.localedir
         end
       end
     end
