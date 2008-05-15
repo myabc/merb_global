@@ -1,3 +1,7 @@
+#<% if false %>
+# This is quick hack to avoid naming confict in specs
+class Merb::Global::Providers::Sequel
+#<% end %>
 class AddTranslationsMigration < Sequel::Migration
   def up
     create_table :merb_global_languages do
@@ -16,3 +20,6 @@ class AddTranslationsMigration < Sequel::Migration
     drop_table :merb_global_languages, :merb_global_translations
   end
 end
+#<% if false %>
+end
+#<% end %>

@@ -25,13 +25,13 @@ module Merb
           if migration_exists
             puts "\nThe Translation Migration File already exists\n\n"
           else
-            sh%{merb-gen translations_migration}
+            sh %{merb-gen translations_migration}
           end
         end
-        class Language < Sequel::Model(:merb_global_lanuages)
+        class Language < ::Sequel::Model(:merb_global_languages)
         end
-        class Translation < Sequel::Model(:merb_global_translations)
-          set_primery_key [:language_id, :msgid_hash, :msgstr_index]
+        class Translation < ::Sequel::Model(:merb_global_translations)
+          set_primary_key :language_id, :msgid_hash, :msgstr_index
         end
       end
     end
