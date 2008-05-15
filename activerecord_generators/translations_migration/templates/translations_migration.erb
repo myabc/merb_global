@@ -1,3 +1,6 @@
+#<% if false %>
+class Merb::Global::Providers::ActiveRecord
+#<% end %>
 class AddTranslationsMigration < Sequel::Migration
   def up
     create_table :merb_global_languages do
@@ -19,3 +22,6 @@ class AddTranslationsMigration < Sequel::Migration
     drop_table :merb_global_languages, :merb_global_translations
   end
 end
+#<% if false %>
+end
+#<% end %>
