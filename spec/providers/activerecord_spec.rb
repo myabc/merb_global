@@ -92,9 +92,9 @@ describe Merb::Global::Providers::ActiveRecord do
       trans = Merb::Global::Providers::ActiveRecord::Translation
       en = lang.create! :name => 'en', :plural => 'n==1?0:1'
       trans.create! :language_id => en.id, :msgid_hash => 'Test'.hash,
-                   :msgstr => 'One test', :msgstr_index => 0
+                    :msgstr => 'One test', :msgstr_index => 0
       trans.create! :language_id => en.id, :msgid_hash => 'Test'.hash,
-                   :msgstr => 'Many tests', :msgstr_index => 1
+                    :msgstr => 'Many tests', :msgstr_index => 1
     end
     it 'should find it in database and return proper translation' do
       trans = @provider.translate_to 'Test', 'Tests', :n => 1, :lang => 'en'
