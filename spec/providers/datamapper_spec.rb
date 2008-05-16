@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'data_mapper'
 
-DataMapper::Database.setup :adapter => 'sqlite3', :database => 'dm.sql'
+DataMapper::Database.setup :adapter => 'sqlite3', :database => ':memory:'
 
 require 'merb_global/providers/datamapper'
 
@@ -9,9 +9,6 @@ describe Merb::Global::Providers::DataMapper do
   before do
     DataMapper::Persistence.auto_migrate!
     @provider = Merb::Global::Providers::DataMapper.new
-  end
-  after(:all) do
-    File.unlink 'dm.sql' if File.exist? 'dm.sql'
   end
   describe '.create!' do
     it 'should call automigrate' do
