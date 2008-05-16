@@ -1,9 +1,9 @@
 #<% if false %>
 class Merb::Global::Providers::ActiveRecord
 #<% end %>
-class AddTranslationsMigration < Sequel::Migration
-  def up
-    create_table :merb_global_languages do
+class AddTranslationsMigration < ActiveRecord::Migration
+  def self.up
+    create_table :merb_global_languages do |t|
       t.string	  :name,         :limit => 16
       t.string    :plural,       :size => 128
     end
@@ -18,8 +18,9 @@ class AddTranslationsMigration < Sequel::Migration
       t.integer   :msgstr_index, :null => false
     end
   end
-  def down
-    drop_table :merb_global_languages, :merb_global_translations
+  def self.down
+    drop_table :merb_global_languages
+    drop_table :merb_global_translations
   end
 end
 #<% if false %>

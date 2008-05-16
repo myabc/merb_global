@@ -11,12 +11,12 @@ module Merb
       class ActiveRecord < Merb::Global::Provider #:nodoc: all
         def translate_to(singular, plural, opts)
           language = Language.find :first,
-                                   :conditions => {:name => opts[:lanf]}
+                                   :conditions => {:name => opts[:lang]}
           unless language.nil?
-            n = Plural.which_form n, language.plural
-            translation = Translation.find [language.pk, singular.hash, n]
-            return translation.msgstr unless translation.nil?
-          end
+            n = Plural.which_form opts[:n], language.plural
+            translation = Translation.find [language.id, singular.hash, n]
+            return translation.msgstr
+          end rescue nil
           return opts[:n] > 1 ? plural : singular # Fallback if not in database
         end
         def support?(lang)
