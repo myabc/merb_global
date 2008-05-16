@@ -18,16 +18,17 @@ module Merb
           context.ngettext(singular, plural, opts[:n])
         end
         def support?(lang)
-          # I know it's a hack - but it should work
-          File.directory? File.join(Merb::Global::Providers.localedir, lang)
+          File.exist? File.join(Merb::Global::Providers.localedir,
+                                lang + '.mo')
         end
         def create!
           File.mkdirs Merb::Global::Providers.localedir
         end
         class GettextContext
-          include GetText
+          include ::GetText
           # Please change it to proper location
-          bindtextdomian "merbapp", Merb::Global::Providers.localedir
+          bindtextdomain "merbapp", Merb::Global::Providers.localedir
+          public :locale=, :ngettext
         end
       end
     end
