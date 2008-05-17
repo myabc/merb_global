@@ -9,7 +9,8 @@ module Merb
           provider = Merb::Plugins.config[:merb_global][:provider]
         end
       end
-      require 'merb_global/providers/' + provider
+      # Should it be like that or should the provider be renamed?
+      require 'merb_global/providers/' + provider.gsub(/_/, '')
       @@provider = eval("Merb::Global::Providers::#{provider.camel_case}.new")
       # call-seq:
       #     provider => provider
