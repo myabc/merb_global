@@ -1,9 +1,12 @@
 require 'rubygems'
+require 'pathname'
 require 'merb-core'
 
-Merb::Plugins.config[:merb_global] = {:provider=> 'mock'}
+Merb::Plugins.config[:merb_global] = {
+  :provider => 'mock',
+  :localedir => File.join('spec', 'locale')
+}
 
-require 'pathname'
 require 'spec'
 require Pathname(__FILE__).dirname.parent.expand_path + 'lib/merb_global'
 
