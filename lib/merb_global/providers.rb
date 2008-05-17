@@ -1,17 +1,22 @@
 module Merb
   module Global
     module Providers
-      # Probably there's better place for this startup code. However it's
-      # should work
-      provider = 'gettext'
-      unless Merb::Plugins.config[:merb_global].nil?
-        unless Merb::Plugins.config[:merb_global][:provider].nil?
-          provider = Merb::Plugins.config[:merb_global][:provider]
+      # Is there a way to mark static methods as private?
+      @@provider_name = lambda do 
+        provider = 'gettext'
+        unless Merb::Plugins.config[:merb_global].nil?
+          unless Merb::Plugins.config[:merb_global][:provider].nil?
+            provider = Merb::Plugins.config[:merb_global][:provider]
+          end
         end
+        return provider
       end
-      # Should it be like that or should the provider be renamed?
-      require 'merb_global/providers/' + provider.gsub(/_/, '')
-      @@provider = eval("Merb::Global::Providers::#{provider.camel_case}.new")
+      @@provider_loading = lambda do |provider|
+        # Should it be like that or should the provider be renamed?
+        require 'merb_global/providers/' + provider.gsub(/_/, '')
+        @@provider = eval "Merb::Global::Providers::#{provider.camel_case}.new"
+      end
+      @@provider_loading.call @@provider_name.call
       # call-seq:
       #     provider => provider
       #
