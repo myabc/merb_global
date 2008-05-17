@@ -14,12 +14,12 @@ module Merb
       class Gettext < Merb::Global::Provider #:nodoc: all
         def translate_to(singular, plural, opts)
           context = Thread.current.gettext_context
-          context.locale = Locale::Object.new opts[:lang]
+          context.set_locale opts[:lang], true
           context.ngettext(singular, plural, opts[:n])
         end
         def support?(lang)
-          File.exist? File.join(Merb::Global::Providers.localedir,
-                                lang + '.mo')
+          puts File.join(Merb::Global::Providers.localedir, lang)
+          File.exist? File.join(Merb::Global::Providers.localedir, lang)
         end
         def create!
           File.mkdirs Merb::Global::Providers.localedir
@@ -28,7 +28,7 @@ module Merb
           include ::GetText
           # Please change it to proper location
           bindtextdomain "merbapp", Merb::Global::Providers.localedir
-          public :locale=, :ngettext
+          public :set_locale, :ngettext
         end
       end
     end
