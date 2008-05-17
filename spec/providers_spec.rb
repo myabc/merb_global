@@ -26,21 +26,15 @@ describe Merb::Global::Providers do
     end
   end
   describe '.provider_loading' do
-    it 'should change the provider into correct form' do
-      provider = mock do |provider|
-        provider.expects(:gsub).with(/_/, '').returns("test")
-        provider.stubs(:camel_case).returns("Test")
-      end
+    it 'should load the provider' do
+      provider = 'test'
       provider_path = 'merb_global/providers/test'
       Merb::Global::Providers.expects(:require).with(provider_path)
       Merb::Global::Providers.stubs(:eval)
       Merb::Global::Providers.provider_loading.call(provider)
     end
-    it 'should load the provider' do
-      provider = mock do |provider|
-        provider.stubs(:gsub).with(/_/, '').returns("test")
-        provider.expects(:camel_case).returns("Test")
-      end
+    it 'should create the provider' do
+      provider = 'test'
       provider_class = 'Merb::Global::Providers::Test'
       Merb::Global::Providers.stubs(:require)
       Merb::Global::Providers.expects(:eval).with(provider_class + '.new')

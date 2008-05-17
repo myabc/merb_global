@@ -5,7 +5,7 @@ ActiveRecord::Base.establish_connection :adapter => "sqlite3",
                                         :database => ":memory:"
 ActiveRecord::Migration.verbose = false
 
-require 'merb_global/providers/activerecord'
+require 'merb_global/providers/active_record'
 
 load    Pathname(__FILE__).dirname.parent.parent.expand_path +
         'activerecord_generators/translations_migration/templates/' +

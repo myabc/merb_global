@@ -13,7 +13,7 @@ module Merb
       end
       @@provider_loading = lambda do |provider|
         # Should it be like that or should the provider be renamed?
-        require 'merb_global/providers/' + provider.gsub(/_/, '')
+        require 'merb_global/providers/' + provider
         @@provider = eval "Merb::Global::Providers::#{provider.camel_case}.new"
       end
       @@provider_loading.call @@provider_name.call

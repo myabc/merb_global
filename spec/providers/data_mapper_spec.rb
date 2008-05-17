@@ -3,7 +3,7 @@ require 'data_mapper'
 
 DataMapper::Database.setup :adapter => 'sqlite3', :database => ':memory:'
 
-require 'merb_global/providers/datamapper'
+require 'merb_global/providers/data_mapper'
 
 describe Merb::Global::Providers::DataMapper do
   before do
