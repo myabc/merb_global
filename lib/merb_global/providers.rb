@@ -6,7 +6,7 @@ module Merb
         provider = 'gettext'
         unless Merb::Plugins.config[:merb_global].nil?
           unless Merb::Plugins.config[:merb_global][:provider].nil?
-            provider = Merb::Plugins.config[:merb_global][:provider]
+            provider = Merb::Plugins.config[:merb_global][:provider].to_s
           end
         end
         return provider

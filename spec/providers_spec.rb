@@ -22,7 +22,7 @@ describe Merb::Global::Providers do
       provider = mock
       config = {:merb_global => {:provider => provider}}
       Merb::Plugins.expects(:config).returns(config).at_least_once
-      Merb::Global::Providers.provider_name.call.should == provider
+      Merb::Global::Providers.provider_name.call.should == provider.to_s
     end
   end
   describe '.provider_loading' do
