@@ -5,5 +5,5 @@ An example of a single file Merb application.
 
 Start with
 
-  merb -I mock.rb
+  merb -I mock_example.rb
   

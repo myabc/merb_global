@@ -12,10 +12,10 @@ end
 dependency 'merb_global'
 
 Merb::Router.prepare do |r|
-  r.match('/').to(:controller => 'mock', :action =>'index')
+  r.match('/').to(:controller => 'mock_example', :action =>'index')
 end
 
-class Mock < Merb::Controller
+class MockExample < Merb::Controller
   def index
     _("Hi! Hello world!")
   end
