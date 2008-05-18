@@ -1,6 +1,26 @@
 module Merb
   module Global
     module Providers
+      # call-seq:
+      #     localedir => localdir
+      #
+      # Returns the directory where locales are stored for file-backended
+      # providers (such as gettext or yaml)
+      #
+      # ==== Returns
+      # localedir<String>>:: Directory where the locales are stored
+      def self.localedir
+        localedir = nil
+        unless Merb::Plugins.config[:merb_global].nil?
+          if not Merb::Plugins.config[:merb_global][:localedir].nil?
+            localedir = Merb::Plugins.config[:merb_global][:localedir]
+          elsif Merb::Plugins.config[:merb_global][:flat]
+            localedir = 'locale'
+          end
+        end
+        localedir ||= File.join('app', 'locale')
+        File.join Merb.root, localedir
+      end
       # Is there a way to mark static methods as private?
       @@provider_name = lambda do 
         provider = 'gettext'
@@ -26,26 +46,6 @@ module Merb
       # provider<Provider>:: Returns provider
       def self.provider
         @@provider
-      end
-      # call-seq:
-      #     localedir => localdir
-      #
-      # Returns the directory where locales are stored for file-backended
-      # providers (such as gettext or yaml)
-      #
-      # ==== Returns
-      # localedir<String>>:: Directory where the locales are stored
-      def self.localedir
-        localedir = nil
-        unless Merb::Plugins.config[:merb_global].nil?
-          if not Merb::Plugins.config[:merb_global][:localedir].nil?
-            localedir = Merb::Plugins.config[:merb_global][:localedir]
-          elsif Merb::Plugins.config[:merb_global][:flat]
-            localedir = 'locale'
-          end
-        end
-        localedir ||= File.join('app', 'locale')
-        File.join Merb.root, localedir
       end
     end
   end
