@@ -94,7 +94,7 @@ Your best sources for support are currently the wiki, IRC or our mailing
 list:
 
  * **MerbGlobal Wiki** (this is its temporary residence):
-    http://github.com/myabc/merb_global/wikis
+    http://trac.ikonoklastik.com/merb_global/
  * **MerbGlobal mailing list**: <http://groups.google.com/group/merb_global>
  * **MerbGlobal homepage**: _coming soon_
  * Contact the developers directly:
