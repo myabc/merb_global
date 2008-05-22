@@ -15,7 +15,11 @@ module Merb
         def translate_to(singular, plural, opts)
           context = Thread.current.gettext_context
           context.set_locale opts[:lang], true
-          context.ngettext(singular, plural, opts[:n])
+          unless plural.nil?
+            context.ngettext singular, plural, opts[:n]
+          else
+            context.gettext singular
+          end
         end
         def support?(lang)
           File.exist? File.join(Merb::Global::Providers.localedir, lang)

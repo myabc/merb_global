@@ -22,9 +22,13 @@ module Merb
           end
           unless @lang[opts[:lang]].nil?
             lang = @lang[opts[:lang]]
-            n = Merb::Global::Plural.which_form opts[:n], lang[:plural]
             unless lang[singular].nil?
-              return lang[singular][n] unless lang[singular][n].nil?
+              unless plural.nil?
+                n = Merb::Global::Plural.which_form opts[:n], lang[:plural]
+                return lang[singular][n] unless lang[singular][n].nil?
+              else
+                return lang[singular] unless lang[singular].nil?
+              end
             end
           end
           return opts[:n] > 1 ? plural : singular
