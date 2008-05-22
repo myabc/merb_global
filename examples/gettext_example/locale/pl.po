@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-22 13:59+0200\n"
-"PO-Revision-Date: 2008-05-22 21:21+0100\n"
+"PO-Revision-Date: 2008-05-22 21:42+0100\n"
 "Last-Translator: Maciej Piechotka <uzytkownik2@gmail.com>\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
@@ -19,8 +19,5 @@ msgstr ""
 
 #: gettext_example.rb:21
 msgid "Hi! Hello world!"
-msgid_plural "Hi! Hello world!"
-msgstr[0] "Cześć. Witaj świecie!"
-msgstr[1] "Cześć. Witaj świecie!"
-msgstr[2] "Cześć. Witaj świecie!"
+msgstr "Cześć. Witaj świecie!"
 
