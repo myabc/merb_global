@@ -11,7 +11,7 @@ end
 
 class GettextExample < Merb::Controller
   def index
-    _("hi")
+    _("Hi! Hello world!")
   end
 end
 
