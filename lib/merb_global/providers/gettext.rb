@@ -31,7 +31,7 @@ module Merb
           include ::GetText
           # Please change it to proper location
           bindtextdomain "merbapp", Merb::Global::Providers.localedir
-          public :set_locale, :ngettext
+          public :set_locale, :ngettext, :gettext
         end
       end
     end
