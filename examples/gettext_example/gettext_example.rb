@@ -3,7 +3,13 @@ Gem.clear_paths
 Gem.path.unshift Pathname(__FILE__).dirname.parent.parent.expand_path + 'lib'
 $LOAD_PATH.unshift Pathname(__FILE__).dirname.parent.parent.expand_path + 'lib'
 
-dependency 'merb_global'
+module Merb::Plugins
+  def self.config
+    {:merb_global => {:provider => :gettext, :flat => true}}
+  end
+end
+
+require 'merb_global'
 
 Merb::Router.prepare do |r|
   r.match('/').to(:controller => 'gettext_example', :action =>'index')

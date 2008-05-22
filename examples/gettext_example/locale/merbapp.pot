@@ -16,6 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gettext_example.c:21
+#: gettext_example.rb:21
 msgid "Hi! Hello world!"
-msgstr ""
+msgid_plural "Hi! Hello world!"
+msgstr[0] ""
+msgstr[1] ""
