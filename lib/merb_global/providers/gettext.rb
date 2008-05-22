@@ -18,7 +18,6 @@ module Merb
           context.ngettext(singular, plural, opts[:n])
         end
         def support?(lang)
-          puts File.join(Merb::Global::Providers.localedir, lang)
           File.exist? File.join(Merb::Global::Providers.localedir, lang)
         end
         def create!
