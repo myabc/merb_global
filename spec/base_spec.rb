@@ -23,10 +23,10 @@ describe Merb::Global do
     end
   end
   describe "._" do
-    it "should send doubled singular if plural not given" do
+    it "should send singular and nil if plural not given" do
       test_base = TestBase.new
       test_base.provider = mock do |provider|
-        expected_args = ["a", "a", {:n => 1, :lang => "en"}]
+        expected_args = ["a", nil, {:n => 1, :lang => "en"}]
         provider.expects(:translate_to).with(*expected_args).returns("b")
       end
       test_base._("a").should == "b"

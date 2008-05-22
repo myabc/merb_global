@@ -34,7 +34,7 @@ module Merb
       opts = {:lang => self.lang, :n => 1}
       opts.merge! args.pop if args.last.is_a? Hash
       if args.size == 1
-        self.provider.translate_to args[0], args[0], opts
+        self.provider.translate_to args[0], nil, opts
       elsif args.size == 2
         self.provider.translate_to args[0], args[1], opts
       else
