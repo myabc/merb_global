@@ -24,6 +24,12 @@ module Merb
         def create!
           File.mkdirs Merb::Global::Providers.localedir
         end
+        def choose(except)
+          dir = Dir[Merb::Global::Providers.localedir + '/*/']
+          dir.collect! {|p| p.basename}
+          dir.reject! {|lang| except.include? lang}
+          dir.first
+        end
         class GettextContext
           include ::GetText
           # Please change it to proper location

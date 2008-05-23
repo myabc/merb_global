@@ -57,6 +57,13 @@ module Merb
       def create!
         raise NoMethodError.new('method create! has not been implemented')
       end
+      
+      # This method choos an supported language except those form the list
+      # given. It may fallback to english if none language can be found
+      # which agree with those criteria
+      def choose(except)
+        raise NoMethodError.new('method choose has not been implemented')
+      end
     end
   end
 end

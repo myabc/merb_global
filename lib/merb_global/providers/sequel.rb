@@ -28,6 +28,9 @@ module Merb
             sh %{merb-gen translations_migration}
           end
         end
+        def choose(except)
+          Language.filter {:name != except}.first[:name]
+        end
         class Language < ::Sequel::Model(:merb_global_languages)
         end
         class Translation < ::Sequel::Model(:merb_global_translations)

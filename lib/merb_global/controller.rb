@@ -23,8 +23,12 @@ module Merb
         accept_language.reject! do |lang|
           lang != '*' and not self.provider.support? lang
         end
-        unless accept_language.empty? or accept_language.last == '*'
-          self.lang = accept_language.last
+        unless accept_language.empty?
+          unless accept_language.last == '*'
+            self.lang = accept_language.last
+          else
+            self.lang = self.provider.choose
+          end
         end
       end
     end

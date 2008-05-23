@@ -11,6 +11,9 @@ module Merb
         def create!
           nil # It's mock after all ;)
         end
+        def choose
+          "en"
+        end
       end
     end
   end
