@@ -4,7 +4,7 @@ Gem.path.unshift((Pathname(__FILE__).dirname + '../../../pkg').expand_path)
 $LOAD_PATH.unshift((Pathname(__FILE__).dirname + '../../../lib').expand_path)
 
 Merb::Router.prepare do |r|
-  r.match('/').to(:controller => 'datamapper_example', :action =>'index')
+  r.match('/').to(:controller => 'data_mapper_example', :action =>'index')
 end
 
 use_orm :datamapper

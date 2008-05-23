@@ -1,4 +1,4 @@
-class ActiverecordExample < Merb::Controller
+class ActiveRecordExample < Merb::Controller
   def index
     _("Hi! Hello world!")
   end
