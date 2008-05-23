@@ -9,7 +9,7 @@ module Merb::Plugins
   end
 end
 
-dependency 'merb_global'
+require 'merb_global'
 
 Merb::Router.prepare do |r|
   r.match('/').to(:controller => 'mock_example', :action =>'index')

@@ -15,10 +15,13 @@ module Merb
         def translate_to(singular, plural, opts)
           context = Thread.current.gettext_context
           context.set_locale opts[:lang], true
-          context.ngettext(singular, plural, opts[:n])
+          unless plural.nil?
+            context.ngettext singular, plural, opts[:n]
+          else
+            context.gettext singular
+          end
         end
         def support?(lang)
-          puts File.join(Merb::Global::Providers.localedir, lang)
           File.exist? File.join(Merb::Global::Providers.localedir, lang)
         end
         def create!
@@ -34,7 +37,7 @@ module Merb
           include ::GetText
           # Please change it to proper location
           bindtextdomain "merbapp", Merb::Global::Providers.localedir
-          public :set_locale, :ngettext
+          public :set_locale, :ngettext, :gettext
         end
       end
     end

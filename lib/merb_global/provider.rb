@@ -14,7 +14,7 @@ module Merb
       #
       # ==== Parameters
       # singular<String>:: A string to translate
-      # plural<String>:: A plural form of string
+      # plural<String>:: A plural form of string (nil if only singular)
       # opts<Hash>:: An options hash (see below)
       #
       # ==== Options (opts)

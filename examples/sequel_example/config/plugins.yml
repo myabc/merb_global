@@ -1,0 +1,2 @@
+:merb_global:
+  :provider: sequel

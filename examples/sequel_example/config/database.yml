@@ -1,0 +1,9 @@
+:development: &defaults
+  :adapter: sqlite
+  :database: database.db
+
+:test:
+  <<: *defaults
+
+:production:
+  <<: *defaults

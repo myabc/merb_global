@@ -6,9 +6,9 @@ require 'spec/rake/spectask'
 PLUGIN = "merb_global"
 NAME = "merb_global"
 GEM_VERSION = "0.0.1"
-AUTHOR = "Alex Coles"
+AUTHORS = ["Alex Coles", "Maciej Piechotka"]
 EMAIL = "alex@alexcolesportfolio.com"
-HOMEPAGE = "http://github.com/myabc/merb_global/wikis"
+HOMEPAGE = "http://trac.ikonoklastik.com/merb_global/"
 SUMMARY = "Localization (L10n) and Internationalization (i18n) support for the Merb MVC Framework"
 
 spec = Gem::Specification.new do |s|
@@ -19,7 +19,7 @@ spec = Gem::Specification.new do |s|
   s.extra_rdoc_files = ["README", "LICENSE", 'TODO']
   s.summary = SUMMARY
   s.description = s.summary
-  s.author = AUTHOR
+  s.authors = AUTHORS
   s.email = EMAIL
   s.homepage = HOMEPAGE
   s.add_dependency('merb-core', '>= 0.9.1')
