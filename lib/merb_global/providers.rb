@@ -36,7 +36,6 @@ module Merb
         require 'merb_global/providers/' + provider
         @@provider = eval "Merb::Global::Providers::#{provider.camel_case}.new"
       end
-      @@provider_loading.call @@provider_name.call
       # call-seq:
       #     provider => provider
       #
@@ -45,7 +44,7 @@ module Merb
       # ==== Returns
       # provider<Provider>:: Returns provider
       def self.provider
-        @@provider
+        @@provider ||= @@provider_loading.call @@provider_name.call
       end
     end
   end
