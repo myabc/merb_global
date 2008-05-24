@@ -29,7 +29,7 @@ module Merb
         end
         def choose(except)
           dir = Dir[Merb::Global::Providers.localedir + '/*/']
-          dir.collect! {|p| p.basename}
+          dir.collect! {|p| File.basename p}
           dir.reject! {|lang| except.include? lang}
           dir.first
         end

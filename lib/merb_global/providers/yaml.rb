@@ -45,8 +45,8 @@ module Merb
           File.mkdirs Merb::Global::Providers.localedir
         end
         def choose(except)
-          dir = Dir[Merb::Global::Providers.localedir + '/*.yml']
-          dir.collect! {|p| p.basename p, '.yml'}
+          dir = Dir[Merb::Global::Providers.localedir + '/*.yaml']
+          dir.collect! {|p| File.basename p, '.yaml'}
           dir.reject! {|lang| except.include? lang}
           dir.first
         end

@@ -35,15 +35,15 @@ module Merb
         end
         def choose(except)
           if except.empty?
-            Language.find(:first)
+            Language.find(:first).name
           else
             condition = 'name NOT IN (' + '?, ' * (except.length - 1) + '?)'
-            Language.find(:first, :condition => [condition, *except])
+            Language.find(:first, :conditions => [condition, *except]).name
           end
           # On #rubyonrails the following method was given. However I do not
           # trust it. Please change if the validity is confirmed
-          # Language.find(:first, :condition => ["name NOT IN ?",
-          #                                      "(#{except.join(',')})"])
+          # Language.find(:first, :conditions => ["name NOT IN ?",
+          #                                       "(#{except.join(',')})"])
         end
         class Language < ::ActiveRecord::Base
           set_table_name :merb_global_languages

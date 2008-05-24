@@ -26,7 +26,7 @@ module Merb
           Translation.auto_migrate!
         end
         def choose(except)
-          Language.all(:name.not => except)
+          Language.first(:name.not => except).name
         end
         # When table structure becomes stable it *should* be documented
         class Language < ::DataMapper::Base
