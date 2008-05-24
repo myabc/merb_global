@@ -4,6 +4,7 @@ module Merb
   class Controller #:nodoc:
     include Merb::Global
     before do
+      # Set up the language
       accept_language = self.request.env['HTTP_ACCEPT_LANGUAGE']
       self.lang = "en"
       unless accept_language.nil?
@@ -28,7 +29,7 @@ module Merb
             self.lang = accept_language.last
           else
             accept_language.pop
-            self.lang = self.provider.choose accept_language
+            self.lang = (self.provider.choose(accept_language) || "en")
           end
         end
       end
