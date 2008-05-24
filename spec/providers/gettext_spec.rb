@@ -1,7 +1,6 @@
 require 'spec_helper'
 require 'merb_global/providers/gettext'
 
-
 describe Merb::Global::Providers::Gettext do
   before do
     @provider = Merb::Global::Providers::Gettext.new
@@ -40,6 +39,10 @@ describe Merb::Global::Providers::Gettext do
       trans.should == 'Test'
       trans = @provider.translate_to 'Test', 'Tests', :n => 2, :lang => 'fr'
       trans.should == 'Tests'
+    end
+    it 'should translate for singular only also' do
+      trans = @provider.translate_to('Hello', nil, :n => 1, :lang => 'pl')
+      trans.should == 'Cześć'
     end
   end
   describe '.choose' do

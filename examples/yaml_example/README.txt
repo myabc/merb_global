@@ -1,9 +1,10 @@
-Merb Very Flat
+Merb Flat
 ==============
 
-An example of a single file Merb application.
+An example of a small Merb application. Uses a single views directory and one
+controller file.
 
 Start with
 
-  merb -I yaml_example.rb
+  merb
   
