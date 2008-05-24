@@ -27,6 +27,7 @@ module Merb
           unless accept_language.last == '*'
             self.lang = accept_language.last
           else
+            accept_language.pop
             self.lang = self.provider.choose accept_language
           end
         end
