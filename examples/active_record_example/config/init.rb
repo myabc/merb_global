@@ -8,7 +8,7 @@ Merb::Router.prepare do |r|
 end
 
 use_orm :activerecord
-require 'merb_global'
+dependency 'merb_global'
 
 Merb::Config.use { |c|
   c[:environment]         = 'production',
