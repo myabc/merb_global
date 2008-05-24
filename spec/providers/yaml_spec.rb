@@ -28,6 +28,10 @@ describe Merb::Global::Providers::Yaml do
                                           :lang => 'pl', :n => 2
       translated.should == "Testy"
     end
+    it 'should translate for singular only also' do
+      trans = @provider.translate_to('Hello', nil, :n => 1, :lang => 'pl')
+      trans.should == 'Cześć'
+    end
   end
   describe '.create!' do
     it "should create app/locale firectory" do

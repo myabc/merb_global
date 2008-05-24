@@ -22,3 +22,5 @@ msgid_plural "Tests"
 msgstr[0] ""
 msgstr[1] ""
 
+msgid "Hello"
+msgstr ""
