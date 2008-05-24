@@ -25,4 +25,11 @@ describe Merb::Global::Provider do
       end.should raise_error(NoMethodError)
     end
   end
+  describe '.choose' do
+    it 'should raise NoMethodError' do
+      lambda do
+        @provider.choose ['en']
+      end.should raise_error(NoMethodError)
+    end
+  end
 end

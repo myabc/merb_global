@@ -36,4 +36,12 @@ describe Merb::Global::Providers::Yaml do
       @provider.create!
     end
   end
+  describe '.choose' do
+    it 'should choose first language if given list is empty' do
+      @provider.choose([]).should == 'pl'
+    end
+    it 'should choose first language not from list' do
+      @provider.choose(['pl']).should be_nil
+    end
+  end
 end

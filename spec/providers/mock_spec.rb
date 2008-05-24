@@ -24,4 +24,9 @@ describe Merb::Global::Providers::Mock do
       @provider.create!.should be_nil
     end
   end
+  describe '.choose' do
+    it 'should return "en"' do
+      @provider.choose.should == 'en'
+    end
+  end
 end

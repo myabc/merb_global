@@ -109,4 +109,17 @@ describe Merb::Global::Providers::ActiveRecord do
       trans.should == 'Cars'
     end
   end
+  describe '.choose' do
+    before do
+      lang = Merb::Global::Providers::ActiveRecord::Language
+      en = lang.create! :name => 'en', :plural => 'n==1?0:1'
+      fr = lang.create! :name => 'fr', :plural => 'n>1?1:0'
+    end
+    it 'should choose the first language if list is empty' do
+      @provider.choose([]).should == 'en'
+    end
+    it 'should choose the first language except from the list' do
+      @provider.choose(['en']).should == 'fr'
+    end
+  end
 end
