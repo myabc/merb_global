@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'merb_global/providers/mock'
 
 describe Merb::Global::Providers::Mock do
   before do
