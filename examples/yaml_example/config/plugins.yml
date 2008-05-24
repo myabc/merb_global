@@ -1,0 +1,3 @@
+:merb_global:
+  :provider: yaml
+  :flat: true
