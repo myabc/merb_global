@@ -3,6 +3,10 @@ require 'merb_global/base'
 module Merb
   class Controller 
     include Merb::Global
+    # Sets the language of block.
+    # 
+    # The block should return language or nil if other method should be used
+    # to determine the language
     def self.language &block
       @language = block
     end
