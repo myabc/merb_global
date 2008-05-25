@@ -41,14 +41,7 @@ merb\_global will have the following feature set:
         built-in functionality provided by java.util.Currency, java.util.Locale
         
  * support for localization of Merb generated code
- * support for non-English Inflectors.   
-
-**WARNING** : MerbGlobal is in a very early planning/development stages. 
-At this point of time, this code should only be considered for consumption
-by advanced Ruby and Merb developers. If you're looking for something for
-production use, and still in the world of Rails, then you should examine their
-page dedicated to localization techniques here: 
-<http://wiki.rubyonrails.org/rails/pages/Internationalization>
+ * support for non-English Inflectors.
 
 Developer ReadMe
 ----------------
@@ -86,15 +79,14 @@ well as a copy of the License may be found in the LICENSE file.
 Support
 -------
 
-**WARNING REPEATED** : MerbGlobal at a very early stage of its development. 
+**WARNING REPEATED** : MerbGlobal at an early stage of its development. 
 You should not use this code unless you're reasonably secure with both Ruby 
 and Merb. That said, _please do get involved!_
 
 Your best sources for support are currently the wiki, IRC or our mailing
 list:
 
- * **MerbGlobal Wiki** (this is its temporary residence):
-    http://trac.ikonoklastik.com/merb_global/
+ * **MerbGlobal Wiki**:         <http://trac.ikonoklastik.com/merb_global/>
  * **MerbGlobal mailing list**: <http://groups.google.com/group/merb_global>
  * **MerbGlobal homepage**: _coming soon_
  * Contact the developers directly:
