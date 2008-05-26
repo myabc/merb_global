@@ -1,6 +1,8 @@
+require 'pathname'
+
 if defined? Merb::Plugins
-  require 'merb_global/base'
-  require 'merb_global/controller'
+  require Pathname(__FILE__).dirname.expand_path + 'merb_global/base'
+  require Pathname(__FILE__).dirname.expand_path + 'merb_global/controller'
 
   Merb::Plugins.add_rakefiles 'merb_global/rake'
 end
