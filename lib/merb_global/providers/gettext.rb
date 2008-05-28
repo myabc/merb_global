@@ -35,8 +35,8 @@ module Merb
         end
         class GettextContext
           include ::GetText
-          # Please change it to proper location
-          bindtextdomain "merbapp", Merb::Global::Providers.localedir
+          bindtextdomain Merb::Global.config([:gettext, :domain], 'merbapp'),
+                         Merb::Global::Providers.localedir
           public :set_locale, :ngettext, :gettext
         end
       end
