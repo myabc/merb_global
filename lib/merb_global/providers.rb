@@ -10,26 +10,17 @@ module Merb
       # ==== Returns
       # localedir<String>>:: Directory where the locales are stored
       def self.localedir
-        localedir = nil
-        unless Merb::Plugins.config[:merb_global].nil?
-          if not Merb::Plugins.config[:merb_global][:localedir].nil?
-            localedir = Merb::Plugins.config[:merb_global][:localedir]
-          elsif Merb::Plugins.config[:merb_global][:flat]
-            localedir = 'locale'
+        localedir =
+          if Merb::Global.config :flat
+            'locale'
+          else
+            Merb::Global.config :localedir, File.join('app', 'locale')
           end
-        end
-        localedir ||= File.join('app', 'locale')
         File.join Merb.root, localedir
       end
       # Is there a way to mark static methods as private?
       @@provider_name = lambda do 
-        provider = 'gettext'
-        unless Merb::Plugins.config[:merb_global].nil?
-          unless Merb::Plugins.config[:merb_global][:provider].nil?
-            provider = Merb::Plugins.config[:merb_global][:provider].to_s
-          end
-        end
-        return provider
+        Merb::Global.config :provider, 'gettext'
       end
       @@provider_loading = lambda do |provider|
         # Should it be like that or should the provider be renamed?

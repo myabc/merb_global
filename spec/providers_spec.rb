@@ -15,14 +15,15 @@ end
 describe Merb::Global::Providers do
   describe '.provider_name' do
     it 'should return gettext as default' do
-      Merb::Plugins.expects(:config).returns({})
+      Merb::Global.expects(:config).with(:provider, 'gettext').
+                   returns('gettext')
       Merb::Global::Providers.provider_name.call.should == 'gettext'
     end
     it 'should return the name of the provider in config' do
       provider = mock
-      config = {:merb_global => {:provider => provider}}
-      Merb::Plugins.expects(:config).returns(config).at_least_once
-      Merb::Global::Providers.provider_name.call.should == provider.to_s
+      Merb::Global.expects(:config).with(:provider, 'gettext').
+                   returns(provider)
+      Merb::Global::Providers.provider_name.call.should == provider
     end
   end
   describe '.provider_loading' do
