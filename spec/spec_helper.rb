@@ -34,11 +34,14 @@ def load_provider_lib(name, options = {})
   end
 end
 
-HAS_AR      = load_provider_lib(:activerecord)
-HAS_DM03    = load_provider_lib(:data_mapper, :version => '=0.3')
-HAS_DM09    = load_provider_lib(:data_mapper, :version => '=0.9.0', :gem_names => [ 'dm-core', 'dm-validations', 'dm-aggregates'])
-HAS_GETTEXT = load_provider_lib(:gettext)
-HAS_SEQUEL  = load_provider_lib(:sequel)
+HAS_AR      = load_provider_lib :activerecord
+HAS_DM03    = load_provider_lib :data_mapper, :version => '~>0.3.0',
+                                :gem_names => ['datamapper']
+HAS_DM09    = load_provider_lib :data_mapper, :version => '~>0.9.0',
+                                :gem_names => ['dm-core', 'dm-validations',
+                                               'dm-aggregates']
+HAS_GETTEXT = load_provider_lib :gettext
+HAS_SEQUEL  = load_provider_lib :sequel
 
 Merb.start_environment(:testing => true, :adapter => 'runner', :environment => ENV['MERB_ENV'] || 'test')
 
