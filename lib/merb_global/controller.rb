@@ -3,17 +3,18 @@ require 'merb_global/base'
 module Merb
   class Controller 
     include Merb::Global
+    class_inheritable_accessor :_language
     # Sets the language of block.
     # 
     # The block should return language or nil if other method should be used
     # to determine the language
     def self.language &block
-      @language = block
+      self._language = block
     end
     before do
       # Set up the language
       accept_language = self.request.env['HTTP_ACCEPT_LANGUAGE']
-      self.lang = (@language && @language.call) || begin
+      self.lang = (self._language && self._language.call) || begin
         unless accept_language.nil?
           accept_language = accept_language.split(',')
           accept_language.collect! {|lang| lang.delete " " "\n" "\r" "\t"}
