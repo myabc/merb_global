@@ -13,7 +13,7 @@ module Merb
     before do
       # Set up the language
       accept_language = self.request.env['HTTP_ACCEPT_LANGUAGE']
-      self.lang = (@language && @language.call) || begin
+      self.lang = params[:language] || (@language && @language.call) || begin
         unless accept_language.nil?
           accept_language = accept_language.split(',')
           accept_language.collect! {|lang| lang.delete " " "\n" "\r" "\t"}
