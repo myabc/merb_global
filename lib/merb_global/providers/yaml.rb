@@ -10,6 +10,7 @@ module Merb
           # Shouldn't it be sort of cache with some expiration limit?
           @lang = Hash.new
         end
+
         def translate_to(singular, plural, opts)
           unless @lang.include? opts[:lang]
             file = File.join Merb::Global::Providers.localedir,
@@ -20,6 +21,7 @@ module Merb
               @lang[opts[:lang]] = nil
             end
           end
+
           unless @lang[opts[:lang]].nil?
             lang = @lang[opts[:lang]]
             unless lang[singular].nil?
@@ -33,6 +35,7 @@ module Merb
           end
           return opts[:n] > 1 ? plural : singular
         end
+
         def support?(lang)
           unless @lang.include? lang
             file = File.join Merb::Global::Providers.localedir, lang + '.yaml'
@@ -40,10 +43,12 @@ module Merb
           end
           not @lang[lang].nil?
         end
+
         def create!
           require 'ftools'
           File.mkdirs Merb::Global::Providers.localedir
         end
+
         def choose(except)
           dir = Dir[Merb::Global::Providers.localedir + '/*.yaml']
           dir.collect! {|p| File.basename p, '.yaml'}

@@ -14,11 +14,13 @@ if HAS_SEQUEL
       migration = Merb::Global::Providers::Sequel::AddTranslationsMigration
       @migration = migration.new DB
     end
+
     describe '.up' do
       it 'should migrate the database' do
         @migration.up
       end
     end
+
     describe '.down' do
       it 'should remove the effects' do
         @migration.down
@@ -32,10 +34,12 @@ if HAS_SEQUEL
       migration = Merb::Global::Providers::Sequel::AddTranslationsMigration
       migration.new(DB).up rescue nil
     end
+
     after do
       migration = Merb::Global::Providers::Sequel::AddTranslationsMigration
       migration.new(DB).down rescue nil
     end
+
     describe '.create!' do
       it 'should check if migration exists and print message if yes' do
         file = mock do |file|
@@ -49,6 +53,7 @@ if HAS_SEQUEL
         @provider.expects(:puts)
         @provider.create!
       end
+
       it 'should run the script if migration exists' do
         file = mock do |file|
           file.expects(:=~).with(/translations\.rb/).returns(true)
@@ -62,18 +67,22 @@ if HAS_SEQUEL
         @provider.create!
       end
     end
+
     describe '.support?' do
       before do
         lang = Merb::Global::Providers::Sequel::Language
         lang.create :name => 'en', :plural => 'n==1?1:0'
       end
+
       it 'should return true if language has entry in database' do
         @provider.support?('en').should == true
       end
+
       it 'should otherwise return false' do
         @provider.support?('fr').should == false
       end
     end
+
     describe '.translate_to' do
       before do
         lang = Merb::Global::Providers::Sequel::Language
@@ -84,12 +93,14 @@ if HAS_SEQUEL
         trans.create :language_id => en.id, :msgid_hash => 'Test'.hash,
                      :msgstr => 'Many tests', :msgstr_index => 1
       end
+
       it 'should find it in database and return proper translation' do
         trans = @provider.translate_to 'Test', 'Tests', :n => 1, :lang => 'en'
         trans.should == 'One test'
         trans = @provider.translate_to 'Test', 'Tests', :n => 2, :lang => 'en'
         trans.should == 'Many tests'
       end
+
       it 'should fallback if not' do
         trans = @provider.translate_to 'Test', 'Tests', :n => 1,:lang => 'fr'
         trans.should == 'Test'
@@ -97,19 +108,21 @@ if HAS_SEQUEL
         trans.should == 'Cars'
       end
     end
+
     describe '.choose' do
       before do
         lang = Merb::Global::Providers::Sequel::Language
         en = lang.create :name => 'en', :plural => 'n==1?0:1'
         fr = lang.create :name => 'fr', :plural => 'n>1?1:0'
       end
+
       it 'should choose the first language if list is empty' do
         @provider.choose([]).should == 'en'
       end
+
       it 'should choose the first language except from the list' do
         @provider.choose(['en']).should == 'fr'
       end
     end
   end
-
 end

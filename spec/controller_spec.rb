@@ -20,6 +20,7 @@ describe Merb::Controller do
     end
     controller.lang.should == 'en'
   end
+
   it 'should set language according to the preferences' do
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'fr'
@@ -27,6 +28,7 @@ describe Merb::Controller do
     end
     controller.lang.should == 'fr'
   end
+
   it 'should take the weights into account' do
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] =
@@ -39,6 +41,7 @@ describe Merb::Controller do
     end
     controller.lang.should == 'de'
   end
+
   it 'should assume 1.0 as default weight' do
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'it,en;q=0.7'
@@ -46,6 +49,7 @@ describe Merb::Controller do
     end
     controller.lang.should == 'it'
   end
+
   it 'should choose language if \'*\' given' do
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = '*,en;q=0.7'
@@ -55,6 +59,7 @@ describe Merb::Controller do
     end
     controller.lang.should == 'fr'
   end
+
   it "should have overriden settings by language block" do
     controller = dispatch_to(FrTestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'en'

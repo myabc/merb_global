@@ -4,9 +4,11 @@ module Merb::Global::Providers
   def self.provider_name
     @@provider_name
   end
+
   def self.provider_loading
     @@provider_loading
   end
+
   def self.provider= provider
     @@provider = provider
   end
@@ -19,6 +21,7 @@ describe Merb::Global::Providers do
                    returns('gettext')
       Merb::Global::Providers.provider_name.call.should == 'gettext'
     end
+
     it 'should return the name of the provider in config' do
       provider = mock
       Merb::Global.expects(:config).with(:provider, 'gettext').
@@ -34,6 +37,7 @@ describe Merb::Global::Providers do
       Merb::Global::Providers.stubs(:eval)
       Merb::Global::Providers.provider_loading.call(provider)
     end
+
     it 'should create the provider' do
       provider = 'test'
       provider_class = 'Merb::Global::Providers::Test'
@@ -42,13 +46,16 @@ describe Merb::Global::Providers do
       Merb::Global::Providers.provider_loading.call(provider)
     end
   end
+
   describe '.provider' do
     before do
       @provider = Merb::Global::Providers.provider
     end
+
     after do
       Merb::Global::Providers.provider = @provider
     end
+
     it 'should return the provider' do
       provider = mock
       Merb::Global::Providers.provider = provider
@@ -61,11 +68,13 @@ describe Merb::Global::Providers do
       expected = File.join Merb.root, 'app', 'locale'
       Merb::Global::Providers.localedir.should == expected
     end
+
     it 'should return locale when flat option setted' do
       Merb::Plugins.stubs(:config).returns({:merb_global => {:flat => true}})
       expected = File.join Merb.root, 'locale'
       Merb::Global::Providers.localedir.should == expected
     end
+
     it 'should return user setted path' do
       config = {:merb_global => {:localedir => 'test'}}
       Merb::Plugins.stubs(:config).returns(config)

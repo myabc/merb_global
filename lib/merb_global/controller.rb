@@ -4,13 +4,7 @@ module Merb
   class Controller 
     include Merb::Global
     class_inheritable_accessor :_language
-    # Sets the language of block.
-    # 
-    # The block should return language or nil if other method should be used
-    # to determine the language
-    def self.language &block
-      self._language = block
-    end
+
     before do
       # Set up the language
       accept_language = self.request.env['HTTP_ACCEPT_LANGUAGE']
@@ -44,6 +38,13 @@ module Merb
             end
           end
         end || 'en'
+    end
+    # Sets the language of block.
+    #
+    # The block should return language or nil if other method should be used
+    # to determine the language
+    def self.language &block
+      self._language = block
     end
   end
 end

@@ -9,12 +9,14 @@ describe Merb::Global do
     it 'should return \'en\' by default' do
       TestBase.new.lang.should == 'en'
     end
+
     it 'should return the setted language' do
       test_base = TestBase.new
       test_base.lang = lang = mock('lang')
       test_base.lang.should == lang
     end
   end
+
   describe '.provider' do
     it 'should return the default provider' do
       provider = mock 'provider'
@@ -22,6 +24,7 @@ describe Merb::Global do
       TestBase.new.provider.should == provider
     end
   end
+
   describe '._' do
     it 'should send singular and nil if plural not given' do
       test_base = TestBase.new
@@ -31,6 +34,7 @@ describe Merb::Global do
       end
       test_base._('a').should == 'b'
     end
+
     it 'should send singular and plural if both given' do
       test_base = TestBase.new
       test_base.provider = mock do |provider|
@@ -39,6 +43,7 @@ describe Merb::Global do
       end
       test_base._('a', 'b').should == 'a'
     end
+
     it 'should send the proper number if given' do
       test_base = TestBase.new
       test_base.provider = mock do |provider|
@@ -47,6 +52,7 @@ describe Merb::Global do
       end
       test_base._('a', 'b', :n => 2).should == 'b'
     end
+
     it 'should raise ArgumentException for wrong number of arguments' do
       lambda {TestBase.new._}.should raise_error(ArgumentError)
       lambda {TestBase.new._ 'a', 'b', 'c'}.should raise_error(ArgumentError)

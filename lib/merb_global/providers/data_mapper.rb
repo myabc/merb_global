@@ -18,16 +18,20 @@ module Merb
           # Fallback if not in database
           return opts[:n] != 1 ? plural : singular
         end
+
         def support?(lang)
           Language.count(:name => lang) != 0
         end
+
         def create!
           Language.auto_migrate!
           Translation.auto_migrate!
         end
+
         def choose(except)
           Language.first(:name.not => except).name
         end
+
         # When table structure becomes stable it *should* be documented
         class Language < ::DataMapper::Base
           set_table_name 'merb_global_languages'
@@ -35,6 +39,7 @@ module Merb
           property :plural, :text, :lazy => false
           validates_uniqueness_of :name
         end
+
         class Translation < ::DataMapper::Base
           set_table_name 'merb_global_translations'
           property :language_id, :integer, :nullable => false, :key => true

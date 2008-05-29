@@ -19,9 +19,11 @@ module Merb
           end rescue nil
           return opts[:n] > 1 ? plural : singular # Fallback if not in database
         end
+
         def support?(lang)
           Language.count(:conditions => {:name => lang}) != 0
         end
+
         def create!
           migration_exists = Dir[File.join(Merb.root, 'schema',
                                            'migrations', '*.rb')].detect do |f|
@@ -33,6 +35,7 @@ module Merb
             sh %{merb-gen translations_migration}
           end
         end
+
         def choose(except)
           if except.empty?
             Language.find(:first).name
@@ -45,9 +48,11 @@ module Merb
           # Language.find(:first, :conditions => ['name NOT IN ?',
           #                                       "(#{except.join(',')})"])
         end
+
         class Language < ::ActiveRecord::Base
           set_table_name :merb_global_languages
         end
+
         class Translation < ::ActiveRecord::Base
           set_table_name :merb_global_translations
           set_primary_keys :language_id, :msgid_hash, :msgstr_index

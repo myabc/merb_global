@@ -14,9 +14,11 @@ module Merb
           end
           return opts[:n] > 1 ? plural : singular # Fallback if not in database
         end
+
         def support?(lang)
           Language.filter(:name => lang).count != 0
         end
+
         def create!
           migration_exists = Dir[File.join(Merb.root, 'schema',
                                            'migrations', "*.rb")].detect do |f|
@@ -28,11 +30,14 @@ module Merb
             sh %{merb-gen translations_migration}
           end
         end
+
         def choose(except)
           Language.filter {:name != except}.first[:name]
         end
+
         class Language < ::Sequel::Model(:merb_global_languages)
         end
+
         class Translation < ::Sequel::Model(:merb_global_translations)
           set_primary_key :language_id, :msgid_hash, :msgstr_index
         end

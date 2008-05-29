@@ -1,9 +1,12 @@
 class TranslationMigrationGenerator < Merb::GeneratorBase
+  protected :banner
+
   def initialize runtime_args, runtime_options = {}
     runtime_args.push ''
     super
     @name = 'translations'
   end
+
   def mainfest
     record do |m|
       m.directory 'schema/migrations'
@@ -18,7 +21,6 @@ class TranslationMigrationGenerator < Merb::GeneratorBase
     end
   end
 
-  protected :banner
   def banner
     <<-EOS
 A migration to add translation tables to your database has been created.

@@ -21,18 +21,22 @@ module Merb
             context.gettext singular
           end
         end
+
         def support?(lang)
           File.exist? File.join(Merb::Global::Providers.localedir, lang)
         end
+
         def create!
           File.mkdirs Merb::Global::Providers.localedir
         end
+
         def choose(except)
           dir = Dir[Merb::Global::Providers.localedir + '/*/']
           dir.collect! {|p| File.basename p}
           dir.reject! {|lang| except.include? lang}
           dir.first
         end
+
         class GettextContext
           include ::GetText
           bindtextdomain Merb::Global.config([:gettext, :domain], 'merbapp'),

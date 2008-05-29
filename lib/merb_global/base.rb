@@ -6,12 +6,15 @@ require 'merb_global/providers'
 module Merb
   module Global
     attr_accessor :lang, :provider
+
     def lang #:nodoc:
       @lang ||= 'en'
     end
+
     def provider #:nodoc:
       @provider ||= Merb::Global::Providers.provider
     end
+
     # call-seq:
     #   _(singular, opts)          => translated
     #   _(singlular, plural, opts) => translated
