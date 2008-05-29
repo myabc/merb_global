@@ -7,7 +7,7 @@ module Merb
   module Global
     attr_accessor :lang, :provider
     def lang #:nodoc:
-      @lang ||= "en"
+      @lang ||= 'en'
     end
     def provider #:nodoc:
       @provider ||= Merb::Global::Providers.provider
@@ -30,7 +30,7 @@ module Merb
     # translated<String>:: A translated string
     #
     # ==== Example
-    # <tt>render _("%d file deleted", "%d files deleted", :n => del) % del</tt>
+    # <tt>render _('%d file deleted', '%d files deleted', :n => del) % del</tt>
     def _(*args)
       opts = {:lang => self.lang, :n => 1}
       opts.merge! args.pop if args.last.is_a? Hash

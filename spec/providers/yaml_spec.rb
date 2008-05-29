@@ -19,14 +19,14 @@ describe Merb::Global::Providers::Yaml do
   end
   describe '.translate_to' do
     it 'should mark nil if file do not exists' do
-      @provider.translate_to "Test", "Tests", :lang => 'fr', :n => 1
-      @provider.lang.should include("fr")
-      @provider.lang["fr"].should be_nil
+      @provider.translate_to 'Test', 'Tests', :lang => 'fr', :n => 1
+      @provider.lang.should include('fr')
+      @provider.lang['fr'].should be_nil
     end
     it 'should check appropiete form' do
-      translated = @provider.translate_to "Test", "Tests",
+      translated = @provider.translate_to 'Test', 'Tests',
                                           :lang => 'pl', :n => 2
-      translated.should == "Testy"
+      translated.should == 'Testy'
     end
     it 'should translate for singular only also' do
       trans = @provider.translate_to('Hello', nil, :n => 1, :lang => 'pl')
@@ -34,7 +34,7 @@ describe Merb::Global::Providers::Yaml do
     end
   end
   describe '.create!' do
-    it "should create app/locale firectory" do
+    it 'should create app/locale firectory' do
       file = Merb::Global::Providers.localedir
       File.expects(:mkdirs).with(file).returns([file])
       @provider.create!

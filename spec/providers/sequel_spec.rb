@@ -41,7 +41,7 @@ if HAS_SEQUEL
         file = mock do |file|
           file.expects(:=~).with(/translations\.rb/).returns(true)
         end
-        dir = File.join Merb.root, "schema", "migrations", "*.rb"
+        dir = File.join Merb.root, 'schema', 'migrations', '*.rb'
         dir_mock = mock do |dir_mock|
           dir_mock.expects(:detect).yields(file).returns(true)
         end
@@ -53,7 +53,7 @@ if HAS_SEQUEL
         file = mock do |file|
           file.expects(:=~).with(/translations\.rb/).returns(true)
         end
-        dir = File.join Merb.root, "schema", "migrations", "*.rb"
+        dir = File.join Merb.root, 'schema', 'migrations', '*.rb'
         dir_mock = mock do |dir_mock|
           dir_mock.expects(:detect).yields(file).returns(false)
         end

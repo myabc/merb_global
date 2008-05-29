@@ -23,8 +23,8 @@ module Merb
           Language.count(:conditions => {:name => lang}) != 0
         end
         def create!
-          migration_exists = Dir[File.join(Merb.root,"schema",
-                                           "migrations", "*.rb")].detect do |f|
+          migration_exists = Dir[File.join(Merb.root, 'schema',
+                                           'migrations', '*.rb')].detect do |f|
             f =~ /translations\.rb/
           end
           if migration_exists
@@ -42,7 +42,7 @@ module Merb
           end
           # On #rubyonrails the following method was given. However I do not
           # trust it. Please change if the validity is confirmed
-          # Language.find(:first, :conditions => ["name NOT IN ?",
+          # Language.find(:first, :conditions => ['name NOT IN ?',
           #                                       "(#{except.join(',')})"])
         end
         class Language < ::ActiveRecord::Base

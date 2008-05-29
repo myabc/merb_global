@@ -12,7 +12,7 @@ module Merb
           nil # It's mock after all ;)
         end
         def choose
-          "en"
+          'en'
         end
       end
     end

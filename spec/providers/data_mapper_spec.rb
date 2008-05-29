@@ -19,7 +19,7 @@ if HAS_DM03
     describe '.support?' do
       before do
         lang = Merb::Global::Providers::DataMapper::Language
-        lang.create! :name => "en", :plural => "n>1?1:0"
+        lang.create! :name => 'en', :plural => 'n>1?1:0'
       end
       it 'should return true for language in database' do
         @provider.support?('en').should == true
@@ -31,20 +31,20 @@ if HAS_DM03
     describe '.translate_to' do
       before do
         lang = Merb::Global::Providers::DataMapper::Language
-        en = lang.create! :name => "en", :plural => "n>1?1:0"
+        en = lang.create! :name => 'en', :plural => 'n>1?1:0'
         trans = Merb::Global::Providers::DataMapper::Translation
-        trans.create! :language_id => en.id, :msgid_hash => "Test".hash,
-                      :msgstr => "One test", :msgstr_index => 0
-        trans.create! :language_id => en.id, :msgid_hash => "Test".hash,
-                      :msgstr => "Many tests", :msgstr_index => 1
+        trans.create! :language_id => en.id, :msgid_hash => 'Test'.hash,
+                      :msgstr => 'One test', :msgstr_index => 0
+        trans.create! :language_id => en.id, :msgid_hash => 'Test'.hash,
+                      :msgstr => 'Many tests', :msgstr_index => 1
       end
       it 'should fetch the correct translation from database if avaible' do
-        trans = @provider.translate_to("Test", "Tests", :lang => "en", :n => 1)
-        trans.should == "One test"
+        trans = @provider.translate_to('Test', 'Tests', :lang => 'en', :n => 1)
+        trans.should == 'One test'
       end
       it 'should fallback to default if needed' do
-        trans = @provider.translate_to("Test", "Tests", :lang => "fr", :n => 2)
-        trans.should == "Tests"
+        trans = @provider.translate_to('Test', 'Tests', :lang => 'fr', :n => 2)
+        trans.should == 'Tests'
       end
     end
     describe '.choose' do

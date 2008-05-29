@@ -18,8 +18,8 @@ module Merb
           Language.filter(:name => lang).count != 0
         end
         def create!
-          migration_exists = Dir[File.join(Merb.root,"schema",
-                                           "migrations", "*.rb")].detect do |f|
+          migration_exists = Dir[File.join(Merb.root, 'schema',
+                                           'migrations', "*.rb")].detect do |f|
             f =~ /translations\.rb/
           end
           if migration_exists

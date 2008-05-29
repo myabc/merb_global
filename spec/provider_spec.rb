@@ -7,14 +7,14 @@ describe Merb::Global::Provider do
   describe '.translate_to' do
     it 'should raise NoMethodError' do
       lambda do
-        @provider.translate_to "test", "tests", :n => 1, :lang => "en"
+        @provider.translate_to 'test', 'tests', :n => 1, :lang => 'en'
       end.should raise_error(NoMethodError)
     end
   end
   describe '.support?' do
     it 'should raise NoMethodError' do
       lambda do
-        @provider.support? "en"
+        @provider.support? 'en'
       end.should raise_error(NoMethodError)
     end
   end

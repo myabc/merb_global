@@ -7,11 +7,11 @@ describe Merb::Global::Providers::Mock do
   end
   describe '.translate_to' do
     it 'should return plural for n > 1' do
-      @provider.translate_to("test", "tests", :n => 2).should == "tests"
+      @provider.translate_to('test', 'tests', :n => 2).should == 'tests'
     end
     it 'should return singular for n <= 1' do
-      @provider.translate_to("test", "tests", :n => 0).should == "test"
-      @provider.translate_to("test", "tests", :n => 1).should == "test"
+      @provider.translate_to('test', 'tests', :n => 0).should == 'test'
+      @provider.translate_to('test', 'tests', :n => 1).should == 'test'
     end
   end
   describe '.support?' do
@@ -25,7 +25,7 @@ describe Merb::Global::Providers::Mock do
     end
   end
   describe '.choose' do
-    it 'should return "en"' do
+    it 'should return \'en\'' do
       @provider.choose.should == 'en'
     end
   end
