@@ -39,7 +39,7 @@ describe Merb::Controller do
     end
     controller.lang.should == 'it'
   end
-  it 'should choose language if '*' given' do
+  it 'should choose language if \'*\' given' do
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = '*,en;q=0.7'
       provider = controller.provider = stub(:support? => true)

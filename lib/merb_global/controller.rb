@@ -16,7 +16,7 @@ module Merb
       self.lang = (@language && @language.call) || begin
         unless accept_language.nil?
           accept_language = accept_language.split(',')
-          accept_language.collect! {|lang| lang.delete ' ' '\n' '\r' '\t'}
+          accept_language.collect! {|lang| lang.delete ' ' "\n" "\r" "\t"}
           accept_language.reject! {|lang| lang.empty?}
           accept_language.collect! {|lang| lang.split ';q='}
           accept_language.collect! do |lang|
