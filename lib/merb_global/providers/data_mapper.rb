@@ -20,7 +20,7 @@ module Merb
         end
 
         def support?(lang)
-          Language.count(:name => lang) != 0
+          not Language.first(:name => lang).nil?
         end
 
         def create!
