@@ -5,7 +5,6 @@ module Merb
   module Global
     module Providers
       class DataMapper #:nodoc: all
-        include ::DataMapper::Resource
         def translate_to(singular, plural, opts)
           # I hope it's from MemCache
           language = Language.first :name => opts[:lang]

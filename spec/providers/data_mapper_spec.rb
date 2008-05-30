@@ -8,8 +8,9 @@ if HAS_DM
 
   describe Merb::Global::Providers::DataMapper do
     before do
-      DataMapper::Resource.repository.auto_migrate!
       @provider = Merb::Global::Providers::DataMapper.new
+      # Quick'n'dirty hack - to change in future
+      @provider.create!
     end
 
     describe '.create!' do
