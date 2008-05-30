@@ -1,4 +1,5 @@
 require 'data_mapper'
+require 'dm-aggregates'
 require 'merb_global/plural'
 
 module Merb
@@ -35,16 +36,16 @@ module Merb
         # When table structure becomes stable it *should* be documented
         class Language
           include ::DataMapper::Resource
-          # @resource_names = {:default => :merb_global_languages}
+          storage_names[:default] = 'merb_global_languages'
           property :id, Integer, :serial => true
           property :name, String, :index => true # It should be unique
           property :plural, Text, :lazy => false
-          #validates_uniqueness_of :name
+          # validates_is_unique :name
         end
 
         class Translation
           include ::DataMapper::Resource
-          # @resource_names = {:default => 'merb_global_translations'}
+          storage_names[:default] = 'merb_global_translations'
           property :language_id, Integer, :nullable => false, :key => true
           # Sould it be propery :msgid, :text?
           # This form should be faster. However:
