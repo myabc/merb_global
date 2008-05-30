@@ -38,7 +38,7 @@ module Merb
           include ::DataMapper::Resource
           storage_names[:default] = 'merb_global_languages'
           property :id, Integer, :serial => true
-          property :name, String, :index => true # It should be unique
+          property :name, String, :index => :unique
           property :plural, Text, :lazy => false
           # validates_is_unique :name
         end
