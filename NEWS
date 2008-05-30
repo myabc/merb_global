@@ -1,0 +1,11 @@
+=== 0.0.2
+ * Added language customisation
+ * Support for auto-choose of language
+ * Support for DataMapper 0.9 (removed for 0.3)
+ * Developed examples
+ * Clean-up of code
+ * Minor other improvements
+
+=== 0.0.1
+ * Basic support for 'view' translation
+ * Auto-guess of language on base of Accept-Language header
