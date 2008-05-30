@@ -8,7 +8,7 @@ if HAS_DM
 
   describe Merb::Global::Providers::DataMapper do
     before do
-      DataMapper::Resource.auto_migrate!
+      DataMapper::Resource.repository.auto_migrate!
       @provider = Merb::Global::Providers::DataMapper.new
     end
 
