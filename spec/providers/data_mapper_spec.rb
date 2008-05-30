@@ -2,14 +2,15 @@ require 'spec_helper'
 
 if HAS_DM
 
-  DataMapper::Database.setup :adapter => 'sqlite3', :database => ':memory:'
+  DataMapper.setup :default, 'sqlite3::memory:'
 
   require 'merb_global/providers/data_mapper'
 
   describe Merb::Global::Providers::DataMapper do
     before do
-      DataMapper::Persistence.auto_migrate!
       @provider = Merb::Global::Providers::DataMapper.new
+      # Quick'n'dirty hack - to change in future
+      @provider.create!
     end
 
     describe '.create!' do

@@ -4,7 +4,7 @@ require 'merb_global/plural'
 module Merb
   module Global
     module Providers
-      class DataMapper < Merb::Global::Provider #:nodoc: all
+      class DataMapper #:nodoc: all
         def translate_to(singular, plural, opts)
           # I hope it's from MemCache
           language = Language.first :name => opts[:lang]
@@ -20,7 +20,7 @@ module Merb
         end
 
         def support?(lang)
-          Language.count(:name => lang) != 0
+          not Language.first(:name => lang).nil?
         end
 
         def create!
@@ -33,25 +33,28 @@ module Merb
         end
 
         # When table structure becomes stable it *should* be documented
-        class Language < ::DataMapper::Base
-          set_table_name 'merb_global_languages'
-          property :name, :string, :index => true # It should be unique
-          property :plural, :text, :lazy => false
-          validates_uniqueness_of :name
+        class Language
+          include ::DataMapper::Resource
+          # @resource_names = {:default => :merb_global_languages}
+          property :id, Integer, :serial => true
+          property :name, String, :index => true # It should be unique
+          property :plural, Text, :lazy => false
+          #validates_uniqueness_of :name
         end
 
-        class Translation < ::DataMapper::Base
-          set_table_name 'merb_global_translations'
-          property :language_id, :integer, :nullable => false, :key => true
+        class Translation
+          include ::DataMapper::Resource
+          # @resource_names = {:default => 'merb_global_translations'}
+          property :language_id, Integer, :nullable => false, :key => true
           # Sould it be propery :msgid, :text?
           # This form should be faster. However:
           # - collision may appear (despite being unpropable)
           # - it may be wrong optimalisation
           # As far I'll leave it in this form. If anybody could measure the
           # speed of both methods it will be appreciate.
-          property :msgid_hash, :integer, :nullable => false, :key => true
-          property :msgstr, :text, :nullable => false, :lazy => false
-          property :msgstr_index, :integer, :nullable => false, :key => true
+          property :msgid_hash, Integer, :nullable => false, :key => true
+          property :msgstr, Text, :nullable => false, :lazy => false
+          property :msgstr_index, Integer, :nullable => false, :key => true
           #belongs_to :language
         end
       end
