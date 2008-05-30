@@ -62,7 +62,7 @@ if HAS_GETTEXT
       end
 
       it 'should choose first language not from list' do
-        @provider.choose(['pl']).should be_nil
+        @provider.choose(['en', 'pl']).should be_nil
       end
     end
   end
