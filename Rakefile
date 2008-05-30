@@ -52,7 +52,7 @@ end
 desc "Run all specs"
 Spec::Rake::SpecTask.new('specs') do |st|
   st.libs = ['lib', 'spec']
-  st.spec_files = FileList['spec/**/*.rb']
+  st.spec_files = FileList['spec/**/*_spec.rb']
   st.spec_opts = ['--format specdoc', '--color']
 end
 
