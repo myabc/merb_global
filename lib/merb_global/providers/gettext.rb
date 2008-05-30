@@ -23,7 +23,8 @@ module Merb
         end
 
         def support?(lang)
-          File.exist? File.join(Merb::Global::Providers.localedir, lang)
+          lang == 'en' ||
+            File.exist?(File.join(Merb::Global::Providers.localedir, lang))
         end
 
         def create!
@@ -33,6 +34,7 @@ module Merb
         def choose(except)
           dir = Dir[Merb::Global::Providers.localedir + '/*/']
           dir.collect! {|p| File.basename p}
+          dir << 'en'
           dir.reject! {|lang| except.include? lang}
           dir.first
         end
