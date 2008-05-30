@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-if HAS_DM03
+if HAS_DM
 
   DataMapper::Database.setup :adapter => 'sqlite3', :database => ':memory:'
 
