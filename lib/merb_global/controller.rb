@@ -39,11 +39,12 @@ module Merb
           end
         end || 'en'
     end
+
     # Sets the language of block.
     #
     # The block should return language or nil if other method should be used
     # to determine the language
-    def self.language &block
+    def self.language(&block)
       self._language = block
     end
   end
