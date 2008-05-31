@@ -1,5 +1,21 @@
 grammar Plural
   rule expression
+    ternary
+  end
+
+  rule ternary
+    logop '?' if_true:ternary ':' if_false:ternary {
+      def to_lambda
+        lambda do |n|
+          if logop.to_lambda.call(n)
+            if_true.to_lambda.call(n)
+          else
+            if_false.to_lambda.call(n)
+          end
+        end
+      end
+    }
+    /
     logop
   end
 
