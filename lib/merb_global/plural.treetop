@@ -1,5 +1,24 @@
 grammar Plural
   rule expression
+    addition
+  end
+  rule addition
+    multiplication '+' addition {
+      def to_lambda
+        lambda do |n|
+          multiplication.to_lambda.call(n) + addition.to_lambda.call(n)
+        end
+      end
+    }
+    /
+    multiplication '-' addition {
+      def to_lambda
+        lambda do |n|
+          multiplication.to_lambda.call(n) - addition.to_lambda.call(n)
+        end
+      end
+    }
+    /
     multiplication
   end
   rule multiplication
