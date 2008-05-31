@@ -3,7 +3,8 @@ require 'treetop'
 module Merb
   module Global
     module Plural
-      @parser = Treetop.load('plural').new
+      path = Pathname.new(__FILE__).dirname.expand_path + '/plural'
+      @parser = Treetop.load(path).new
 
       # Returns which form should be returned
       # ==== Parameters
