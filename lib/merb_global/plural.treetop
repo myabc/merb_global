@@ -1,4 +1,28 @@
 grammar Plural
+  rule expression
+    multiplication
+  end
+  rule multiplication
+    unary '*' multiplication {
+      def to_lambda
+        lambda {|n| unary.to_lambda.call(n) * multiplication.to_lambda.call(n)}
+      end
+    }
+    /
+    unary '/' multiplication {
+      def to_lambda
+        lambda {|n| unary.to_lambda.call(n) / multiplication.to_lambda.call(n)}
+      end
+    }
+    /
+    unary '%' multiplication {
+      def to_lambda
+      	lambda {|n| unary.to_lambda.call(n) % multiplication.to_lambda.call(n)}
+      end
+    }
+    /
+    unary
+  end
   rule unary
     '+' base {
       def to_lambda
@@ -23,12 +47,14 @@ grammar Plural
         lambda {|n| ~base.call(n)}
       end
     }
+    /
+    base
   end
 
   rule base
-    '(' unary ')' {
+    '(' expression ')' {
       def to_lambda
-        unary.to_lambda
+        expression.to_lambda
       end
     }
     /
