@@ -1,5 +1,32 @@
 grammar Plural
   rule expression
+    relation
+  end
+  rule relation
+    bitwise '<' relation {
+      def to_lambda
+        lambda {|n| bitwise.to_lambda.call(n) < relation.to_lambda.call(n)}
+      end
+    }
+    /
+    bitwise '<=' relation {
+      def to_lambda
+        lambda {|n| bitwise.to_lambda.call(n) <= relation.to_lambda.call(n)}
+      end
+    }
+    /
+    bitwise '>' relation {
+      def to_lambda
+        lambda {|n| bitwise.to_lambda.call(n) > relation.to_lambda.call(n)}
+      end
+    }
+    /
+    bitwise '>=' relation {
+      def to_lambda
+        lambda {|n| bitwise.to_lambda.call(n) >= relation.to_lambda.call(n)}
+      end
+    }
+    /
     bitwise
   end
   rule bitwise
