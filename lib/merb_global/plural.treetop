@@ -1,5 +1,21 @@
 grammar Plural
   rule expression
+    logop
+  end
+
+  rule logop
+    bitop '&&' logop {
+      def to_lambda
+        lambda {|n| bitop.to_lambda.call(n) && logop.to_lambda.call(n)}
+      end
+    }
+    /
+    bitop '||' bitop {
+      def to_lambda
+        lambda {|n| bitop.to_lambda.call(n) || logop.to_lambda.call(n)}
+      end
+    }
+    /
     bitop
   end
 
