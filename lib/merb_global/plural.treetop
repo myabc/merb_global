@@ -1,7 +1,30 @@
 grammar Plural
   rule expression
+    bitop
+  end
+
+  rule bitop
+    equality '&' bitop {
+      def to_lambda
+        lambda {|n| equality.to_lambda.call(n) & bitop.to_lambda.call(n)}
+      end
+    }
+    /
+    equality '^' bitop {
+      def to_lambda
+        lambda {|n| equality.to_lambda.call(n) ^ bitop.to_lambda.call(n)}
+      end
+    }
+    /
+    equality '|' bitop {
+      def to_lambda
+        lambda {|n| equality.to_lambda.call(n) | bitop.to_lambda.call(n)}
+      end
+    }
+    /
     equality
   end
+
   rule equality
     relation '==' equality {
       def to_lambda
@@ -17,6 +40,7 @@ grammar Plural
     /
     relation
   end
+
   rule relation
     bitwise '<' relation {
       def to_lambda
@@ -44,6 +68,7 @@ grammar Plural
     /
     bitwise
   end
+
   rule bitwise
     addition '<<' bitwise {
       def to_lambda
@@ -59,6 +84,7 @@ grammar Plural
     /
     addition
   end
+
   rule addition
     multiplication '+' addition {
       def to_lambda
@@ -78,6 +104,7 @@ grammar Plural
     /
     multiplication
   end
+
   rule multiplication
     unary '*' multiplication {
       def to_lambda
@@ -99,6 +126,7 @@ grammar Plural
     /
     unary
   end
+
   rule unary
     '+' base {
       def to_lambda
