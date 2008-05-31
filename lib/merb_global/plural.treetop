@@ -6,13 +6,13 @@ grammar Plural
   rule logop
     bitop '&&' logop {
       def to_lambda
-        lambda {|n| bitop.to_lambda.call(n) && logop.to_lambda.call(n)}
+        lambda {|n| bitop.to_lambda.call(n) && logop.to_lambda.call(n) ? 0 : 1}
       end
     }
     /
     bitop '||' bitop {
       def to_lambda
-        lambda {|n| bitop.to_lambda.call(n) || logop.to_lambda.call(n)}
+        lambda {|n| bitop.to_lambda.call(n) || logop.to_lambda.call(n) ? 0 : 1}
       end
     }
     /
@@ -44,13 +44,17 @@ grammar Plural
   rule equality
     relation '==' equality {
       def to_lambda
-        lambda {|n| relation.to_lambda.call(n) == equality.to_lambda.call(n)}
+        lambda do |n|
+          relation.to_lambda.call(n) == equality.to_lambda.call(n) ? 0 : 1
+        end
       end
     }
     /
     relation '!=' equality {
       def to_lambda
-        lambda {|n| relation.to_lambda.call(n) != equality.to_lambda.call(n)}
+        lambda do |n|
+          relation.to_lambda.call(n) != equality.to_lambda.call(n) ? 0 : 1
+        end
       end
     }
     /
@@ -60,25 +64,33 @@ grammar Plural
   rule relation
     bitwise '<' relation {
       def to_lambda
-        lambda {|n| bitwise.to_lambda.call(n) < relation.to_lambda.call(n)}
+        lambda do |n|
+          bitwise.to_lambda.call(n) < relation.to_lambda.call(n) ? 0 : 1
+        end
       end
     }
     /
     bitwise '<=' relation {
       def to_lambda
-        lambda {|n| bitwise.to_lambda.call(n) <= relation.to_lambda.call(n)}
+        lambda do |n|
+          bitwise.to_lambda.call(n) <= relation.to_lambda.call(n) ? 0 : 1
+        end
       end
     }
     /
     bitwise '>' relation {
       def to_lambda
-        lambda {|n| bitwise.to_lambda.call(n) > relation.to_lambda.call(n)}
+        lambda do |n|
+          bitwise.to_lambda.call(n) > relation.to_lambda.call(n) ? 0 : 1
+        end
       end
     }
     /
     bitwise '>=' relation {
       def to_lambda
-        lambda {|n| bitwise.to_lambda.call(n) >= relation.to_lambda.call(n)}
+        lambda do |n|
+          bitwise.to_lambda.call(n) >= relation.to_lambda.call(n) ? 0 : 1
+        end
       end
     }
     /
