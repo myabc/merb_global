@@ -1,0 +1,47 @@
+grammar Plural
+  rule unary
+    '+' base {
+      def to_lambda
+        base.to_lambda
+      end
+    }
+    /
+    '-' base {
+      def to_lambda
+        lambda {|n| -base.to_lambda.call(n)}
+      end
+    }
+    /
+    '!' base {
+      def to_lambda
+        lambda {|n| base.to_lambda.call(n) == 0 ? 1 : 0}
+      end
+    }
+    /
+    '~' base {
+      def to_lambda
+        lambda {|n| ~base.call(n)}
+      end
+    }
+  end
+
+  rule base
+    '(' unary ')' {
+      def to_lambda
+        unary.to_lambda
+      end
+    }
+    /
+    'n' {
+      def to_lambda
+        lambda {|n| n}
+      end
+    }
+    /
+    [0-9]* {
+      def to_lambda
+        lambda {|n| text_value.to_i}
+      end
+    }
+  end
+end
