@@ -1,5 +1,20 @@
 grammar Plural
   rule expression
+    equality
+  end
+  rule equality
+    relation '==' equality {
+      def to_lambda
+        lambda {|n| relation.to_lambda.call(n) == equality.to_lambda.call(n)}
+      end
+    }
+    /
+    relation '!=' equality {
+      def to_lambda
+        lambda {|n| relation.to_lambda.call(n) != equality.to_lambda.call(n)}
+      end
+    }
+    /
     relation
   end
   rule relation
