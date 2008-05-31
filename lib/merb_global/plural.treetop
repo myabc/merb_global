@@ -1,5 +1,15 @@
 grammar Plural
   rule expression
+    comma
+  end
+
+  rule comma
+    ternary ',' comma {
+      def to_lambda
+        comma.to_lambda
+      end
+    }
+    /
     ternary
   end
 
