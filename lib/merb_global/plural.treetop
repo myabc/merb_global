@@ -1,231 +1,255 @@
-grammar Plural
-  rule expression
-    comma
-  end
-
-  rule comma
-    ternary ',' comma {
-      def to_lambda
-        comma.to_lambda
+module Merb
+  module Global
+    grammar Plural
+      rule expression
+        comma
       end
-    }
-    /
-    ternary
-  end
-
-  rule ternary
-    logop '?' if_true:ternary ':' if_false:ternary {
-      def to_lambda
-        lambda do |n|
-          if logop.to_lambda.call(n)
-            if_true.to_lambda.call(n)
-          else
-            if_false.to_lambda.call(n)
+    
+      rule comma
+        ternary ',' comma {
+          def to_lambda
+            comma.to_lambda
           end
-        end
+        }
+        /
+        ternary
       end
-    }
-    /
-    logop
-  end
-
-  rule logop
-    bitop '&&' logop {
-      def to_lambda
-        lambda {|n| bitop.to_lambda.call(n) && logop.to_lambda.call(n) ? 0 : 1}
+    
+      rule ternary
+        logop '?' if_true:ternary ':' if_false:ternary {
+          def to_lambda
+            lambda do |n|
+              if logop.to_lambda.call(n)
+                if_true.to_lambda.call(n)
+              else
+                if_false.to_lambda.call(n)
+              end
+            end
+          end
+        }
+        /
+        logop
       end
-    }
-    /
-    bitop '||' bitop {
-      def to_lambda
-        lambda {|n| bitop.to_lambda.call(n) || logop.to_lambda.call(n) ? 0 : 1}
+    
+      rule logop
+        bitop '&&' logop {
+          def to_lambda
+            lambda do |n|
+              bitop.to_lambda.call(n) && logop.to_lambda.call(n) ? 0 : 1
+            end
+          end
+        }
+        /
+        bitop '||' bitop {
+          def to_lambda
+            lambda do |n|
+              bitop.to_lambda.call(n) || logop.to_lambda.call(n) ? 0 : 1
+            end
+          end
+        }
+        /
+        bitop
       end
-    }
-    /
-    bitop
-  end
-
-  rule bitop
-    equality '&' bitop {
-      def to_lambda
-        lambda {|n| equality.to_lambda.call(n) & bitop.to_lambda.call(n)}
+    
+      rule bitop
+        equality '&' bitop {
+          def to_lambda
+            lambda do |n|
+              equality.to_lambda.call(n) & bitop.to_lambda.call(n)
+            end
+          end
+        }
+        /
+        equality '^' bitop {
+          def to_lambda
+            lambda do |n|
+              equality.to_lambda.call(n) ^ bitop.to_lambda.call(n)
+            end
+          end
+        }
+        /
+        equality '|' bitop {
+          def to_lambda
+            lambda do |n|
+              equality.to_lambda.call(n) | bitop.to_lambda.call(n)
+            end
+          end
+        }
+        /
+        equality
       end
-    }
-    /
-    equality '^' bitop {
-      def to_lambda
-        lambda {|n| equality.to_lambda.call(n) ^ bitop.to_lambda.call(n)}
+    
+      rule equality
+        relation '==' equality {
+          def to_lambda
+            lambda do |n|
+              relation.to_lambda.call(n) == equality.to_lambda.call(n) ? 0 : 1
+            end
+          end
+        }
+        /
+        relation '!=' equality {
+          def to_lambda
+            lambda do |n|
+              relation.to_lambda.call(n) != equality.to_lambda.call(n) ? 0 : 1
+            end
+          end
+        }
+        /
+        relation
       end
-    }
-    /
-    equality '|' bitop {
-      def to_lambda
-        lambda {|n| equality.to_lambda.call(n) | bitop.to_lambda.call(n)}
+    
+      rule relation
+        bitwise '<' relation {
+          def to_lambda
+            lambda do |n|
+              bitwise.to_lambda.call(n) < relation.to_lambda.call(n) ? 0 : 1
+            end
+          end
+        }
+        /
+        bitwise '<=' relation {
+          def to_lambda
+            lambda do |n|
+              bitwise.to_lambda.call(n) <= relation.to_lambda.call(n) ? 0 : 1
+            end
+          end
+        }
+        /
+        bitwise '>' relation {
+          def to_lambda
+            lambda do |n|
+              bitwise.to_lambda.call(n) > relation.to_lambda.call(n) ? 0 : 1
+            end
+          end
+        }
+        /
+        bitwise '>=' relation {
+          def to_lambda
+            lambda do |n|
+              bitwise.to_lambda.call(n) >= relation.to_lambda.call(n) ? 0 : 1
+            end
+          end
+        }
+        /
+        bitwise
       end
-    }
-    /
-    equality
-  end
-
-  rule equality
-    relation '==' equality {
-      def to_lambda
-        lambda do |n|
-          relation.to_lambda.call(n) == equality.to_lambda.call(n) ? 0 : 1
-        end
+    
+      rule bitwise
+        addition '<<' bitwise {
+          def to_lambda
+            lambda do |n|
+              addition.to_lambda.call(n) << bitwise.to_lambda.call(n)
+            end
+          end
+        }
+        /
+        addition '>>' bitwise {
+          def to_lambda
+            lambda do |n|
+              addition.to_lambda.call(n) >> bitwise.to_lambda.call(n)
+            end
+          end
+        }
+        /
+        addition
       end
-    }
-    /
-    relation '!=' equality {
-      def to_lambda
-        lambda do |n|
-          relation.to_lambda.call(n) != equality.to_lambda.call(n) ? 0 : 1
-        end
+    
+      rule addition
+        multiplication '+' addition {
+          def to_lambda
+            lambda do |n|
+              multiplication.to_lambda.call(n) + addition.to_lambda.call(n)
+            end
+          end
+        }
+        /
+        multiplication '-' addition {
+          def to_lambda
+            lambda do |n|
+              multiplication.to_lambda.call(n) - addition.to_lambda.call(n)
+            end
+          end
+        }
+        /
+        multiplication
       end
-    }
-    /
-    relation
-  end
-
-  rule relation
-    bitwise '<' relation {
-      def to_lambda
-        lambda do |n|
-          bitwise.to_lambda.call(n) < relation.to_lambda.call(n) ? 0 : 1
-        end
+    
+      rule multiplication
+        unary '*' multiplication {
+          def to_lambda
+            lambda do |n|
+              unary.to_lambda.call(n) * multiplication.to_lambda.call(n)
+            end
+          end
+        }
+        /
+        unary '/' multiplication {
+          def to_lambda
+            lambda do |n|
+              unary.to_lambda.call(n) / multiplication.to_lambda.call(n)
+            end
+          end
+        }
+        /
+        unary '%' multiplication {
+          def to_lambda
+            lambda do |n|
+              unary.to_lambda.call(n) % multiplication.to_lambda.call(n)
+            end
+          end
+        }
+        /
+        unary
       end
-    }
-    /
-    bitwise '<=' relation {
-      def to_lambda
-        lambda do |n|
-          bitwise.to_lambda.call(n) <= relation.to_lambda.call(n) ? 0 : 1
-        end
+    
+      rule unary
+        '+' base {
+          def to_lambda
+            base.to_lambda
+          end
+        }
+        /
+        '-' base {
+          def to_lambda
+            lambda {|n| -base.to_lambda.call(n)}
+          end
+        }
+        /
+        '!' base {
+          def to_lambda
+            lambda {|n| base.to_lambda.call(n) == 0 ? 1 : 0}
+          end
+        }
+        /
+        '~' base {
+          def to_lambda
+            lambda {|n| ~base.call(n)}
+          end
+        }
+        /
+        base
       end
-    }
-    /
-    bitwise '>' relation {
-      def to_lambda
-        lambda do |n|
-          bitwise.to_lambda.call(n) > relation.to_lambda.call(n) ? 0 : 1
-        end
+    
+      rule base
+        '(' expression ')' {
+          def to_lambda
+            expression.to_lambda
+          end
+        }
+        /
+        'n' {
+          def to_lambda
+            lambda {|n| n}
+          end
+        }
+        /
+        [0-9]* {
+          def to_lambda
+            lambda {|n| text_value.to_i}
+          end
+        }
       end
-    }
-    /
-    bitwise '>=' relation {
-      def to_lambda
-        lambda do |n|
-          bitwise.to_lambda.call(n) >= relation.to_lambda.call(n) ? 0 : 1
-        end
-      end
-    }
-    /
-    bitwise
-  end
-
-  rule bitwise
-    addition '<<' bitwise {
-      def to_lambda
-        lambda {|n| addition.to_lambda.call(n) << bitwise.to_lambda.call(n)}
-      end
-    }
-    /
-    addition '>>' bitwise {
-      def to_lambda
-        lambda {|n| addition.to_lambda.call(n) >> bitwise.to_lambda.call(n)}
-      end
-    }
-    /
-    addition
-  end
-
-  rule addition
-    multiplication '+' addition {
-      def to_lambda
-        lambda do |n|
-          multiplication.to_lambda.call(n) + addition.to_lambda.call(n)
-        end
-      end
-    }
-    /
-    multiplication '-' addition {
-      def to_lambda
-        lambda do |n|
-          multiplication.to_lambda.call(n) - addition.to_lambda.call(n)
-        end
-      end
-    }
-    /
-    multiplication
-  end
-
-  rule multiplication
-    unary '*' multiplication {
-      def to_lambda
-        lambda {|n| unary.to_lambda.call(n) * multiplication.to_lambda.call(n)}
-      end
-    }
-    /
-    unary '/' multiplication {
-      def to_lambda
-        lambda {|n| unary.to_lambda.call(n) / multiplication.to_lambda.call(n)}
-      end
-    }
-    /
-    unary '%' multiplication {
-      def to_lambda
-      	lambda {|n| unary.to_lambda.call(n) % multiplication.to_lambda.call(n)}
-      end
-    }
-    /
-    unary
-  end
-
-  rule unary
-    '+' base {
-      def to_lambda
-        base.to_lambda
-      end
-    }
-    /
-    '-' base {
-      def to_lambda
-        lambda {|n| -base.to_lambda.call(n)}
-      end
-    }
-    /
-    '!' base {
-      def to_lambda
-        lambda {|n| base.to_lambda.call(n) == 0 ? 1 : 0}
-      end
-    }
-    /
-    '~' base {
-      def to_lambda
-        lambda {|n| ~base.call(n)}
-      end
-    }
-    /
-    base
-  end
-
-  rule base
-    '(' expression ')' {
-      def to_lambda
-        expression.to_lambda
-      end
-    }
-    /
-    'n' {
-      def to_lambda
-        lambda {|n| n}
-      end
-    }
-    /
-    [0-9]* {
-      def to_lambda
-        lambda {|n| text_value.to_i}
-      end
-    }
+    end
   end
 end
