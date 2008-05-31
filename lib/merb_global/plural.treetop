@@ -1,5 +1,20 @@
 grammar Plural
   rule expression
+    bitwise
+  end
+  rule bitwise
+    addition '<<' bitwise {
+      def to_lambda
+        lambda {|n| addition.to_lambda.call(n) << bitwise.to_lambda.call(n)}
+      end
+    }
+    /
+    addition '>>' bitwise {
+      def to_lambda
+        lambda {|n| addition.to_lambda.call(n) >> bitwise.to_lambda.call(n)}
+      end
+    }
+    /
     addition
   end
   rule addition
