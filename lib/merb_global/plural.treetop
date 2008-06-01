@@ -230,8 +230,16 @@ module Merb
         /
         base
       end
-    
+
       rule base
+        space* base_wospace space* {
+           def to_lambda
+             base_wospace.to_lambda
+           end
+        }
+      end
+    
+      rule base_wospace
         '(' expression ')' {
           def to_lambda
             expression.to_lambda
@@ -244,11 +252,15 @@ module Merb
           end
         }
         /
-        [0-9]* {
+        [0-9]+ {
           def to_lambda
             lambda {|n| text_value.to_i}
           end
         }
+      end
+
+      rule space
+        " " / "\n" / "\t"
       end
     end
   end
