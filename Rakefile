@@ -23,12 +23,12 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('merb-core', '>= 0.9.1')
   s.require_path = 'lib'
   s.autorequire = PLUGIN
-  s.files = %w(LICENSE README Rakefile TODO) +
+  s.files = %w(LICENSE README Rakefile TODO HISTORY) +
             Dir.glob("{lib,specs,*_generators}/**/*")
 
   # rdoc
   s.has_rdoc = true
-  s.extra_rdoc_files = %w( README LICENSE TODO )
+  s.extra_rdoc_files = %w(README LICENSE TODO HISTORY)
 end
 
 windows = (PLATFORM =~ /win32|cygwin/) rescue nil
