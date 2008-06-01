@@ -19,7 +19,7 @@ module Merb
         logop '?' if_true:ternary ':' if_false:ternary {
           def to_lambda
             lambda do |n|
-              if logop.to_lambda.call(n)
+              if logop.to_lambda.call(n) != 0
                 if_true.to_lambda.call(n)
               else
                 if_false.to_lambda.call(n)
@@ -35,7 +35,7 @@ module Merb
         bitop '&&' logop {
           def to_lambda
             lambda do |n|
-              bitop.to_lambda.call(n) && logop.to_lambda.call(n) ? 0 : 1
+              bitop.to_lambda.call(n) && logop.to_lambda.call(n) ? 1 : 0
             end
           end
         }
@@ -43,7 +43,7 @@ module Merb
         bitop '||' bitop {
           def to_lambda
             lambda do |n|
-              bitop.to_lambda.call(n) || logop.to_lambda.call(n) ? 0 : 1
+              bitop.to_lambda.call(n) || logop.to_lambda.call(n) ? 1 : 0
             end
           end
         }
@@ -83,7 +83,7 @@ module Merb
         relation '==' equality {
           def to_lambda
             lambda do |n|
-              relation.to_lambda.call(n) == equality.to_lambda.call(n) ? 0 : 1
+              relation.to_lambda.call(n) == equality.to_lambda.call(n) ? 1 : 0
             end
           end
         }
@@ -103,7 +103,7 @@ module Merb
         bitwise '<' relation {
           def to_lambda
             lambda do |n|
-              bitwise.to_lambda.call(n) < relation.to_lambda.call(n) ? 0 : 1
+              bitwise.to_lambda.call(n) < relation.to_lambda.call(n) ? 1 : 0
             end
           end
         }
@@ -111,7 +111,7 @@ module Merb
         bitwise '<=' relation {
           def to_lambda
             lambda do |n|
-              bitwise.to_lambda.call(n) <= relation.to_lambda.call(n) ? 0 : 1
+              bitwise.to_lambda.call(n) <= relation.to_lambda.call(n) ? 1 : 0
             end
           end
         }
@@ -119,7 +119,7 @@ module Merb
         bitwise '>' relation {
           def to_lambda
             lambda do |n|
-              bitwise.to_lambda.call(n) > relation.to_lambda.call(n) ? 0 : 1
+              bitwise.to_lambda.call(n) > relation.to_lambda.call(n) ? 1 : 0
             end
           end
         }
@@ -127,7 +127,7 @@ module Merb
         bitwise '>=' relation {
           def to_lambda
             lambda do |n|
-              bitwise.to_lambda.call(n) >= relation.to_lambda.call(n) ? 0 : 1
+              bitwise.to_lambda.call(n) >= relation.to_lambda.call(n) ? 1 : 0
             end
           end
         }
