@@ -34,7 +34,7 @@ def load_provider_lib(name, options = {})
   end
 end
 
-HAS_AR      = load_provider_lib :activerecord, :version => '<= 2.0.9'
+HAS_AR      = load_provider_lib :activerecord
 HAS_DM      = load_provider_lib :data_mapper, :version => '~>0.9.0',
                                 :gem_names => ['dm-core', 'dm-validations',
                                                'dm-aggregates']
