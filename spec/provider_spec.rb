@@ -1,8 +1,12 @@
 require 'spec_helper'
 
+class Provider
+  include Merb::Global::Provider
+end
+
 describe Merb::Global::Provider do
   before do
-    @provider = Merb::Global::Provider.new
+    @provider = Provider.new
   end
 
   describe '.translate_to' do

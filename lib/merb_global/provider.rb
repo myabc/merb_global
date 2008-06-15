@@ -3,7 +3,11 @@ module Merb
     # Merb-global is able to store the translations in different types of
     # storage. An interface betwean merb-global and those storages are
     # providers.
-    class Provider
+    # 
+    # Please note that it is not required to include this module - despite it
+    # is recomended both as a documentation part and the more customized 
+    # error messages.
+    module Provider
       # call-seq:
       #     translate_to(singular, plural, opts) => translated
       #
