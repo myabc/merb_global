@@ -13,8 +13,12 @@ module Merb
           language = Language.find :first,
                                    :conditions => {:name => opts[:lang]}
           unless language.nil?
-            n = Plural.which_form opts[:n], language.plural
-            translation = Translation.find [language.id, singular.hash, n]
+            unless plural.nil?
+              n = Plural.which_form opts[:n], language.plural
+              translation = Translation.find [language.id, singular.hash, n]
+            else
+              translation = Translation.find [language.id, singular.hash, nil]
+            end  
             return translation.msgstr
           end rescue nil
           return opts[:n] > 1 ? plural : singular # Fallback if not in database
