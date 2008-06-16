@@ -3,48 +3,49 @@ require 'benchmark'
 
 DB = Sequel.sqlite
 
-DB.create_table :languages1 do
+DB.create_table! :languages1 do
   primary_key :id
   varchar  :name,         :size => 16,           :unique => true
   varchar  :plural,       :size => 128
 end
 
-DB.create_table :translations1 do
-  foreign_key :language_id, :languages1, :null => false, :key => true
-  integer     :msgid_hash,   :null => false, :key =>true
+DB.create_table! :translations1 do
+  primary_key [:language_id, :msgid_hash, :msgstr_index]
+  foreign_key :language_id, :languages1, :null => false
+  integer     :msgid_hash,   :null => false
   text        :msgstr,       :null => false
-  integer     :msgstr_index,                 :key =>true
+  integer     :msgstr_index
 end
 
-DB.create_table :languages2 do
+DB.create_table! :languages2 do
   primary_key :id
   varchar  :name,         :size => 16,           :unique => true
   varchar  :plural,       :size => 128
 end
 
-DB.create_table :translations2 do
-  foreign_key :language_id, :languages2, :null => false, :key => true
-  text        :msgid,        :null => false, :key =>true
+DB.create_table! :translations2 do
+  primary_key [:language_id, :msgid, :msgstr_index]
+  foreign_key :language_id, :languages2, :null => false
+  text        :msgid,        :null => false
   text        :msgstr,       :null => false
-  integer     :msgstr_index,                 :key =>true
+  integer     :msgstr_index
 end
 
-DB.create_table :languages3 do
+DB.create_table! :languages3 do
   primary_key :id
   varchar  :name,         :size => 16,           :unique => true
   varchar  :plural,       :size => 128
 end
 
-DB.create_table :translations3 do
-  foreign_key :language_id, :languages3, :null => false, :key => true
-  foreign_key :original_id, :original3, :null => false, :key =>true
-  text        :msgstr,       :null => false
-  integer     :msgstr_index,                 :key =>true
-end
+drop_table :original3 rescue nil
+DB << "CREATE TABLE original3 (id INTEGER PRIMARY KEY, msgid TEXT)"
 
-DB.create_table :original3 do
-  integer     :id
-  text        :msgid, :key => true
+DB.create_table! :translations3 do
+  primary_key [:language_id, :original_id, :msgstr_index]
+  foreign_key :language_id, :languages3, :null => false
+  foreign_key :original_id, :original3, :null => false
+  text        :msgstr,       :null => false
+  integer     :msgstr_index
 end
 
 $chars = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a
@@ -76,7 +77,7 @@ def rand_original
 end
 
 puts 'Export'
-Benchmark.bm(30) do |bm|
+Benchmark.bm(22) do |bm|
   bm.report('Original 0.0.3:') do
     $translations.each do |lang, trans|
       lang_id = (DB[:languages1] << {:name => lang, :plural => $plurals[lang]})
@@ -122,7 +123,7 @@ $search = (0...1024).collect {[rand_language, rand_original]}
 
 puts ''
 puts 'Searching'
-Benchmark.bm(30) do |bm|
+Benchmark.bm(22) do |bm|
   bm.report('Original 0.0.3:') do
     $search.each do |arr|
       _lang, _orig = *arr
@@ -154,7 +155,7 @@ end
 
 puts ''
 puts 'Import'
-Benchmark.bm(30) do |bm|
+Benchmark.bm(22) do |bm|
   bm.report('With string inside:') do
     DB[:languages2].each do |lang|
       DB[:translations2].each do |trans|
