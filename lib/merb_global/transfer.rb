@@ -26,7 +26,7 @@ module Merb
         # ==== Raises
         # NoMethodError:: Raised by default implementation.
         #                 Should not be thrown.
-        def self.import(exporter)
+        def import(exporter)
           raise NoMethodError.new('method import has not been implemented')
         end
       end
@@ -42,7 +42,7 @@ module Merb
         # flush of changes.
         # ==== Yields
         # A block in which the transfer is handled
-        def self.start_export # Better name needed
+        def start_export # Better name needed
           Merb.logger.error('No transaction has been set by exporter')
           yield
         end
@@ -54,7 +54,7 @@ module Merb
         # msgid<String>:: Orginal string
         # no<Integer>:: The number of form (nil if only singular)
         # msgstr<String>:: The translation
-        def self.export(language, msgid, no, msgstr)
+        def export(language, msgid, no, msgstr)
           raise NoMethodError.new('method export has not been implemented')
         end
       end
