@@ -3,7 +3,9 @@ require 'yaml'
 module Merb
   module Global
     module Providers
-      class Yaml < Merb::Global::Provider #:nodoc:
+      class Yaml #:nodoc:
+        include Merb::Global::Provider
+        
         def initialize
           # Not synchronized - make GC do it's work (may be not optimal
           # but I don't think that some problem will occure).

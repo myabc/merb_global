@@ -1,41 +1,48 @@
 require 'spec_helper'
 
 module Merb::Global::Providers
-  def self.provider_name
-    @@provider_name
+  def self.clear
+    @@provider = nil
+    @@providers = {}
   end
-
-  def self.provider_loading
-    @@provider_loading
-  end
-
   def self.provider= provider
     @@provider = provider
   end
 end
 
 describe Merb::Global::Providers do
-  describe '.provider_name' do
+  before do
+    Merb::Global::Providers.clear
+  end
+  describe '.provider' do
     it 'should return gettext as default' do
+      provider = mock
       Merb::Global.expects(:config).with(:provider, 'gettext').
                    returns('gettext')
-      Merb::Global::Providers.provider_name.call.should == 'gettext'
+      Merb::Global::Providers.expects(:[]).with('gettext').returns(provider)
+      Merb::Global::Providers.provider.should == provider
     end
 
     it 'should return the name of the provider in config' do
       provider = mock
-      Merb::Global.expects(:config).with(:provider, 'gettext').
-                   returns(provider)
-      Merb::Global::Providers.provider_name.call.should == provider
+      Merb::Global.expects(:config).with(:provider, 'gettext').returns('name')
+      Merb::Global::Providers.expects(:[]).with('name').returns(provider)
+      Merb::Global::Providers.provider.should == provider
+    end
+
+    it 'should return cached provider' do
+      provider = mock
+      Merb::Global::Providers.provider = provider
+      Merb::Global::Providers.provider.should == provider
     end
   end
-  describe '.provider_loading' do
+  describe '.[]' do
     it 'should load the provider' do
       provider = 'test'
       provider_path = 'merb_global/providers/test'
       Merb::Global::Providers.expects(:require).with(provider_path)
       Merb::Global::Providers.stubs(:eval)
-      Merb::Global::Providers.provider_loading.call(provider)
+      Merb::Global::Providers[provider]
     end
 
     it 'should create the provider' do
@@ -43,25 +50,10 @@ describe Merb::Global::Providers do
       provider_class = 'Merb::Global::Providers::Test'
       Merb::Global::Providers.stubs(:require)
       Merb::Global::Providers.expects(:eval).with(provider_class + '.new')
-      Merb::Global::Providers.provider_loading.call(provider)
+      Merb::Global::Providers[provider]
     end
   end
 
-  describe '.provider' do
-    before do
-      @provider = Merb::Global::Providers.provider
-    end
-
-    after do
-      Merb::Global::Providers.provider = @provider
-    end
-
-    it 'should return the provider' do
-      provider = mock
-      Merb::Global::Providers.provider = provider
-      Merb::Global::Providers.provider.should == provider
-    end
-  end
   describe '.localedir' do
     it 'should return app/locale by default' do
       Merb::Plugins.stubs(:config).returns({})
