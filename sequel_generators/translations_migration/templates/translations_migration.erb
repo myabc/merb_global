@@ -13,7 +13,7 @@ class AddTranslationsMigration < Sequel::Migration
       foreign_key :language_id,  :null => false,	:key => true
       integer	  :msgid_hash,   :null => false,	:key =>	true
       text	  :msgstr,       :null => false
-      integer	  :msgstr_index, :null => false,	:key =>	true
+      integer	  :msgstr_index,			:key =>	true
     end
   end
   def down
