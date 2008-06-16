@@ -42,7 +42,7 @@ module Merb
         # flush of changes.
         # ==== Yields
         # A block in which the transfer is handled
-        def start_export # Better name needed
+        def export # Better name needed
           Merb.logger.error('No transaction has been set by exporter')
           yield
         end
@@ -54,7 +54,16 @@ module Merb
         # msgid<String>:: Orginal string
         # no<Integer>:: The number of form (nil if only singular)
         # msgstr<String>:: The translation
-        def export(language, msgid, no, msgstr)
+        def export_string(language, msgid, no, msgstr)
+          raise NoMethodError.new('method export has not been implemented')
+        end
+        ##
+        # This method export an language. It is guaranteed to be called
+        # before any of the messages will be exported.
+        #
+        # It is recomended that it should be called before group of
+        # the translations but it is not required.
+        def export_language(language, plural)
           raise NoMethodError.new('method export has not been implemented')
         end
       end
