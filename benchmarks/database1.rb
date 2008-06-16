@@ -1,7 +1,7 @@
 require 'sequel'
 require 'benchmark'
 
-DB = Sequel.sqlite
+DB = Sequel.connect ARGV[0]
 
 DB.create_table! :languages1 do
   primary_key :id
