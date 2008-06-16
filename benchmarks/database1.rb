@@ -75,7 +75,7 @@ def rand_original
   $original[Kernel.rand($original.length)]
 end
 
-puts "Export"
+puts 'Export'
 Benchmark.bm(30) do |bm|
   bm.report('Original 0.0.3:') do
     $translations.each do |lang, trans|
@@ -120,7 +120,8 @@ end
 
 $search = (0...1024).collect {[rand_language, rand_original]}
 
-puts "Searching"
+puts ''
+puts 'Searching'
 Benchmark.bm(30) do |bm|
   bm.report('Original 0.0.3:') do
     $search.each do |arr|
@@ -151,7 +152,8 @@ Benchmark.bm(30) do |bm|
   end
 end
 
-puts "Import"
+puts ''
+puts 'Import'
 Benchmark.bm(30) do |bm|
   bm.report('With string inside:') do
     DB[:languages2].each do |lang|
