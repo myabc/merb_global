@@ -1,12 +1,22 @@
 module Merb
   module Global
     module Providers
-      @@provider_name = lambda do
-          Merb::Global.config :provider, 'gettext'
+      @@providers = {}
+      ##
+      # Creates a provider and/or returns already created one
+      #
+      # ==== Parames
+      # provider<~to_s,~to_sym>:: A name of provider
+      # 
+      # ==== Returns
+      # provider<Provider>:: A new provider
+      def self.[](provider)
+        unless @@providers.include? provider.to_sym
+          require 'merb_global/providers/' + provider
+          klass = "Merb::Global::Providers::#{provider.camel_case}"
+          @@providers[provider.to_sym] = eval "#{klass}.new"
         end
-      @@provider_loading = lambda do |provider|
-        require 'merb_global/providers/' + provider
-        @@provider = eval "Merb::Global::Providers::#{provider.camel_case}.new"
+        @@providers[provider.to_sym]
       end
 
       # call-seq:
@@ -35,7 +45,7 @@ module Merb
       # ==== Returns
       # provider<Provider>:: Returns provider
       def self.provider
-        @@provider ||= @@provider_loading.call @@provider_name.call
+        @@provider ||= self[Merb::Global.config(:provider, 'gettext')]
       end
     end
   end
