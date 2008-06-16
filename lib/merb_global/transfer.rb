@@ -1,6 +1,12 @@
 module Merb
   module Global
     class Provider
+      ##
+      # Transfer data from importer into exporter
+      #
+      # ==== Parameters
+      # importer<Importer>:: The provider providing the information
+      # exporter<Exporter>:: The provider receiving the information
       def self.transfer(importer, exporter)
         exporter.start_export do
           importer.import(exporter)
