@@ -103,9 +103,9 @@ if HAS_AR
         lang = Merb::Global::Providers::ActiveRecord::Language
         trans = Merb::Global::Providers::ActiveRecord::Translation
         en = lang.create! :name => 'en', :plural => 'n==1?0:1'
-        trans.create! :language_id => en.id, :msgid_hash => 'Test'.hash,
+        trans.create! :language_id => en.id, :msgid => 'Test',
                       :msgstr => 'One test', :msgstr_index => 0
-        trans.create! :language_id => en.id, :msgid_hash => 'Test'.hash,
+        trans.create! :language_id => en.id, :msgid => 'Test',
                       :msgstr => 'Many tests', :msgstr_index => 1
       end
 
