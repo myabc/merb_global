@@ -10,6 +10,8 @@ module Merb
     module Providers
       class ActiveRecord #:nodoc: all
         include Merb::Global::Provider
+        include Merb::Global::Provider::Importer
+        include Merb::Global::Provider::Exporter
         
         def translate_to(singular, plural, opts)
           language = Language.find :first,
@@ -53,6 +55,45 @@ module Merb
           # trust it. Please change if the validity is confirmed
           # Language.find(:first, :conditions => ['name NOT IN ?',
           #                                       "(#{except.join(',')})"])
+        end
+
+        def import(exporter)
+          Language.transaction do
+            Translation.transaction do
+              Language.find(:all).each do |language|
+                exporter.export_language language.name
+                language.translations.each do |translation|
+                  exporter.export_string language.name, translation.msgid,
+                                         translation.msgstr_index,
+                                         translation.msgstr
+                end
+              end
+            end
+          end
+        end
+
+        def export
+          Language.transaction do
+            Translation.transaction do
+              Language.delete_all
+              Translation.delete_all
+              @export = {}
+              yield
+              @export = nil
+            end
+          end
+        end
+
+        def export_language(language, plural)
+          lang = Language.create! :language => language, :plural => plural
+          @export[language] = lang.id
+        end
+
+        def export_string(language, msgid, no, msgstr)
+          Translation.create! :language_id => @export[language],
+                              :msgid => msgid,
+                              :msgstr => msgstr,
+                              :msgstr_index => no
         end
 
         class Language < ::ActiveRecord::Base
