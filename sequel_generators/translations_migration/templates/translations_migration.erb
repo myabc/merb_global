@@ -12,7 +12,7 @@ class AddTranslationsMigration < Sequel::Migration
     create_table :merb_global_translations do
       primary_key [:language_id, :msgid_hash, :msgstr_index]
       foreign_key :language_id,  :null => false
-      integer	  :msgid_hash,   :null => false
+      text   	  :msgid,        :null => false
       text	  :msgstr,       :null => false
       integer	  :msgstr_index, :null => false
     end

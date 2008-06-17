@@ -13,7 +13,7 @@ class AddTranslationsMigration < ActiveRecord::Migration
                                                 :msgid_hash,
                                                 :msgstr_index] do |t|
       t.integer   :language_id,  :null => false
-      t.integer   :msgid_hash,   :null => false
+      t.text      :msgid,        :null => false
       t.text	  :msgstr,	 :null => false
       t.integer   :msgstr_index, :null => false
     end
