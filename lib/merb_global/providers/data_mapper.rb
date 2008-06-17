@@ -7,6 +7,8 @@ module Merb
     module Providers
       class DataMapper #:nodoc: all
         include Merb::Global::Provider
+        include Merb::Global::Provider::Importer
+        include Merb::Global::Provider::Exporter
         
         def translate_to(singular, plural, opts)
           # I hope it's from MemCache
@@ -39,6 +41,45 @@ module Merb
 
         def choose(except)
           Language.first(:name.not => except).name
+        end
+
+        def import(exporter)
+          ::DataMapper::Transaction.new(Language, Translation) do
+            Language.all.each do |language|
+              exporter.export_language language.name
+              language.translations.each do |translation|
+                exporter.export_string language.name, translation.msgid,
+                                       translation.msgstr_index,
+                                       translation.msgstr
+              end
+            end
+          end
+        end
+
+        def export
+          ::DataMapper::Transaction.new(Language, Translation) do
+            Language.all.each {|language| language.destroy}
+            Translation.all.each {|translation| translation.destroy}
+            @export = {}
+            yield
+            @export = nil
+          end
+        end
+
+        def export_language(language, plural)
+          lang = Language.new :language => language, :plural => plural
+          lang.save
+          raise if lang.new_record?
+          @export[language] = lang.id
+        end
+
+        def export_string(language, msgid, no, msgstr)
+          trans =Translation.new :language_id => @export[language],
+                                 :msgid => msgid,
+                                 :msgstr => msgstr,
+                                 :msgstr_index => no
+          trans.save
+          raise if lang.new_record?
         end
 
         # When table structure becomes stable it *should* be documented
