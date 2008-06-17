@@ -17,9 +17,9 @@ module Merb
           unless language.nil?
             unless plural.nil?
               n = Plural.which_form opts[:n], language.plural
-              translation = Translation.find [language.id, singular.hash, n]
+              translation = Translation.find [language.id, singular, n]
             else
-              translation = Translation.find [language.id, singular.hash, nil]
+              translation = Translation.find [language.id, singular, nil]
             end  
             return translation.msgstr
           end rescue nil
@@ -61,7 +61,7 @@ module Merb
 
         class Translation < ::ActiveRecord::Base
           set_table_name :merb_global_translations
-          set_primary_keys :language_id, :msgid_hash, :msgstr_index
+          set_primary_keys :language_id, :msgid, :msgstr_index
         end
       end
     end
