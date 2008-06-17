@@ -49,6 +49,9 @@ module Merb
           property :name, String, :unique_index => true
           property :plural, Text, :lazy => false
           # validates_is_unique :name
+          has n, :translations,
+            :class_name => "Merb::Global::Providers::DataMapper::Translation",
+            :child_key => [:language_id]
         end
 
         class Translation
@@ -64,7 +67,7 @@ module Merb
           property :msgid, Text, :nullable => false, :key => true
           property :msgstr, Text, :nullable => false, :lazy => false
           property :msgstr_index, Integer, :key => true
-          #belongs_to :language
+          belongs_to :language, :class_name =>  Language.name
         end
       end
     end

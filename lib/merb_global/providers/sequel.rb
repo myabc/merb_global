@@ -42,6 +42,9 @@ module Merb
         end
 
         class Language < ::Sequel::Model(:merb_global_languages)
+          has_many :translations,
+                   :class => "Merb::Global::Providers::Sequel::Translation",
+                   :key => :language_id
         end
 
         class Translation < ::Sequel::Model(:merb_global_translations)

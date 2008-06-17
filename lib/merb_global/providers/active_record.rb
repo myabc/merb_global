@@ -57,6 +57,9 @@ module Merb
 
         class Language < ::ActiveRecord::Base
           set_table_name :merb_global_languages
+          has_many :translations,
+            :class_name =>
+              "Merb::Global::Providers::ActiveRecord::Translations"
         end
 
         class Translation < ::ActiveRecord::Base
