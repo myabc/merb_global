@@ -74,10 +74,10 @@ module Merb
         end
 
         def export_string(language_id, msgid, msgstr, msgstr_index)
-          trans =Translation.new :language_id => language_id
-                                 :msgid => msgid,
-                                 :msgstr => msgstr,
-                                 :msgstr_index => msgstr_index
+          trans = Translation.new :language_id => language_id,
+                                  :msgid => msgid,
+                                  :msgstr => msgstr,
+                                  :msgstr_index => msgstr_index
           trans.save
           raise if lang.new_record?
         end
