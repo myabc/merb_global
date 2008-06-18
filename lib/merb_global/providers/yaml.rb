@@ -60,11 +60,12 @@ module Merb
           dir.first
         end
 
-        def import(exporter)
+        def import(exporter, export_data)
           Dir[Merb::Global::Providers.localedir + '/*.yaml'].each do |file|
             lang_name = File.basename p, '.yaml'
             lang = YAML.file_load file
-            exporter.export_language lang_name, lang[:plural] do |lang_data|
+            exporter.export_language export_data, lang_name,
+                                     lang[:plural] do |lang_data|
               lang.each do |msgid, msgstr|
                 if msgid.is_a? String
                   if msgstr.is_a? Hash
@@ -81,10 +82,10 @@ module Merb
         end
 
         def export
-          yield
+          yield nil
         end
 
-        def export_language(language, plural)
+        def export_language(export_data, language, plural)
           lang = {:plural => plural}
           yield lang
           file = "#{Merb::Global::Providers.localedir}/#{language}.yaml"

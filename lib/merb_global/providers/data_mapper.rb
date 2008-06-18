@@ -43,10 +43,11 @@ module Merb
           Language.first(:name.not => except).name
         end
 
-        def import(exporter)
+        def import(exporter, export_data)
           ::DataMapper::Transaction.new(Language, Translation) do
             Language.all.each do |language|
-              exporter.export_language language.name do |lang|
+              exporter.export_language export_data, language.name
+                                       language.plural do |lang|
                 language.translations.each do |translation|
                   exporter.export_string lang, translation.msgid,
                                          translation.msgstr_index,
@@ -61,11 +62,11 @@ module Merb
           ::DataMapper::Transaction.new(Language, Translation) do
             Language.all.each {|language| language.destroy}
             Translation.all.each {|translation| translation.destroy}
-            yield
+            yield nil
           end
         end
 
-        def export_language(language, plural)
+        def export_language(export_data, language, plural)
           lang = Language.new :language => language, :plural => plural
           lang.save
           raise if lang.new_record?

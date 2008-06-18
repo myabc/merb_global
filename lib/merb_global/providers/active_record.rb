@@ -57,11 +57,12 @@ module Merb
           #                                       "(#{except.join(',')})"])
         end
 
-        def import(exporter)
+        def import(exporter, export_data)
           Language.transaction do
             Translation.transaction do
               Language.find(:all).each do |language|
-                exporter.export_language language.name do |lang|
+                exporter.export_language export_data, language.name,
+                                         language.plural do |lang|
                   language.translations.each do |translation|
                     exporter.export_string lang, translation.msgid,
                                                  translation.msgstr_index,
@@ -78,12 +79,12 @@ module Merb
             Translation.transaction do
               Language.delete_all
               Translation.delete_all
-              yield
+              yield nil
             end
           end
         end
 
-        def export_language(language, plural)
+        def export_language(export_data, language, plural)
           yield Language.create!(:language => language, :plural => plural).id
         end
 

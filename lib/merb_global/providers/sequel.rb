@@ -43,10 +43,11 @@ module Merb
           Language.filter {:name != except}.first[:name]
         end
 
-        def import(exporter)
+        def import(exporter, export_data)
           DB.transaction do
             Language.each do |language|
-              exporter.export_language language.name do |lang|
+              exporter.export_language export_data, language.name
+                                       language.plural do |lang|
                 language.translations.each do |translation|
                   exporter.export_string lang, translation.msgid,
                                          translation.msgstr_index,
@@ -61,11 +62,11 @@ module Merb
           DB.transaction do
             Language.delete_all
             Translation.delete_all
-            yield
+            yield nil
           end
         end
 
-        def export_language(language, plural)
+        def export_language(export_data, language, plural)
           lang = Language.create :name => language, :plural => plural
           raise unless lang
           yield lang
