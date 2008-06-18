@@ -6,12 +6,18 @@ module Merb
     module Providers
       class Sequel #:nodoc: all
         include Merb::Global::Provider
+        include Merb::Global::Provider::Importer
+        include Merb::Global::Provider::Exporter
 
         def translate_to(singular, plural, opts)
           language = Language[:name => opts[:lang]] # I hope it's from MemCache
           unless language.nil?
-            n = Plural.which_form opts[:n], language[:plural]
-            translation = Translation[language.pk, singular, n]
+            unless plural.nil?
+              n = Plural.which_form opts[:n], language[:plural]
+              translation = Translation[language.pk, singular, n]
+            else
+              translation = Translation[language.pk, singular, nil]
+            end
             return translation[:msgstr] unless translation.nil?
           end
           return opts[:n] > 1 ? plural : singular # Fallback if not in database
@@ -37,7 +43,46 @@ module Merb
           Language.filter {:name != except}.first[:name]
         end
 
+        def import(exporter)
+          DB.transaction do
+            Language.each do |language|
+              exporter.export_language language.name
+              language.translations.each do |translation|
+                exporter.export_string language.name, translation.msgid,
+                                       translation.msgstr_index,
+                                       translation.msgstr
+              end
+            end
+          end
+        end
+
+        def export
+          DB.transaction do
+            Language.delete_all
+            Translation.delete_all
+            @export = {}
+            yield
+            @export = nil
+          end
+        end
+
+        def export_language(language, plural)
+          lang = Language.create :name => language, :plural => plural
+          raise unless lang
+          @export[language] = lang[:id]
+        end
+
+        def export_string(language, msgid, no, msgstr)
+          Translation.create(:language_id => @export[language],
+                             :msgid => msgid,
+                             :msgstr => msgstr,
+                             :msgstr_index => no) or raise
+        end
+
         class Language < ::Sequel::Model(:merb_global_languages)
+          has_many :translations,
+                   :class => "Merb::Global::Providers::Sequel::Translation",
+                   :key => :language_id
         end
 
         class Translation < ::Sequel::Model(:merb_global_translations)
