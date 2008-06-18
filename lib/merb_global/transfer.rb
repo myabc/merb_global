@@ -8,8 +8,8 @@ module Merb
       # importer<Importer>:: The provider providing the information
       # exporter<Exporter>:: The provider receiving the information
       def self.transfer(importer, exporter)
-        exporter.start_export do
-          importer.import(exporter)
+        exporter.export do |export_data|
+          importer.import(exporter, export_data)
         end
       end
       ##
@@ -22,11 +22,12 @@ module Merb
         #
         # ==== Parameters
         # exporter<Exporter>:: Exporter to which it should be exported
+        # export_data:: Data to pass in calles
         # 
         # ==== Raises
         # NoMethodError:: Raised by default implementation.
         #                 Should not be thrown.
-        def import(exporter)
+        def import(exporter, export_data)
           raise NoMethodError.new('method import has not been implemented')
         end
       end
@@ -41,29 +42,33 @@ module Merb
         # needed specificly to the transfer as well as the final
         # flush of changes.
         # ==== Yields
-        # A block in which the transfer is handled
+        # exported:: A data needed for transfer
         def export # Better name needed
           Merb.logger.error('No transaction has been set by exporter')
-          yield
+          yield nil
         end
         ##
         # This method exports a single message. Please note that the calles
         # may be not in any particular order.
         # ==== Parameters
-        # language<String>:: Language code of the message
+        # language:: Language data (yielded by Language call)
         # msgid<String>:: Orginal string
-        # no<Integer>:: The number of form (nil if only singular)
         # msgstr<String>:: The translation
-        def export_string(language, msgid, no, msgstr)
+        # msgstr_index<Integer>:: The number of form (nil if only singular)
+        def export_string(language, msgid, msgstr, msgstr_index)
           raise NoMethodError.new('method export has not been implemented')
         end
         ##
         # This method export an language. It is guaranteed to be called
         # before any of the messages will be exported.
         #
-        # It is recomended that it should be called before group of
-        # the translations but it is not required.
-        def export_language(language, plural)
+        # ==== Parameters
+        # export_data:: Data given from transfer
+        # language<String>:: Language call
+        # plural<String>:: Format of plural
+        # ==== Yields
+        # language:: The data about language
+        def export_language(export_data, language, plural)
           raise NoMethodError.new('method export has not been implemented')
         end
       end

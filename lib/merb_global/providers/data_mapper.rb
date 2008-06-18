@@ -22,7 +22,7 @@ module Merb
             else
               translation = Translation.first :language_id => language.id,
                                               :msgid => singular,
-                                               :msgstr_index => nil
+                                              :msgstr_index => nil
             end
             return translation.msgstr unless translation.nil?
           end
@@ -43,14 +43,16 @@ module Merb
           Language.first(:name.not => except).name
         end
 
-        def import(exporter)
+        def import(exporter, export_data)
           ::DataMapper::Transaction.new(Language, Translation) do
             Language.all.each do |language|
-              exporter.export_language language.name
-              language.translations.each do |translation|
-                exporter.export_string language.name, translation.msgid,
-                                       translation.msgstr_index,
-                                       translation.msgstr
+              exporter.export_language export_data, language.name
+                                       language.plural do |lang|
+                language.translations.each do |translation|
+                  exporter.export_string lang, translation.msgid,
+                                         translation.msgstr_index,
+                                         translation.msgstr
+                end
               end
             end
           end
@@ -60,24 +62,22 @@ module Merb
           ::DataMapper::Transaction.new(Language, Translation) do
             Language.all.each {|language| language.destroy}
             Translation.all.each {|translation| translation.destroy}
-            @export = {}
-            yield
-            @export = nil
+            yield nil
           end
         end
 
-        def export_language(language, plural)
+        def export_language(export_data, language, plural)
           lang = Language.new :language => language, :plural => plural
           lang.save
           raise if lang.new_record?
-          @export[language] = lang.id
+          yield lang.id
         end
 
-        def export_string(language, msgid, no, msgstr)
-          trans =Translation.new :language_id => @export[language],
-                                 :msgid => msgid,
-                                 :msgstr => msgstr,
-                                 :msgstr_index => no
+        def export_string(language_id, msgid, msgstr, msgstr_index)
+          trans = Translation.new :language_id => language_id,
+                                  :msgid => msgid,
+                                  :msgstr => msgstr,
+                                  :msgstr_index => msgstr_index
           trans.save
           raise if lang.new_record?
         end

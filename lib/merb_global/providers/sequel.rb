@@ -43,14 +43,16 @@ module Merb
           Language.filter(~{:name => except}).first[:name]
         end
 
-        def import(exporter)
+        def import(exporter, export_data)
           DB.transaction do
             Language.each do |language|
-              exporter.export_language language.name
-              language.translations.each do |translation|
-                exporter.export_string language.name, translation.msgid,
-                                       translation.msgstr_index,
-                                       translation.msgstr
+              exporter.export_language export_data, language.name
+                                       language.plural do |lang|
+                language.translations.each do |translation|
+                  exporter.export_string lang, translation.msgid,
+                                         translation.msgstr_index,
+                                         translation.msgstr
+                end
               end
             end
           end
@@ -60,23 +62,21 @@ module Merb
           DB.transaction do
             Language.delete_all
             Translation.delete_all
-            @export = {}
-            yield
-            @export = nil
+            yield nil
           end
         end
 
-        def export_language(language, plural)
+        def export_language(export_data, language, plural)
           lang = Language.create :name => language, :plural => plural
           raise unless lang
-          @export[language] = lang[:id]
+          yield lang
         end
 
-        def export_string(language, msgid, no, msgstr)
-          Translation.create(:language_id => @export[language],
+        def export_string(language_id, msgid, msgstr, msgstr_index)
+          Translation.create(:language_id => language_id,
                              :msgid => msgid,
                              :msgstr => msgstr,
-                             :msgstr_index => no) or raise
+                             :msgstr_index => msgstr_index) or raise
         end
 
         class Language < ::Sequel::Model(:merb_global_languages)
