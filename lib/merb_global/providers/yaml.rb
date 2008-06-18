@@ -64,15 +64,16 @@ module Merb
           Dir[Merb::Global::Providers.localedir + '/*.yaml'].each do |file|
             lang_name = File.basename p, '.yaml'
             lang = YAML.file_load file
-            exporter.export_language lang_name, lang[:plural]
-            lang.each do |msgid, msgstr|
-              if msgid.is_a? String
-                if msgstr.is_a? Hash
-                  msgstr.each do |msgstr_index, msgstr|
-                    export_string lang_name, msgid, msgstr_index, msgstr
+            exporter.export_language lang_name, lang[:plural] do |lang_data|
+              lang.each do |msgid, msgstr|
+                if msgid.is_a? String
+                  if msgstr.is_a? Hash
+                    msgstr.each do |msgstr_index, msgstr|
+                      export_string lang_data, msgid, msgstr_index, msgstr
+                    end
+                  else
+                    export_string lang_data, msgid, nil, msgstr
                   end
-                else
-                  export_string lang_name, msgid, nil, msgstr
                 end
               end
             end
@@ -80,27 +81,24 @@ module Merb
         end
 
         def export
-          @languages = {}
           yield
-          File.unlink *Dir[Merb::Global::Providers.localedir + '/*.yaml']
-          @languages.each do |lang, language|
-            open "#{Merb::Global::Providers.localedir}/#{lang}.yaml" do |out|
-              YAML.dump(language, out)
-            end
-          end
-          @languages = nil
         end
 
         def export_language(language, plural)
-          @languages[language] = {:plural => plural}
+          lang = {:plural => plural}
+          yield lang
+          file = "#{Merb::Global::Providers.localedir}/#{language}.yaml"
+          open file, 'w+' do |out|
+            YAML.dump lang, out
+          end 
         end
 
-        def export_string(language, msgid, no, msgstr)
+        def export_string(language, msgid, msgstr, msgstr_index)
           if no.nil?
-            @languages[language][msgid] = msgstr
+            language[msgid] = msgstr
           else
-            @languages[language][msgid] ||= {}
-            @languages[language][msgid][no] = msgstr
+            language[msgid] ||= {}
+            language[msgid][no] = msgstr
           end
         end
       end

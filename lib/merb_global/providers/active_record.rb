@@ -61,11 +61,12 @@ module Merb
           Language.transaction do
             Translation.transaction do
               Language.find(:all).each do |language|
-                exporter.export_language language.name
-                language.translations.each do |translation|
-                  exporter.export_string language.name, translation.msgid,
-                                         translation.msgstr_index,
-                                         translation.msgstr
+                exporter.export_language language.name do |lang|
+                  language.translations.each do |translation|
+                    exporter.export_string lang, translation.msgid,
+                                                 translation.msgstr_index,
+                                                 translation.msgstr
+                  end
                 end
               end
             end
@@ -77,23 +78,20 @@ module Merb
             Translation.transaction do
               Language.delete_all
               Translation.delete_all
-              @export = {}
               yield
-              @export = nil
             end
           end
         end
 
         def export_language(language, plural)
-          lang = Language.create! :language => language, :plural => plural
-          @export[language] = lang.id
+          yield Language.create!(:language => language, :plural => plural).id
         end
 
-        def export_string(language, msgid, no, msgstr)
-          Translation.create! :language_id => @export[language],
+        def export_string(language_id, msgid, msgstr, msgstr_index)
+          Translation.create! :language_id => language_id,
                               :msgid => msgid,
                               :msgstr => msgstr,
-                              :msgstr_index => no
+                              :msgstr_index => msgstr_index
         end
 
         class Language < ::ActiveRecord::Base
