@@ -40,7 +40,7 @@ module Merb
         end
 
         def choose(except)
-          Language.filter {:name != except}.first[:name]
+          Language.filter(~{:name => except}).first[:name]
         end
 
         def import(exporter)
