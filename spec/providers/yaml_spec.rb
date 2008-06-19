@@ -42,7 +42,7 @@ describe Merb::Global::Providers::Yaml do
   describe '.create!' do
     it 'should create app/locale firectory' do
       file = Merb::Global::Providers.localedir
-      File.expects(:mkdirs).with(file).returns([file])
+      FileUtils.expects(:mkdir_p).with(file)
       @provider.create!
     end
   end

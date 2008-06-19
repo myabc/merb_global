@@ -1,5 +1,5 @@
 require 'yaml'
-require 'ftools'
+require 'fileutils'
 
 module Merb
   module Global
@@ -50,7 +50,7 @@ module Merb
         end
 
         def create!
-          File.mkdirs Merb::Global::Providers.localedir
+          FileUtils.mkdir_p Merb::Global::Providers.localedir
         end
 
         def choose(except)
