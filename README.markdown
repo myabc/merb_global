@@ -70,6 +70,72 @@ Installation and Setup
     rake gem
     sudo gem install pkg/merb_global-0.0.1.gem
 
+Configuration options
+---------------------
+
+MerbGlobal is possible to configure with:
+
+    Merb::Plugins.config[:merb_global] = {
+        :provider => 'gettext'
+        ...
+     }
+
+in init.rb or using plugins.yml file:
+
+    :merb_global:
+        :provider: gettext
+        ...
+
+Configuration options:
+ 
+ * :provider
+   
+   What provider we want to use.
+
+   Values: gettext, yaml, sequel, active_record, data_mapper
+   Default: gettext
+
+ * :flat
+
+   Are we running merb-flat or normal merb?
+
+   Values: true/false
+   Default: false
+
+ * :localedir
+
+   Define directory where translations are stored.
+
+   If :flat is set to true than MerbGlobal will search in #{Merb.root}+'locale'. If :flat is false than in #{Merb.root}+:localedir. When :flat is false and :localedir configuration is not defined the default will be #{Merb.root}+'app/locale'.
+
+ * :domain
+   
+   Name of the text domain. Which is basically name of the GetText MO file without .mo extension.
+
+   Default: merbapp
+
+##Example
+
+Follwing configuraiton in plugins.yml:
+
+    :merb_global:
+        :provider:  gettext
+        :flat:      false
+        :localedir: locale
+        :domain:    messages
+
+will make MerbGlobal to search translations in following places:
+
+    #{Merb.root}/locale/#{language}/LC_MESSAGES/messages.mo
+    #{Merb.root}/locale/#{language}/messages.mo
+
+Where #{language} is string which defines language such as cs_CZ, en_GB or just cs, en.
+
+No configuration will look at:
+
+    #{Merb.root}/app/locale/#{language}/LC_MESSAGES/merbapp.mo
+    #{Merb.root}/app/locale/#{language}/merbapp.mo
+
 Licensing and Copyright
 -----------------------
 
