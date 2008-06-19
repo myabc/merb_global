@@ -92,7 +92,7 @@ Configuration options:
    
    What provider we want to use.
 
-   Values: gettext, yaml, sequel, active_record, data_mapper
+   Values: gettext, yaml, sequel, active\_record, data\_mapper
    Default: gettext
 
  * :flat
@@ -114,7 +114,7 @@ Configuration options:
 
    Default: merbapp
 
-##Example
+##Configuration examples
 
 Follwing configuraiton in plugins.yml:
 
@@ -129,7 +129,7 @@ will make MerbGlobal to search translations in following places:
     #{Merb.root}/locale/#{language}/LC_MESSAGES/messages.mo
     #{Merb.root}/locale/#{language}/messages.mo
 
-Where #{language} is string which defines language such as cs_CZ, en_GB or just cs, en.
+Where #{language} is string which defines language such as cs\_CZ, en\_GB or just cs, en.
 
 No configuration will look at:
 
