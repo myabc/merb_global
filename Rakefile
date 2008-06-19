@@ -42,7 +42,7 @@ end
 
 desc "Install merb_global"
 task :install => [:package] do
-  sh %{#{SUDO} gem install pkg/#{NAME}-#{VERSION}}
+  sh %{#{SUDO} gem install pkg/#{NAME}-#{GEM_VERSION}}
 end
 
 Rake::RDocTask.new do |rd|
