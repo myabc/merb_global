@@ -72,9 +72,11 @@ module Merb
           yield lang
         end
 
-        def export_string(language_id, msgid, msgstr, msgstr_index)
+        def export_string(language_id, msgid, msgid_plural,
+                                       msgstr, msgstr_index)
           Translation.create(:language_id => language_id,
                              :msgid => msgid,
+                             :msgid_plural => msgid_plural,
                              :msgstr => msgstr,
                              :msgstr_index => msgstr_index) or raise
         end
