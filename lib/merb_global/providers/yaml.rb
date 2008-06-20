@@ -70,10 +70,10 @@ module Merb
                 if msgid.is_a? String
                   if msgstr.is_a? Hash
                     msgstr.each do |msgstr_index, msgstr|
-                      export_string lang_data, msgid, msgstr_index, msgstr
+                      export_string lang_data, msgid, msgstr, sgstr_index
                     end
                   else
-                    export_string lang_data, msgid, nil, msgstr
+                    export_string lang_data, msgid, msgstr, nil
                   end
                 end
               end
