@@ -53,9 +53,10 @@ module Merb
         # ==== Parameters
         # language:: Language data (yielded by Language call)
         # msgid<String>:: Orginal string
+        # msgid_plural<String>:: Orginal plural string
         # msgstr<String>:: The translation
         # msgstr_index<Integer>:: The number of form (nil if only singular)
-        def export_string(language, msgid, msgstr, msgstr_index)
+        def export_string(language, msgid, msgid_plural, msgstr, msgstr_index)
           raise NoMethodError.new('method export has not been implemented')
         end
         ##

@@ -1,4 +1,4 @@
-require 'yaml'
+\require 'yaml'
 require 'ftools'
 
 module Merb
@@ -69,11 +69,15 @@ module Merb
               lang.each do |msgid, msgstr|
                 if msgid.is_a? String
                   if msgstr.is_a? Hash
+                    msgid_plural = msgstr[:plural]
                     msgstr.each do |msgstr_index, msgstr|
-                      export_string lang_data, msgid, msgstr, sgstr_index
+                      if msgstr_index.is_a? Fixnum
+                        export_string lang_data, msgid, msgid_plural,
+                                                 msgstr, sgstr_index
+                      end
                     end
                   else
-                    export_string lang_data, msgid, msgstr, nil
+                    export_string lang_data, msgid, nil, msgstr, nil
                   end
                 end
               end

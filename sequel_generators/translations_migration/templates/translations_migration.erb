@@ -13,6 +13,7 @@ class AddTranslationsMigration < Sequel::Migration
       primary_key [:language_id, :msgid_hash, :msgstr_index]
       foreign_key :language_id,  :null => false
       text   	  :msgid,        :null => false
+      text        :msgid_plural
       text	  :msgstr,       :null => false
       integer	  :msgstr_index
     end

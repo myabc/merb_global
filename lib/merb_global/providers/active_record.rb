@@ -65,6 +65,7 @@ module Merb
                                          language.plural do |lang|
                   language.translations.each do |translation|
                     exporter.export_string lang, translation.msgid,
+                                                 translation.msgid_plural,
                                                  translation.msgstr_index,
                                                  translation.msgstr
                   end
@@ -88,9 +89,11 @@ module Merb
           yield Language.create!(:language => language, :plural => plural).id
         end
 
-        def export_string(language_id, msgid, msgstr, msgstr_index)
+        def export_string(language_id, msgid, msgid_plural,
+                                       msgstr, msgstr_index)
           Translation.create! :language_id => language_id,
                               :msgid => msgid,
+                              :msgid_plural => msgid_plural,
                               :msgstr => msgstr,
                               :msgstr_index => msgstr_index
         end

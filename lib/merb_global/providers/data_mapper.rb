@@ -50,8 +50,9 @@ module Merb
                                        language.plural do |lang|
                 language.translations.each do |translation|
                   exporter.export_string lang, translation.msgid,
-                                         translation.msgstr_index,
-                                         translation.msgstr
+                                               translation.msgid_plural,
+                                               translation.msgstr_index,
+                                               translation.msgstr
                 end
               end
             end
@@ -73,9 +74,11 @@ module Merb
           yield lang.id
         end
 
-        def export_string(language_id, msgid, msgstr, msgstr_index)
+        def export_string(language_id, msgid, msgid_plural,
+                                       msgstr, msgstr_index)
           trans = Translation.new :language_id => language_id,
                                   :msgid => msgid,
+                                  :msgid_plural => msgid_plural,
                                   :msgstr => msgstr,
                                   :msgstr_index => msgstr_index
           trans.save
@@ -106,6 +109,7 @@ module Merb
           # As far I'll leave it in this form. If anybody could measure the
           # speed of both methods it will be appreciate.
           property :msgid, Text, :nullable => false, :key => true
+          property :msgid_plural, Text, :lazy => true
           property :msgstr, Text, :nullable => false, :lazy => false
           property :msgstr_index, Integer, :key => true
           belongs_to :language, :class_name =>  Language.name
