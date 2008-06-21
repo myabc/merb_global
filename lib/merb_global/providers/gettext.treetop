@@ -24,7 +24,7 @@ module Merb
 	        {msgid.to_s => msgstr.to_s}
 	      end
 	      def visit
-	        yield msgid.to_s, nil, msgstr.to_s, nil
+	        yield msgid.to_s, nil, msgstr.to_s, nil unless msgid.to_s == ""
 	      end
 	    }
 	    /
@@ -64,7 +64,8 @@ module Merb
 	rule string
 	  '"' content:(!'"' ('\"' / .))* '"' {
 	    def to_s
-	      content.text_value
+	      # Quick'n'dirty replacement
+	      content.text_value.split('\n').join("\n").split('\"').join('"')
 	    end
 	  }
 	end
