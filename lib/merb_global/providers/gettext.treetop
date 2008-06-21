@@ -1,0 +1,48 @@
+module Merb
+  module Global
+    module Providers
+      grammar Gettext
+	rule whitespaces
+	  whitespace+
+	end
+
+        rule whitespace
+          (" " / "\t")* "\n"
+        end
+
+	rule comments
+	  comment+
+	end
+
+	rule comment
+	  '#' (!"\n" .)* "\n"
+	end
+
+	rule msg_single
+	  "msgid" strings
+	  "msgstr" strings
+	end
+
+	rule msg_plural
+	  "msgid " strings
+	  "msgid_plural " strings
+	  (
+	    msg_plural_str
+	  )+
+	end
+
+	rule msg_plural_str
+	  "msgstr[" [0-9]+ "]" strings
+	end
+
+	rule strings
+	  (string "\n")+
+	end
+
+	rule string
+	  '"' (!'"' ('\"' / .))* '"'
+	end
+      end
+    end
+  end
+end
