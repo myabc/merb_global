@@ -3,12 +3,34 @@ module Merb
     module Providers
       grammar Gettext
         rule po_file
-	  entry*
+	  entry* {
+	    def to_hash
+              hash = {}
+	      elements.each {|entry| hash.merge! entry.to_hash}
+	      hash
+	    end
+	  }
 	end
 
         rule entry
 	  whitespaces*
-	  (msg_single / msg_plural)
+	  msg:(
+	    msg_single {
+	      def to_hash
+	        msg_single.to_hash
+	      end
+	    }
+	    /
+	    msg_plural {
+	      def to_hash
+	        msg_plural.to_hash
+              end
+	    }
+	  ) {
+	    def to_hash
+	      msg.to_hash
+	    end
+	  }
 	end
 
 	rule whitespaces
@@ -16,28 +38,48 @@ module Merb
 	end
 
 	rule msg_single
-	  "msgid" whitespaces strings
-	  "msgstr" whitespaces strings
+	  "msgid" whitespaces msgid:strings
+	  "msgstr" whitespaces msgstr:strings {
+            def to_hash
+	      {msgid.to_s => msgstr.to_s}
+	    end
+	  }
 	end
 
 	rule msg_plural
-	  "msgid" whitespace strings
-	  "msgid_plural " whitespace strings
-	  (
-	    msg_plural_str
-	  )+
+	  "msgid" whitespaces msgid:strings
+	  "msgid_plural" whitespaces msgid_plural:strings
+	  msgstrs:( msg_plural_str )+ {
+	    def to_hash
+	      msgstr_hash = {:plural => msgid_plural.to_s}
+	      msgstrs.each {|msgstr| msgstr_hash.merge! msgstr.to_hash}
+	      {msgid.to_s => msgstr_hash}
+	    end
+	  }
 	end
 
 	rule msg_plural_str
-	  "msgstr[" [0-9]+ "]" whitespaces strings
+	  "msgstr[" number:[0-9]+ "]" whitespaces strings {
+	    def to_hash
+	      {number.text_value.to_i => strings.to_s}
+	    end
+	  }
 	end
 
 	rule strings
-	  (string whitespaces)+
+	  (string whitespaces?)+ {
+	    def to_s
+	      elements.collect {|element| element.string.to_s}.join
+	    end
+	  }
 	end
 
 	rule string
-	  '"' (!'"' ('\"' / .))* '"'
+	  '"' content:(!'"' ('\"' / .))* '"' {
+	    def to_s
+	      content.text_value
+	    end
+	  }
 	end
       end
     end
