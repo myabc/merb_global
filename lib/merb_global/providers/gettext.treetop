@@ -9,6 +9,9 @@ module Merb
 	      elements.each {|entry| hash.merge! entry.to_hash}
 	      hash
 	    end
+	    def import lang
+	      elements.each {|elem| elem.import lang}
+	    end
 	  }
 	end
 
@@ -19,6 +22,9 @@ module Merb
 	    "msgstr" whitespaces msgstr:strings {
               def to_hash
 	        {msgid.to_s => msgstr.to_s}
+	      end
+	      def import lang
+	        yield lang, msgid.to_s, nil, msgstr.to_s, nil
 	      end
 	    }
 	    /
@@ -31,6 +37,12 @@ module Merb
 		  hash[msgstr.number.text_value.to_i] = msgstr.strings.to_s
 		end
 	        {msgid.to_s => hash}
+	      end
+	      def import lang
+	        msgstrs.elements.each do |msgstr|
+		  yield lang, msgid.to_s, msgid_plural.to_s,
+                              msgstr.to_s, msgstr.number.text_value.to_i
+		end
 	      end
 	    }
 	  )
