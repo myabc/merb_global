@@ -9,8 +9,8 @@ module Merb
 	      elements.each {|entry| hash.merge! entry.to_hash}
 	      hash
 	    end
-	    def import lang
-	      elements.each {|elem| elem.import lang}
+	    def visit
+	      elements.each {|elem| elem.visit}
 	    end
 	  }
 	end
@@ -23,8 +23,8 @@ module Merb
               def to_hash
 	        {msgid.to_s => msgstr.to_s}
 	      end
-	      def import lang
-	        yield lang, msgid.to_s, nil, msgstr.to_s, nil
+	      def visit
+	        yield msgid.to_s, nil, msgstr.to_s, nil
 	      end
 	    }
 	    /
@@ -38,10 +38,10 @@ module Merb
 		end
 	        {msgid.to_s => hash}
 	      end
-	      def import lang
+	      def visit lang
 	        msgstrs.elements.each do |msgstr|
-		  yield lang, msgid.to_s, msgid_plural.to_s,
-                              msgstr.to_s, msgstr.number.text_value.to_i
+		  yield msgid.to_s, msgid_plural.to_s,
+                        msgstr.to_s, msgstr.number.text_value.to_i
 		end
 	      end
 	    }
