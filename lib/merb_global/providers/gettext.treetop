@@ -14,54 +14,29 @@ module Merb
 
         rule entry
 	  whitespaces*
-	  msg:(
-	    msg_single {
-	      def to_hash
-	        msg_single.to_hash
+	  (
+            "msgid" whitespaces msgid:strings
+	    "msgstr" whitespaces msgstr:strings {
+              def to_hash
+	        {msgid.to_s => msgstr.to_s}
 	      end
 	    }
 	    /
-	    msg_plural {
+	    "msgid" whitespaces msgid:strings
+	    "msgid_plural" whitespaces msgid_plural:strings
+	    msgstrs:("msgstr[" number:[0-9]+ "]" whitespaces strings)+ {
 	      def to_hash
-	        msg_plural.to_hash
-              end
+	        hash = {:plural => msgid_plural.to_s}
+	        msgstrs.elements.each do |msgstr|
+		  hash[msgstr.number.text_value.to_i] = msgstr.strings.to_s
+		end
+	        {msgid.to_s => hash}
+	      end
 	    }
-	  ) {
+	  )
+	  {
 	    def to_hash
-	      msg.to_hash
-	    end
-	  }
-	end
-
-	rule whitespaces
-	  (" " / "\t" / "\n" / ('#' (!"\n" .)* "\n") )+
-	end
-
-	rule msg_single
-	  "msgid" whitespaces msgid:strings
-	  "msgstr" whitespaces msgstr:strings {
-            def to_hash
-	      {msgid.to_s => msgstr.to_s}
-	    end
-	  }
-	end
-
-	rule msg_plural
-	  "msgid" whitespaces msgid:strings
-	  "msgid_plural" whitespaces msgid_plural:strings
-	  msgstrs:( msg_plural_str )+ {
-	    def to_hash
-	      msgstr_hash = {:plural => msgid_plural.to_s}
-	      msgstrs.each {|msgstr| msgstr_hash.merge! msgstr.to_hash}
-	      {msgid.to_s => msgstr_hash}
-	    end
-	  }
-	end
-
-	rule msg_plural_str
-	  "msgstr[" number:[0-9]+ "]" whitespaces strings {
-	    def to_hash
-	      {number.text_value.to_i => strings.to_s}
+	      elements.last.to_hash
 	    end
 	  }
 	end
@@ -81,6 +56,10 @@ module Merb
 	    end
 	  }
 	end
+
+        rule whitespaces
+          (" " / "\t" / "\n" / ('#' (!"\n" .)* "\n") )+
+        end
       end
     end
   end
