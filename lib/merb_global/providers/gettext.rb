@@ -52,9 +52,11 @@ module Merb
             open file do |data|
               lang_tree = parser.parse data
             end
-            # TODO: Add the plural
+            opts = lang_tree.to_hash[''].split("\n")
+            plural_line = opts[opts.index {|l| l.start_with "Plural-Forms:"}]
+            plural = plural_line.split("plural=")[2]
             exporter.export_language export_data, lang_name,
-                                     nil do |lang_data|
+                                     plural do |lang_data|
               lang_tree.visit do |msgid, msgid_plural, msgstr, index|
                 exporter.export_string lang_data, msgid, msgid_plural,
                                                   msgstr, index
