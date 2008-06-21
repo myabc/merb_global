@@ -1,5 +1,6 @@
 === 0.0.4
  * Changed database format
+ * Added importing/exporting
 
 === 0.0.3
  * New Plural engine
