@@ -1,4 +1,6 @@
 require 'gettext'
+require 'treetop'
+require 'pathname'
 
 # I'm not sure if it is the correct way of doing it.
 # As far it seems to be simpler.
@@ -13,6 +15,7 @@ module Merb
     module Providers
       class Gettext #:nodoc: all
         include Merb::Global::Provider
+        include Merb::Global::Provider::Importer
         
         def translate_to(singular, plural, opts)
           context = Thread.current.gettext_context
@@ -39,6 +42,26 @@ module Merb
           dir << 'en'
           dir.reject! {|lang| except.include? lang}
           dir.first
+        end
+
+        def import(exporter, export_data)
+          Treetop.load  Pathname(__FILE__).dirname.expand_path + 'gettext'
+          parser = Merb::Global::Providers::GettextParser.new
+          Dir[Merb::Global::Providers.localedir + '/*.po'].each do |file|
+            lang_name = File.basename file, '.yaml'
+            open file do |data|
+              lang_tree = parser.parse data
+            end
+            opts = lang_tree.to_hash[''].split("\n")
+            plural_line = opts[opts.index {|l| l.start_with "Plural-Forms:"}]
+            plural = plural_line.split("plural=")[2]
+            exporter.export_language export_data, lang_name,
+                                     plural do |lang_data|
+              lang_tree.visit do |msgid, msgid_plural, msgstr, index|
+                exporter.export_string lang_data, msgid, msgid_plural,
+                                                  msgstr, index
+              end
+            end
         end
 
         class GettextContext
