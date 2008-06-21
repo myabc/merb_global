@@ -72,8 +72,8 @@ module Merb
                     msgid_plural = msgstr[:plural]
                     msgstr.each do |msgstr_index, msgstr|
                       if msgstr_index.is_a? Fixnum
-                        export_string lang_data, msgid, msgid_plural,
-                                                 msgstr, sgstr_index
+                        exporter.export_string lang_data, msgid, msgid_plural,
+                                                          msgstr, sgstr_index
                       end
                     end
                   else
