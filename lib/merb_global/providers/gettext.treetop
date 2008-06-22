@@ -21,10 +21,16 @@ module Merb
             "msgid" whitespaces msgid:strings
 	    "msgstr" whitespaces msgstr:strings {
               def to_hash
-	        {msgid.to_s => msgstr.to_s}
+	        unless msgstr.to_s.empty?
+	          {msgid.to_s => msgstr.to_s}
+		else
+		  {}
+		end
 	      end
 	      def visit
-	        yield msgid.to_s, nil, msgstr.to_s, nil unless msgid.to_s == ""
+	        unless msgid.to_s.empty? or  msgstr.empty?
+		  yield msgid.to_s, nil, msgstr.to_s, nil
+		end
 	      end
 	    }
 	    /
