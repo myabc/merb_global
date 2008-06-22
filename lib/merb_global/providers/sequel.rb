@@ -46,13 +46,15 @@ module Merb
         def import(exporter, export_data)
           DB.transaction do
             Language.each do |language|
-              exporter.export_language export_data, language.name,
-                                                    language.nplural,
-                                                    language.plural do |lang|
+              exporter.export_language export_data, language[:name],
+                                                    language[:nplural],
+                                                    language[:plural] do |lang|
                 language.translations.each do |translation|
-                  exporter.export_string lang, translation.msgid,
-                                         translation.msgstr_index,
-                                         translation.msgstr
+                  exporter.export_string lang,
+                                         translation[:msgid],
+                                         translation[:msgid_plural],
+                                         translation[:msgstr_index],
+                                         translation[:msgstr]
                 end
               end
             end

@@ -164,17 +164,20 @@ if HAS_AR
           exporter.expects(:export_string).with(en_data, 'Test', 'Tests',
                                                          1, 'Many tests')
         end
-        Merb::Global::Providers::ActiveRecord.new.import(exporter, export_data)
+        @provider.import(exporter, export_data)
       end
     end
+    
     describe '.export' do
       it 'should delete all data'
     end
+    
     describe '.export_language' do
       it 'should create a new language and yield its id'
     end
+    
     describe '.export_string' do
-      it 'should create a new tramslation row'
+      it 'should create a new translation row'
     end
   end
 end
