@@ -46,7 +46,7 @@ module Merb
         def import(exporter, export_data)
           ::DataMapper::Transaction.new(Language, Translation) do
             Language.all.each do |language|
-              exporter.export_language export_data, language.name
+              exporter.export_language export_data, language.name,
                                        language.nplural,
                                        language.plural do |lang|
                 language.translations.each do |translation|

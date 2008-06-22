@@ -65,6 +65,7 @@ module Merb
                                                   msgstr, index
               end
             end
+          end
         end
 
         class GettextContext
