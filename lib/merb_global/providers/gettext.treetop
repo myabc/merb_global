@@ -65,7 +65,7 @@ module Merb
 	  '"' content:(!'"' ('\"' / .))* '"' {
 	    def to_s
 	      # Quick'n'dirty replacement
-	      content.text_value.split('\n').join("\n").split('\"').join('"')
+	      content.text_value.sgub(/\\n/, "\n").gsub!(/\\"/, '"')
 	    end
 	  }
 	end
