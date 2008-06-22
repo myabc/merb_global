@@ -16,7 +16,7 @@ class AddTranslationsMigration < Sequel::Migration
       text   	  :msgid,        :null => false
       text        :msgid_plural
       text	  :msgstr,       :null => false
-      integer	  :msgstr_index
+      integer	  :msgstr_index, :null => true
     end
   end
   def down

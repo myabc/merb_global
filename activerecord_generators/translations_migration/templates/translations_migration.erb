@@ -17,7 +17,7 @@ class AddTranslationsMigration < ActiveRecord::Migration
       t.text      :msgid,        :null => false
       t.text      :msgid_plural
       t.text	  :msgstr,	 :null => false
-      t.integer   :msgstr_index
+      t.integer   :msgstr_index, :null => true
     end
   end
   def self.down

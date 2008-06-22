@@ -114,7 +114,7 @@ module Merb
           property :msgid, Text, :nullable => false, :key => true
           property :msgid_plural, Text, :lazy => true
           property :msgstr, Text, :nullable => false, :lazy => false
-          property :msgstr_index, Integer, :key => true
+          property :msgstr_index, Integer, :nullable => true, :key => true
           belongs_to :language, :class_name =>  Language.name
         end
       end
