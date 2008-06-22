@@ -62,8 +62,8 @@ module Merb
 
         def import(exporter, export_data)
           Dir[Merb::Global::Providers.localedir + '/*.yaml'].each do |file|
-            lang_name = File.basename p, '.yaml'
-            lang = YAML.file_load file
+            lang_name = File.basename file, '.yaml'
+            lang = YAML.load_file file
             exporter.export_language export_data,
                                      lang_name,
                                      lang[:nplural],
@@ -75,11 +75,11 @@ module Merb
                     msgstr.each do |msgstr_index, msgstr|
                       if msgstr_index.is_a? Fixnum
                         exporter.export_string lang_data, msgid, msgid_plural,
-                                                          msgstr, sgstr_index
+                                                          msgstr_index, msgstr
                       end
                     end
                   else
-                    export_string lang_data, msgid, nil, msgstr, nil
+                    exporter.export_string lang_data, msgid, nil, nil, msgstr
                   end
                 end
               end
