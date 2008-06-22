@@ -66,10 +66,11 @@ module Merb
         # ==== Parameters
         # export_data:: Data given from transfer
         # language<String>:: Language call
+        # nplural<Integer>:: Number of forms
         # plural<String>:: Format of plural
         # ==== Yields
         # language:: The data about language
-        def export_language(export_data, language, plural)
+        def export_language(export_data, language, nplural, plural)
           raise NoMethodError.new('method export has not been implemented')
         end
       end

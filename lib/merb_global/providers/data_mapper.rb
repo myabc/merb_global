@@ -47,6 +47,7 @@ module Merb
           ::DataMapper::Transaction.new(Language, Translation) do
             Language.all.each do |language|
               exporter.export_language export_data, language.name
+                                       language.nplural,
                                        language.plural do |lang|
                 language.translations.each do |translation|
                   exporter.export_string lang, translation.msgid,
@@ -67,8 +68,9 @@ module Merb
           end
         end
 
-        def export_language(export_data, language, plural)
-          lang = Language.new :language => language, :plural => plural
+        def export_language(export_data, language, nplural, plural)
+          lang = Language.new :language => language, :nplural => nplural,
+                              :plural => plural
           lang.save
           raise if lang.new_record?
           yield lang.id

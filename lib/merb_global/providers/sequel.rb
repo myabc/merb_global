@@ -47,7 +47,8 @@ module Merb
           DB.transaction do
             Language.each do |language|
               exporter.export_language export_data, language.name
-                                       language.plural do |lang|
+                                                    language.nplural,
+                                                    language.plural do |lang|
                 language.translations.each do |translation|
                   exporter.export_string lang, translation.msgid,
                                          translation.msgstr_index,
@@ -66,8 +67,9 @@ module Merb
           end
         end
 
-        def export_language(export_data, language, plural)
-          lang = Language.create :name => language, :plural => plural
+        def export_language(export_data, language, nplural, plural)
+          lang = Language.create :name => language, :nplural => nplural,
+                                                     :plural => plural
           raise unless lang
           yield lang
         end
