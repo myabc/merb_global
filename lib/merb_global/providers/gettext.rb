@@ -45,18 +45,16 @@ module Merb
         end
 
         def import(exporter, export_data)
-          Treetop.load  Pathname(__FILE__).dirname.expand_path + 'gettext'
-          parser = Merb::Global::Providers::GettextParser.new
+          Treetop.load(Pathname(__FILE__).dirname.expand_path.to_s +
+                       '/gettext')
+          parser = Merb::Global::Providers::GetTextParser.new
           Dir[Merb::Global::Providers.localedir + '/*.po'].each do |file|
-            lang_name = File.basename file, '.yaml'
+            lang_name = File.basename file, '.po'
+            lang_tree = nil
             open file do |data|
-              lang_tree = parser.parse data
+              lang_tree = parser.parse data.read
             end
-            opts = lang_tree.to_hash[''].split("\n")
-            plural_line = opts[opts.index {|l| l.start_with "Plural-Forms:"}]
-            plural_line =
-              plural_line["Plural-Forms:".length...plural_line.length]
-            plural_line = Hash[plural_line.split /;=/]
+            plural_line = {}
             exporter.export_language export_data, lang_name,
                                      plural_line[:nplural],
                                      plural_line[:plural] do |lang_data|

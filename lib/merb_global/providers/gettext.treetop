@@ -1,7 +1,7 @@
 module Merb
   module Global
     module Providers
-      grammar Gettext
+      grammar GetText
         rule po_file
 	  entry* {
 	    def to_hash
@@ -68,10 +68,9 @@ module Merb
 	end
 
 	rule string
-	  '"' content:(!'"' ('\"' / .))* '"' {
+	  '"' content:((!'"' ('\"' / .))*) '"' {
 	    def to_s
-	      # Quick'n'dirty replacement
-	      content.text_value.sgub(/\\n/, "\n").gsub!(/\\"/, '"')
+	      content.text_value.gsub(/\\n/, "\n").gsub!(/\\"/, '"')
 	    end
 	  }
 	end
