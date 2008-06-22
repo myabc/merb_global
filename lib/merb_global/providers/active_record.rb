@@ -62,7 +62,7 @@ module Merb
             Translation.transaction do
               Language.find(:all).each do |language|
                 exporter.export_language export_data, language.name,
-                                         language.nplural
+                                         language.nplural,
                                          language.plural do |lang|
                   language.translations.each do |translation|
                     exporter.export_string lang, translation.msgid,
@@ -104,7 +104,7 @@ module Merb
           set_table_name :merb_global_languages
           has_many :translations,
             :class_name =>
-              "Merb::Global::Providers::ActiveRecord::Translations"
+              "::Merb::Global::Providers::ActiveRecord::Translation"
         end
 
         class Translation < ::ActiveRecord::Base

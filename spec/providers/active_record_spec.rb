@@ -102,10 +102,12 @@ if HAS_AR
       before do
         lang = Merb::Global::Providers::ActiveRecord::Language
         trans = Merb::Global::Providers::ActiveRecord::Translation
-        en = lang.create! :name => 'en', :plural => 'n==1?0:1'
-        trans.create! :language_id => en.id, :msgid => 'Test',
+        en = lang.create! :name => 'en', :nplural => 2, :plural => 'n==1?0:1'
+        trans.create! :language_id => en.id,
+                      :msgid => 'Test', :msgid_plural => 'Tests',
                       :msgstr => 'One test', :msgstr_index => 0
-        trans.create! :language_id => en.id, :msgid => 'Test',
+        trans.create! :language_id => en.id,
+                      :msgid => 'Test', :msgid_plural => 'Tests',
                       :msgstr => 'Many tests', :msgstr_index => 1
       end
 
@@ -138,6 +140,41 @@ if HAS_AR
       it 'should choose the first language except from the list' do
         @provider.choose(['en']).should == 'fr'
       end
+    end
+
+    describe '.import' do
+      it 'should iterate over the translations' do
+        lang = Merb::Global::Providers::ActiveRecord::Language
+        trans = Merb::Global::Providers::ActiveRecord::Translation
+        en = lang.create! :name => 'en', :nplural => 2, :plural => 'n==1?0:1'
+        trans.create! :language_id => en.id,
+                      :msgid => 'Test', :msgid_plural => 'Tests',
+                      :msgstr => 'One test', :msgstr_index => 0
+        trans.create! :language_id => en.id,
+                      :msgid => 'Test', :msgid_plural => 'Tests',
+                      :msgstr => 'Many tests', :msgstr_index => 1
+        export_data = mock
+        en_data = mock
+        exporter = mock do |exporter|
+          exporter.expects(:export_language).with(export_data, 'en', 2,
+                                                  'n==1?0:1').
+                                             yields(en_data)
+          exporter.expects(:export_string).with(en_data, 'Test', 'Tests',
+                                                         0, 'One test')
+          exporter.expects(:export_string).with(en_data, 'Test', 'Tests',
+                                                         1, 'Many tests')
+        end
+        Merb::Global::Providers::ActiveRecord.new.import(exporter, export_data)
+      end
+    end
+    describe '.export' do
+      it 'should delete all data'
+    end
+    describe '.export_language' do
+      it 'should create a new language and yield its id'
+    end
+    describe '.export_string' do
+      it 'should create a new tramslation row'
     end
   end
 end
