@@ -5,6 +5,7 @@ class AddTranslationsMigration < ActiveRecord::Migration
   def self.up
     create_table :merb_global_languages do |t|
       t.string	  :name,         :limit => 16
+      t.integer	  :nplural
       t.string    :plural,       :size => 128
     end
     add_index :merb_global_languages, :name, :unique => true

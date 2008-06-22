@@ -7,6 +7,7 @@ class AddTranslationsMigration < Sequel::Migration
     create_table :merb_global_languages do
       primary_key :id
       varchar	  :name,         :size => 16,           :unique => true
+      integer	  :nplural
       varchar	  :plural,       :size => 128
     end
     create_table :merb_global_translations do

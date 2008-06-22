@@ -91,6 +91,7 @@ module Merb
           storage_names[:default] = 'merb_global_languages'
           property :id, Integer, :serial => true
           property :name, String, :unique_index => true
+          property :nplural, Integer
           property :plural, Text, :lazy => false
           # validates_is_unique :name
           has n, :translations,
