@@ -1,6 +1,6 @@
 === 0.0.4
- * Changed database format
- * Added importing/exporting
+ * Changed database format (to allow importing/exporting)
+ * Added importing/exporting (EXPERIMENTAL)
 
 === 0.0.3
  * New Plural engine
