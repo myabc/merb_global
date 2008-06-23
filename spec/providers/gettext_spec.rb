@@ -72,7 +72,7 @@ if HAS_GETTEXT
         pl_data = mock
         exporter = mock do |exporter|
           exporter.expects(:export_language).with(export_data, 'pl', 3,
-          '(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)').
+                        '(n==1?0:n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?1:2)').
                                              yields(pl_data)
           exporter.expects(:export_string).with(pl_data, 'Test', 'Tests',
                                                          0, 'Test')
@@ -87,16 +87,16 @@ if HAS_GETTEXT
       end
     end
     
-    describe '.export' do
-      it 'should delete all data'
-    end
+    #describe '.export' do
+    #  it 'should delete all data'
+    #end
     
-    describe '.export_language' do
-      it 'should create a new language and yield its id'
-    end
+    #describe '.export_language' do
+    #  it 'should create a new language and yield its id'
+    #end
     
-    describe '.export_string' do
-      it 'should create a new translation row'
-    end
+    #describe '.export_string' do
+    #  it 'should create a new translation row'
+    #end
   end
 end

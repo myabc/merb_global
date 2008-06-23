@@ -54,13 +54,25 @@ module Merb
             open file do |data|
               lang_tree = parser.parse data.read
             end
-            plural_line = {}
+            opts = (lang_tree.to_hash)[''].split("\n")
+            plural_line = nil
+            for l in opts
+              if l[0..."Plural-Forms:".length] == "Plural-Forms:"
+                plural_line = l
+                break
+              end
+            end
+            plural_line =
+              plural_line["Plural-Forms:".length...plural_line.length]
+            plural_line = plural_line[0...plural_line.length-1]
+            plural_line = plural_line.gsub(/[[:space:]]/, '').split(/[=;]/, 4)
+            plural_line = Hash[*plural_line]
             exporter.export_language export_data, lang_name,
-                                     plural_line[:nplural],
-                                     plural_line[:plural] do |lang_data|
+                                     plural_line['nplurals'].to_i,
+                                     plural_line['plural'] do |lang_data|
               lang_tree.visit do |msgid, msgid_plural, msgstr, index|
                 exporter.export_string lang_data, msgid, msgid_plural,
-                                                  msgstr, index
+                                                  index, msgstr
               end
             end
           end
