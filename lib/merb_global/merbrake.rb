@@ -1,3 +1,5 @@
+require 'fileutils'
+
 namespace :merb_global do
   task :merb_start do
     Merb.start_environment :adapter => 'runner',
@@ -12,7 +14,14 @@ namespace :merb_global do
     from = Merb::Global.config 'source', 'gettext'
     into = Merb::Global.config 'provider', 'gettext'
     if from == 'gettext' and into == 'gettext'
-      # Change po into mo files
+      Dir[Merb::Global::Providers.localedir + '/*.po'] do |file|
+        lang = File.basename file, '.po'
+        lang_dir = File.join(Merb::Global::Providers.localedir,
+                             lang, 'LC_MESSAGES')
+        FileUtils.mkdir_p lang_dir
+        domain = Merb::Global.config([:gettext, :domain], 'merbapp')
+        `msgfmt #{file} -o #{lang_dir}/#{domain}.mo`
+      end
     elsif from == into
       Merb.logger.error 'Tried transfer from and into the same provider'
     else
