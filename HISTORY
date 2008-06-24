@@ -1,3 +1,6 @@
+=== 0.0.5
+ * Handles lang_REGION as lang
+
 === 0.0.4
  * Changed database format (to allow importing/exporting)
  * Added importing/exporting (EXPERIMENTAL)
