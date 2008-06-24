@@ -8,7 +8,7 @@ module Merb
         include Merb::Global::Provider
         include Merb::Global::Provider::Importer
         include Merb::Global::Provider::Exporter
-        
+
         def initialize
           # Not synchronized - make GC do it's work (may be not optimal
           # but I don't think that some problem will occure).
@@ -97,7 +97,7 @@ module Merb
           file = "#{Merb::Global::Providers.localedir}/#{language}.yaml"
           open file, 'w+' do |out|
             YAML.dump lang, out
-          end 
+          end
         end
 
         def export_string(language, msgid, msgstr, msgstr_index)

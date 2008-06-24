@@ -12,7 +12,7 @@ module Merb
         include Merb::Global::Provider
         include Merb::Global::Provider::Importer
         include Merb::Global::Provider::Exporter
-        
+
         def translate_to(singular, plural, opts)
           language = Language.find :first,
                                    :conditions => {:name => opts[:lang]}
@@ -22,7 +22,7 @@ module Merb
               translation = Translation.find [language.id, singular, n]
             else
               translation = Translation.find [language.id, singular, nil]
-            end  
+            end
             return translation.msgstr
           end rescue nil
           return opts[:n] > 1 ? plural : singular # Fallback if not in database

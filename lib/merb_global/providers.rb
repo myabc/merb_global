@@ -7,7 +7,7 @@ module Merb
       #
       # ==== Parames
       # provider<~to_s,~to_sym>:: A name of provider
-      # 
+      #
       # ==== Returns
       # provider<Provider>:: A new provider
       def self.[](provider)

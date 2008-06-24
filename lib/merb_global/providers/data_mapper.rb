@@ -9,7 +9,7 @@ module Merb
         include Merb::Global::Provider
         include Merb::Global::Provider::Importer
         include Merb::Global::Provider::Exporter
-        
+
         def translate_to(singular, plural, opts)
           # I hope it's from MemCache
           language = Language.first :name => opts[:lang]

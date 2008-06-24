@@ -23,7 +23,7 @@ module Merb
         # ==== Parameters
         # exporter<Exporter>:: Exporter to which it should be exported
         # export_data:: Data to pass in calles
-        # 
+        #
         # ==== Raises
         # NoMethodError:: Raised by default implementation.
         #                 Should not be thrown.

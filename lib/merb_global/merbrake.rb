@@ -1,17 +1,17 @@
 require 'fileutils'
 
 namespace :merb_global do
-  
+
   task :merb_start do
     Merb.start_environment :adapter => 'runner',
                            :environment => ENV['MERB_ENV'] || 'development'
   end
-  
+
   desc 'Create migration'
   task :migration => :merb_start do
     Merb::Global::Providers.provider.create!
   end
-  
+
   desc 'Transfer the translations from one provider to another'
   task :transfer => :merb_start do
     from = Merb::Global.config 'source', 'gettext'
@@ -33,5 +33,5 @@ namespace :merb_global do
       Merb::Global::Provider.transfer from, into
     end
   end
-  
+
 end
