@@ -4,3 +4,4 @@ doc
 log
 pkg
 pkg/*
+*.db

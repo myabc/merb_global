@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'spec/rake/spectask'
+require 'fileutils'
 
 PLUGIN = "merb_global"
 NAME = "merb_global"
@@ -49,6 +50,17 @@ Rake::RDocTask.new do |rd|
   rd.rdoc_dir = "doc"
   rd.rdoc_files.include "lib/**/*.rb"
 end
+
+desc "Creates database for examples"
+task :populate_db do
+  pwd = File.dirname __FILE__
+  db = "#{pwd}/examples/database.db"
+  sh %{sqlite3 #{db} < #{pwd}/examples/database.sql}
+  FileUtils.cp db, "#{pwd}/examples/active_record_example/database.db"
+  FileUtils.cp db, "#{pwd}/examples/data_mapper_example/database.db"
+  FileUtils.cp db, "#{pwd}/examples/sequel_example/database.db"
+end
+task :gem => :populate_db
 
 desc "Run all specs"
 Spec::Rake::SpecTask.new('specs') do |st|
