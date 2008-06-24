@@ -21,6 +21,7 @@ spec = Gem::Specification.new do |s|
   s.authors = AUTHORS
   s.email = EMAIL
   s.homepage = HOMEPAGE
+  s.rubyforge_project = 'merb-global'
   s.add_dependency('merb-core', '>= 0.9.1')
   s.add_dependency('treetop', '>= 1.2.3') # Tested on 1.2.3
   s.require_path = 'lib'
