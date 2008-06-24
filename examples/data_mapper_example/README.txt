@@ -7,4 +7,3 @@ controller file.
 Start with
 
   merb
-  

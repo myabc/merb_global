@@ -3,9 +3,9 @@ module Merb
     # Merb-global is able to store the translations in different types of
     # storage. An interface betwean merb-global and those storages are
     # providers.
-    # 
+    #
     # Please note that it is not required to include this module - despite it
-    # is recomended both as a documentation part and the more customized 
+    # is recomended both as a documentation part and the more customized
     # error messages.
     module Provider
       # call-seq:
@@ -61,7 +61,7 @@ module Merb
       def create!
         raise NoMethodError.new('method create! has not been implemented')
       end
-      
+
       # This method choos an supported language except those form the list
       # given. It may fallback to english if none language can be found
       # which agree with those criteria

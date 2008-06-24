@@ -1,7 +1,7 @@
 require 'merb_global/base'
 
 module Merb
-  class Controller 
+  class Controller
     include Merb::Global
     class_inheritable_accessor :_language
 

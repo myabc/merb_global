@@ -65,7 +65,7 @@ if HAS_GETTEXT
         @provider.choose(['en', 'pl']).should be_nil
       end
     end
-    
+
     describe '.import' do
       it 'should iterate over the translations' do
         export_data = mock
@@ -86,15 +86,15 @@ if HAS_GETTEXT
         @provider.import(exporter, export_data)
       end
     end
-    
+
     #describe '.export' do
     #  it 'should delete all data'
     #end
-    
+
     #describe '.export_language' do
     #  it 'should create a new language and yield its id'
     #end
-    
+
     #describe '.export_string' do
     #  it 'should create a new translation row'
     #end

@@ -16,7 +16,7 @@ module Merb
       class Gettext #:nodoc: all
         include Merb::Global::Provider
         include Merb::Global::Provider::Importer
-        
+
         def translate_to(singular, plural, opts)
           context = Thread.current.gettext_context
           context.set_locale opts[:lang], true

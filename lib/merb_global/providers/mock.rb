@@ -3,7 +3,7 @@ module Merb
     module Providers
       class Mock #:nodoc:
         include Merb::Global::Provider
-        
+
         def translate_to(singular, plural, opts)
           opts[:n] > 1 ? plural : singular
         end

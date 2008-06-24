@@ -68,7 +68,7 @@ $plurals = {}
 end
 
 $languages = $plurals.keys
-def rand_language 
+def rand_language
   $languages[Kernel.rand($languages.length)]
 end
 
@@ -97,7 +97,7 @@ Benchmark.bm(22) do |bm|
         DB[:translations2] << {
           :language_id => lang_id,
           :msgid => original,
-          :msgstr => translation          
+          :msgstr => translation
         }
       end
     end

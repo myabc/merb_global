@@ -126,7 +126,7 @@ if HAS_SEQUEL
         @provider.choose(['en']).should == 'fr'
       end
     end
-    
+
     describe '.import' do
       it 'should iterate over the translations' do
         lang = Merb::Global::Providers::Sequel::Language
@@ -152,15 +152,15 @@ if HAS_SEQUEL
         @provider.import(exporter, export_data)
       end
     end
-    
+
     describe '.export' do
       it 'should delete all data'
     end
-    
+
     describe '.export_language' do
       it 'should create a new language and yield its id'
     end
-    
+
     describe '.export_string' do
       it 'should create a new translation row'
     end
