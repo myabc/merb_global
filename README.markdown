@@ -67,6 +67,10 @@ The following additional mirrors are available:
 Installation and Setup
 ----------------------
 
+	Dependencies:
+	sudo gem install gettext
+	
+	Installing MerbGlobal
     rake gem
     sudo gem install pkg/merb_global-0.0.1.gem
 
