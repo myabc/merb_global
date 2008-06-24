@@ -25,9 +25,24 @@ module Merb
             end
             accept_language.sort! {|lang_a, lang_b| lang_a[1] <=> lang_b[1]}
             accept_language.collect! {|lang| lang[0]}
-            accept_language.reject! do |lang|
-              lang != '*' and not self.provider.support? lang
+            accept_language_orig = accept_language.dup
+            accept_language.collect! do |lang|
+              if lang == '*'
+                '*'
+              elsif self.provider.support? lang
+                lang
+              elsif lang.include? '-'
+                lang = lang.split('-')[0]
+                if self.provider.support? lang
+                  lang
+                else
+                  nil
+                end
+              else
+                nil
+              end
             end
+            accept_language.reject! {|lang| lang.nil?}
             unless accept_language.empty?
               unless accept_language.last == '*'
                 accept_language.last

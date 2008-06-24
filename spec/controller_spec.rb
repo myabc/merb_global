@@ -66,4 +66,14 @@ describe Merb::Controller do
     end
     controller.lang.should == 'fr'
   end
+
+  it 'Should fallback to lang if lang_REGION is not supported' do
+    controller = dispatch_to(TestController, :index) do |controller|
+      controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'pt-BR'
+      provider = controller.provider = mock
+      provider.expects(:support?).with('pt-BR').returns(false)
+      provider.expects(:support?).with('pt').returns(true)
+    end
+    controller.lang.should == 'pt'
+  end
 end
