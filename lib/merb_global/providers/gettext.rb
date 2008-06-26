@@ -14,8 +14,8 @@ module Merb
   module Global
     module Providers
       class Gettext #:nodoc: all
-        include Merb::Global::Provider
-        include Merb::Global::Provider::Importer
+        include Merb::Global::Providers::Base
+        include Merb::Global::Providers::Base::Importer
 
         def translate_to(singular, plural, opts)
           context = Thread.current.gettext_context

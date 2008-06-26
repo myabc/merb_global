@@ -1,3 +1,5 @@
+require 'merb_global/providers/base'
+
 module Merb
   module Global
     module Providers

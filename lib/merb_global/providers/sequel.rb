@@ -5,9 +5,9 @@ module Merb
   module Global
     module Providers
       class Sequel #:nodoc: all
-        include Merb::Global::Provider
-        include Merb::Global::Provider::Importer
-        include Merb::Global::Provider::Exporter
+        include Merb::Global::Providers::Base
+        include Merb::Global::Providers::Base::Importer
+        include Merb::Global::Providers::Base::Exporter
 
         def translate_to(singular, plural, opts)
           language = Language[:name => opts[:lang]] # I hope it's from MemCache

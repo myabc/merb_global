@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 class Provider
-  include Merb::Global::Provider
+  include Merb::Global::Providers::Base
 end
 
-describe Merb::Global::Provider do
+describe Merb::Global::Providers::Base do
   before do
     @provider = Provider.new
   end

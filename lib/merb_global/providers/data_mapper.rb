@@ -6,9 +6,9 @@ module Merb
   module Global
     module Providers
       class DataMapper #:nodoc: all
-        include Merb::Global::Provider
-        include Merb::Global::Provider::Importer
-        include Merb::Global::Provider::Exporter
+        include Merb::Global::Providers
+        include Merb::Global::Providers::Base::Importer
+        include Merb::Global::Providers::Base::Exporter
 
         def translate_to(singular, plural, opts)
           # I hope it's from MemCache

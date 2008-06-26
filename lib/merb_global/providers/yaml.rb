@@ -5,9 +5,9 @@ module Merb
   module Global
     module Providers
       class Yaml #:nodoc:
-        include Merb::Global::Provider
-        include Merb::Global::Provider::Importer
-        include Merb::Global::Provider::Exporter
+        include Merb::Global::Providers::Base
+        include Merb::Global::Providers::Base::Importer
+        include Merb::Global::Providers::Base::Exporter
 
         def initialize
           # Not synchronized - make GC do it's work (may be not optimal

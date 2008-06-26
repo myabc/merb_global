@@ -1,8 +1,6 @@
 require 'merb_global/config'
 require 'merb_global/plural'
-require 'merb_global/provider'
 require 'merb_global/providers'
-require 'merb_global/transfer'
 
 module Merb
   module Global
