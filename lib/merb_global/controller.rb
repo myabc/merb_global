@@ -9,7 +9,7 @@ module Merb
       # Set up the language
       accept_language = self.request.env['HTTP_ACCEPT_LANGUAGE']
       self.lang = params[:language] ||
-        (self._language && self._language.call) ||
+        (self._language && self.instance_eval(&self._language)) ||
         begin
           unless accept_language.nil?
             accept_language = accept_language.split(',')
