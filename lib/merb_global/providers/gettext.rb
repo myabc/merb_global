@@ -44,17 +44,19 @@ module Merb
           dir.first
         end
 
-        def import(exporter, export_data)
+        def import
           Treetop.load(Pathname(__FILE__).dirname.expand_path.to_s +
                        '/gettext')
           parser = Merb::Global::Providers::GetTextParser.new
+          data = {}
           Dir[Merb::Global::Providers.localedir + '/*.po'].each do |file|
             lang_name = File.basename file, '.po'
             lang_tree = nil
             open file do |data|
               lang_tree = parser.parse data.read
             end
-            opts = (lang_tree.to_hash)[''].split("\n")
+            data[lang_name] = lang_tree.to_hash
+            opts = data[lang_name][''].split("\n")
             plural_line = nil
             for l in opts
               if l[0..."Plural-Forms:".length] == "Plural-Forms:"
@@ -66,16 +68,9 @@ module Merb
               plural_line["Plural-Forms:".length...plural_line.length]
             plural_line = plural_line[0...plural_line.length-1]
             plural_line = plural_line.gsub(/[[:space:]]/, '').split(/[=;]/, 4)
-            plural_line = Hash[*plural_line]
-            exporter.export_language export_data, lang_name,
-                                     plural_line['nplurals'].to_i,
-                                     plural_line['plural'] do |lang_data|
-              lang_tree.visit do |msgid, msgid_plural, msgstr, index|
-                exporter.export_string lang_data, msgid, msgid_plural,
-                                                  index, msgstr
-              end
-            end
+            data[lang_name].merge! Hash[*plural_line]
           end
+          data
         end
 
         class GettextContext

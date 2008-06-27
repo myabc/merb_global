@@ -43,48 +43,43 @@ module Merb
           Language.first(:name.not => except).name
         end
 
-        def import(exporter, export_data)
+        def import
+          data = {}
           ::DataMapper::Transaction.new(Language, Translation) do
             Language.all.each do |language|
-              exporter.export_language export_data, language.name,
-                                       language.nplural,
-                                       language.plural do |lang|
-                language.translations.each do |translation|
-                  exporter.export_string lang, translation.msgid,
-                                               translation.msgid_plural,
-                                               translation.msgstr_index,
-                                               translation.msgstr
-                end
+              data[lang.name] = lang_hash = {
+                :plural => lang.plural,
+                :nplural => lang.nplural
+              }
+              language.translations.each do |translation|
+                lang_hash[translation.msgid] ||= {
+                  :plural => translation.msgid_plural
+                }
+                lang_hash[translation.msgid][translation.msgstr_index] =
+                  translation.msgstr
               end
             end
           end
         end
 
-        def export
+        def export(data)
           ::DataMapper::Transaction.new(Language, Translation) do
-            Language.all.each {|language| language.destroy}
             Translation.all.each {|translation| translation.destroy}
-            yield nil
+            Language.all.each {|language| language.destroy}
+            data.each do |lang_name, lang|
+              lang_obj = Language.new(:name => lang_name,
+                                      :plural => lang[:plural]
+                                      :nplural => lang[:nplural])
+              lang_obj.save or raise
+              lang.each do |msgid, msgstr|
+                Translation.new(:language_id => lang_obj.id,
+                                :msgid => msgid,
+                                :msgid_plural => nil,
+                                :msgstr => msgstr,
+                                :msgstr_index => nil).save or raise
+              end
+            end
           end
-        end
-
-        def export_language(export_data, language, nplural, plural)
-          lang = Language.new :language => language, :nplural => nplural,
-                              :plural => plural
-          lang.save
-          raise if lang.new_record?
-          yield lang.id
-        end
-
-        def export_string(language_id, msgid, msgid_plural,
-                                       msgstr, msgstr_index)
-          trans = Translation.new :language_id => language_id,
-                                  :msgid => msgid,
-                                  :msgid_plural => msgid_plural,
-                                  :msgstr => msgstr,
-                                  :msgstr_index => msgstr_index
-          trans.save
-          raise if lang.new_record?
         end
 
         # When table structure becomes stable it *should* be documented
@@ -105,12 +100,6 @@ module Merb
           include ::DataMapper::Resource
           storage_names[:default] = 'merb_global_translations'
           property :language_id, Integer, :nullable => false, :key => true
-          # Sould it be propery :msgid, :text?
-          # This form should be faster. However:
-          # - collision may appear (despite being unpropable)
-          # - it may be wrong optimalisation
-          # As far I'll leave it in this form. If anybody could measure the
-          # speed of both methods it will be appreciate.
           property :msgid, Text, :nullable => false, :key => true
           property :msgid_plural, Text, :lazy => true
           property :msgstr, Text, :nullable => false, :lazy => false

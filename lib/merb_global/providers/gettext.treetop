@@ -3,67 +3,53 @@ module Merb
     module Providers
       grammar GetText
         rule po_file
-	  entry* {
-	    def to_hash
-              hash = {}
-	      elements.each {|entry| hash.merge! entry.to_hash}
-	      hash
-	    end
-	    def visit &block
-	      elements.each {|elem| elem.visit &block}
-	    end
-	  }
-	end
+	      entry* {
+	        def to_hash
+            hash = {}
+	          elements.each {|entry| hash.merge! entry.to_hash}
+	          hash
+	        end
+	      }
+	      end
 
         rule entry
-	  whitespaces*
+	        whitespaces*
           "msgid" whitespaces msgid:strings
           "msgstr" whitespaces msgstr:strings {
-            def to_hash
-	      {msgid.to_string => msgstr.to_string}
-	    end
-	    def visit &block
-	      unless msgid.to_string.empty? or msgstr.to_string.empty?
-		yield msgid.to_string, nil, msgstr.to_string, nil
+           def to_hash
+	           {msgid.to_string => {nil => msgstr.to_string}}
+	         end
+	        }
+	        /
+	        whitespaces*
+	        "msgid" whitespaces msgid:strings
+	        "msgid_plural" whitespaces msgid_plural:strings
+	        msgstrs:("msgstr[" number:[0-9]+ "]" whitespaces strings)+ {
+	          def to_hash
+	            hash = {:plural => msgid_plural.to_string}
+	            msgstrs.elements.each do |msgstr|
+		             hash[msgstr.number.text_value.to_i] = msgstr.strings.to_string
+	            end
+	            {msgid.to_string => hash}
+	          end
+	        }
 	      end
-	    end
-	  }
-	  /
-	  whitespaces*
-	  "msgid" whitespaces msgid:strings
-	  "msgid_plural" whitespaces msgid_plural:strings
-	  msgstrs:("msgstr[" number:[0-9]+ "]" whitespaces strings)+ {
-	    def to_hash
-	      hash = {:plural => msgid_plural.to_string}
-	      msgstrs.elements.each do |msgstr|
-		hash[msgstr.number.text_value.to_i] = msgstr.strings.to_string
+
+	      rule strings
+          (string whitespaces?)+ {
+       	    def to_string
+	            elements.collect {|element| element.string.to_string}.join
+	          end
+	        }
 	      end
-	      {msgid.to_string => hash}
-	    end
-	    def visit &block
-	      msgstrs.elements.each do |msgstr|
-		yield msgid.to_string, msgid_plural.to_string,
-                      msgstr.strings.to_string, msgstr.number.text_value.to_i
-              end
-	    end
-	  }
-	end
 
-	rule strings
-	  (string whitespaces?)+ {
-	    def to_string
-	      elements.collect {|element| element.string.to_string}.join
-	    end
-	  }
-	end
-
-	rule string
-	  '"' content:((!'"' ('\"' / .))*) '"' {
-	    def to_string
-	      content.text_value.gsub(/\\n/, "\n")
-	    end
-	  }
-	end
+       	rule string
+	        '"' content:((!'"' ('\"' / .))*) '"' {
+	          def to_string
+	            content.text_value.gsub(/\\n/, "\n")
+	          end
+	        }
+	      end
 
         rule whitespaces
           (" " / "\t" / "\n" / ('#' (!"\n" .)* "\n") )+

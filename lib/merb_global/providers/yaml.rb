@@ -60,53 +60,18 @@ module Merb
           dir.first
         end
 
-        def import(exporter, export_data)
+        def import
+          data = {}
           Dir[Merb::Global::Providers.localedir + '/*.yaml'].each do |file|
             lang_name = File.basename file, '.yaml'
-            lang = YAML.load_file file
-            exporter.export_language export_data,
-                                     lang_name,
-                                     lang[:nplural],
-                                     lang[:plural] do |lang_data|
-              lang.each do |msgid, msgstr|
-                if msgid.is_a? String
-                  if msgstr.is_a? Hash
-                    msgid_plural = msgstr[:plural]
-                    msgstr.each do |msgstr_index, msgstr|
-                      if msgstr_index.is_a? Fixnum
-                        exporter.export_string lang_data, msgid, msgid_plural,
-                                                          msgstr_index, msgstr
-                      end
-                    end
-                  else
-                    exporter.export_string lang_data, msgid, nil, nil, msgstr
-                  end
-                end
+            data[lang_name] = lang = YAML.load_file file
+            lang.each do |msgid, msgstr|
+              if msgstr.is_a? String and msgid.is_a? String
+                lang[msgid] = {nil => msgstr}
               end
             end
           end
-        end
-
-        def export
-          yield nil
-        end
-
-        def export_language(export_data, language, nplural, plural)
-          lang = {:nplural => nplural, :plural => plural}
-          yield lang
-          file = "#{Merb::Global::Providers.localedir}/#{language}.yaml"
-          open file, 'w+' do |out|
-            YAML.dump lang, out
-          end
-        end
-
-        def export_string(language, msgid, msgstr, msgstr_index)
-          if no.nil?
-            language[msgid] = msgstr
-          else
-            language[msgid] ||= {}
-            language[msgid][no] = msgstr
-          end
+          data
         end
       end
     end

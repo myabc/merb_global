@@ -57,47 +57,47 @@ module Merb
           #                                       "(#{except.join(',')})"])
         end
 
-        def import(exporter, export_data)
+        def import
+          data = {}
           Language.transaction do
             Translation.transaction do
-              Language.find(:all).each do |language|
-                exporter.export_language export_data, language.name,
-                                         language.nplural,
-                                         language.plural do |lang|
-                  language.translations.each do |translation|
-                    exporter.export_string lang, translation.msgid,
-                                                 translation.msgid_plural,
-                                                 translation.msgstr_index,
-                                                 translation.msgstr
-                  end
+              Language.find(:all).each do |lang|
+                data[lang.name] = lang_hash = {
+                  :plural => lang.plural,
+                  :nplural => lang.nplural
+                }
+                lang.translations.each do |translation|
+                  lang_hash[translation.msgid] ||= {
+                    :plural => translation.msgid_plural
+                  }
+                  lang_hash[translation.msgid][translation.msgstr_index] =
+                    translation.msgstr
                 end
               end
             end
           end
+          data
         end
 
-        def export
+        def export(data)
           Language.transaction do
             Translation.transaction do
-              Language.delete_all
               Translation.delete_all
-              yield nil
+              Language.delete_all
+              data.each do |lang_name, lang|
+                lang_id = Language.create!(:name => lang_name,
+                                           :plural => lang[:plural]
+                                           :nplural => lang[:nplural]).id
+                lang.each do |msgid, msgstr|
+                  Translation.create! :language_id => lang_id,
+                                      :msgid => msgid,
+                                      :msgid_plural => nil,
+                                      :msgstr => msgstr,
+                                      :msgstr_index => nil
+                end
+              end
             end
           end
-        end
-
-        def export_language(export_data, language, nplural, plural)
-          yield Language.create!(:language => language, :nplural => nplural,
-                                 :plural => plural).id
-        end
-
-        def export_string(language_id, msgid, msgid_plural,
-                                       msgstr, msgstr_index)
-          Translation.create! :language_id => language_id,
-                              :msgid => msgid,
-                              :msgid_plural => msgid_plural,
-                              :msgstr => msgstr,
-                              :msgstr_index => msgstr_index
         end
 
         class Language < ::ActiveRecord::Base

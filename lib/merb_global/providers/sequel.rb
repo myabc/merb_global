@@ -43,7 +43,8 @@ module Merb
           Language.filter(~{:name => except}).first[:name]
         end
 
-        def import(exporter, export_data)
+        def import
+          data = {}
           DB.transaction do
             Language.each do |language|
               exporter.export_language export_data, language[:name],
@@ -65,24 +66,19 @@ module Merb
           DB.transaction do
             Language.delete_all
             Translation.delete_all
-            yield nil
+            data.each do |lang_name, lang|
+              lang_obj = Language.create(:name => lang_name,
+                                         :plural => lang[:plural]
+                                         :nplural => lang[:nplural]) or raise
+              lang.each do |msgid, msgstr|
+                Translation.create(:language_id => lang_obj.id,
+                                  :msgid => msgid,
+                                  :msgid_plural => nil,
+                                  :msgstr => msgstr,
+                                  :msgstr_index => nil) or raise
+              end
+            end
           end
-        end
-
-        def export_language(export_data, language, nplural, plural)
-          lang = Language.create :name => language, :nplural => nplural,
-                                                     :plural => plural
-          raise unless lang
-          yield lang
-        end
-
-        def export_string(language_id, msgid, msgid_plural,
-                                       msgstr, msgstr_index)
-          Translation.create(:language_id => language_id,
-                             :msgid => msgid,
-                             :msgid_plural => msgid_plural,
-                             :msgstr => msgstr,
-                             :msgstr_index => msgstr_index) or raise
         end
 
         class Language < ::Sequel::Model(:merb_global_languages)
