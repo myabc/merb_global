@@ -73,6 +73,25 @@ module Merb
           end
           data
         end
+        
+        def export(data)
+          File.unlink *Dir[Merb::Global::Providers.localedir + '/*.yaml']
+          data.each do |lang_name, lang_orig|
+            lang = {}
+            lang_orig.each do |msgid, msgstr_hash|
+              lang[msgid] = {}
+              msgstr_hash.each do |msgstr_index, msgstr|
+                if msgstr_index.nil?
+                  lang[msgid] = msgstr
+                else
+                  lang[msgid][msgstr_index] = msgstr
+                end
+              end
+            end
+            YAML.dump File.join(Merb::Global::Providers.localedir,
+                                lang_name + '.yaml')
+          end
+        end
       end
     end
   end
