@@ -16,6 +16,7 @@ module Merb
       class Gettext #:nodoc: all
         include Merb::Global::Providers::Base
         include Merb::Global::Providers::Base::Importer
+        include Merb::Global::Providers::Base::Exporter
 
         def translate_to(singular, plural, opts)
           context = Thread.current.gettext_context
@@ -71,6 +72,41 @@ module Merb
             data[lang_name].merge! Hash[*plural_line]
           end
           data
+        end
+
+        def export(data)
+          data.each do |lang_name, lang|
+            open(File.join(Merb::Global::Providers.localedir,
+                           lang_name + '.po'),
+                 'w') do |po|
+              po.puts <<EOF
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.0.1\\n"
+"POT-Creation-Date: #{Time.now.strftime('%Y-%m-%d %H:%M%z')}\\n"
+"PO-Revision-Date: #{Time.now.strftime('%Y-%m-%d %H:%M%z')}\\n"
+"Last-Translator:  <user@example.com>\\n"
+"Language-Team: Language type\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=UTF-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"Plural-Forms: nplurals=#{lang[:nplurals]}; plural=#{lang[:plural]}\\n"
+EOF
+              
+              lang.each do |msgid, msgstr_hash|
+                po.puts ""
+                po.puts "msgid \"#{msgid}\""
+                if msgstr_hash[:plural]
+                  po.puts "msgid_plural \"#{msgstr_hash[:plural]}\""
+                  msgstr_hash.each do |msgstr_index, msgstr|
+                    po.puts "msgstr[#{msgstr_index}] \"#{msgstr}\""
+                  end
+                else
+                  po.puts "msgstr \"#{msgstr_hash[nil]}\""
+                end
+              end
+            end
+          end
         end
 
         class GettextContext
