@@ -13,6 +13,14 @@ class FrTestController < Merb::Controller
   end
 end
 
+class SettableTestController < Merb::Controller
+  attr_accessor :current_lang
+  language {@current_lang}
+  def index
+    'index'
+  end
+end
+
 describe Merb::Controller do
   it 'should set language to english by default' do
     controller = dispatch_to(TestController, :index) do |controller|
@@ -62,6 +70,14 @@ describe Merb::Controller do
 
   it "should have overriden settings by language block" do
     controller = dispatch_to(FrTestController, :index) do |controller|
+      controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'en'
+    end
+    controller.lang.should == 'fr'
+  end
+
+  it 'should evaluate in the object context' do
+    controller = dispatch_to(SettableTestController, :index) do |controller|
+      controller.current_lang = 'fr'
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'en'
     end
     controller.lang.should == 'fr'
