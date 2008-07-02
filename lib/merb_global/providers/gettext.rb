@@ -76,9 +76,9 @@ module Merb
 
         def export(data)
           data.each do |lang_name, lang|
-            open(File.join(Merb::Global::Providers.localedir,
-                           lang_name + '.po'),
-                 'w') do |po|
+            lang_file = File.join(Merb::Global::Providers.localedir,
+                                  lang_name + '.po')
+            open(lang_file, 'w') do |po|
               po.puts <<EOF
 msgid ""
 msgstr ""
@@ -105,6 +105,11 @@ EOF
                   po.puts "msgstr \"#{msgstr_hash[nil]}\""
                 end
               end
+              lang_dir = File.join(Merb::Global::Providers.localedir,
+                                   lang, 'LC_MESSAGES')
+              FileUtils.mkdir_p lang_dir
+              domain = Merb::Global.config([:gettext, :domain], 'merbapp')
+              `msgfmt #{lang_file} -o #{lang_dir}/#{domain}.mo`
             end
           end
         end

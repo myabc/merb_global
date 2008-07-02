@@ -67,36 +67,11 @@ if HAS_GETTEXT
     end
 
     describe '.import' do
-      it 'should iterate over the translations' do
-        export_data = mock
-        pl_data = mock
-        exporter = mock do |exporter|
-          exporter.expects(:export_language).with(export_data, 'pl', 3,
-                        '(n==1?0:n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?1:2)').
-                                             yields(pl_data)
-          exporter.expects(:export_string).with(pl_data, 'Test', 'Tests',
-                                                         0, 'Test')
-          exporter.expects(:export_string).with(pl_data, 'Test', 'Tests',
-                                                         1, 'Testy')
-          exporter.expects(:export_string).with(pl_data, 'Test', 'Tests',
-                                                         2, 'Testów')
-          exporter.expects(:export_string).with(pl_data, 'Hello', nil,
-                                                         nil, 'Cześć')
-        end
-        @provider.import(exporter, export_data)
-      end
+      it 'should put data in the hash'
     end
 
-    #describe '.export' do
-    #  it 'should delete all data'
-    #end
-
-    #describe '.export_language' do
-    #  it 'should create a new language and yield its id'
-    #end
-
-    #describe '.export_string' do
-    #  it 'should create a new translation row'
-    #end
+    describe '.export' do
+      it 'should transform data from hash into the database'
+    end
   end
 end
