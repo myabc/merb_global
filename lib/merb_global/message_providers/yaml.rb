@@ -66,7 +66,7 @@ module Merb
           Dir[Merb::Global::MessageProviders.localedir +
               '/*.yaml'].each do |file|
             lang_name = File.basename file, '.yaml'
-            data[lang_name] = lang = YAML.load_file file
+            data[lang_name] = lang = YAML.load_file(file)
             lang.each do |msgid, msgstr|
               if msgstr.is_a? String and msgid.is_a? String
                 lang[msgid] = {nil => msgstr}

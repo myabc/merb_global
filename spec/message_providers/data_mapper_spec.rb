@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 if HAS_DM
-  require 'data_mapper'
-
   DataMapper.setup :default, 'sqlite3::memory:'
 
   require 'merb_global/message_providers/data_mapper'
