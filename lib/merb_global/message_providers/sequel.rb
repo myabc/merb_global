@@ -3,11 +3,11 @@ require 'merb_global/plural'
 
 module Merb
   module Global
-    module Providers
+    module MessageProviders
       class Sequel #:nodoc: all
-        include Merb::Global::Providers::Base
-        include Merb::Global::Providers::Base::Importer
-        include Merb::Global::Providers::Base::Exporter
+        include Merb::Global::MessageProviders::Base
+        include Merb::Global::MessageProviders::Base::Importer
+        include Merb::Global::MessageProviders::Base::Exporter
 
         def translate_to(singular, plural, opts)
           language = Language[:name => opts[:lang]] # I hope it's from MemCache
@@ -68,7 +68,7 @@ module Merb
             Translation.delete_all
             data.each do |lang_name, lang|
               lang_obj = Language.create(:name => lang_name,
-                                         :plural => lang[:plural]
+                                         :plural => lang[:plural],
                                          :nplural => lang[:nplural]) or raise
               lang.each do |msgid, msgstr|
                 Translation.create(:language_id => lang_obj.id,
@@ -83,7 +83,7 @@ module Merb
 
         class Language < ::Sequel::Model(:merb_global_languages)
           has_many :translations,
-                   :class => "Merb::Global::Providers::Sequel::Translation",
+                   :class => "Merb::Global::MessageProviders::Sequel::Translation",
                    :key => :language_id
         end
 

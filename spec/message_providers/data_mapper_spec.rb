@@ -1,14 +1,15 @@
 require 'spec_helper'
 
 if HAS_DM
+  require 'data_mapper'
 
   DataMapper.setup :default, 'sqlite3::memory:'
 
-  require 'merb_global/providers/data_mapper'
+  require 'merb_global/message_providers/data_mapper'
 
-  describe Merb::Global::Providers::DataMapper do
+  describe Merb::Global::MessageProviders::DataMapper do
     before do
-      @provider = Merb::Global::Providers::DataMapper.new
+      @provider = Merb::Global::MessageProviders::DataMapper.new
       # Quick'n'dirty hack - to change in future
       @provider.create!
     end
@@ -21,7 +22,7 @@ if HAS_DM
 
     describe '.support?' do
       before do
-        lang = Merb::Global::Providers::DataMapper::Language
+        lang = Merb::Global::MessageProviders::DataMapper::Language
         lang.create! :name => 'en', :plural => 'n==1?1:0'
       end
 
@@ -36,9 +37,9 @@ if HAS_DM
 
     describe '.translate_to' do
       before do
-        lang = Merb::Global::Providers::DataMapper::Language
+        lang = Merb::Global::MessageProviders::DataMapper::Language
         en = lang.create! :name => 'en', :plural => 'n==1?0:1'
-        trans = Merb::Global::Providers::DataMapper::Translation
+        trans = Merb::Global::MessageProviders::DataMapper::Translation
         trans.create! :language_id => en.id,
                       :msgid => 'Test', :msgid_plural => 'Tests',
                       :msgstr => 'One test', :msgstr_index => 0
@@ -60,7 +61,7 @@ if HAS_DM
 
     describe '.choose' do
       before do
-        lang = Merb::Global::Providers::DataMapper::Language
+        lang = Merb::Global::MessageProviders::DataMapper::Language
         en = lang.create! :name => 'en', :plural => 'n==1?0:1'
         fr = lang.create! :name => 'fr', :plural => 'n>1?1:0'
       end

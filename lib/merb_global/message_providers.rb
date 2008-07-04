@@ -1,8 +1,6 @@
-require 'merb_global/providers/base'
-
 module Merb
   module Global
-    module Providers
+    module MessageProviders
       @@providers = {}
       @@providers_classes = {}
       ##
@@ -20,7 +18,7 @@ module Merb
               @@providers_classes[provider.to_sym].new
           else
             require 'merb_global/providers/' + provider
-            klass = "Merb::Global::Providers::#{provider.camel_case}"
+            klass = "Merb::Global::MessageProviders::#{provider.camel_case}"
             @@providers[provider.to_sym] = eval "#{klass}.new"
           end
         end
@@ -81,7 +79,7 @@ module Merb
           include Base::Exporter if opts.include? :exporter
           
           def self.included(klass)
-            Merb::Global::Providers.register name, klass
+            Merb::Global::MessageProviders.register name, klass
           end
         end
       end

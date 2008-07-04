@@ -7,11 +7,11 @@ require 'merb_global/plural'
 
 module Merb
   module Global
-    module Providers
+    module MessageProviders
       class ActiveRecord #:nodoc: all
-        include Merb::Global::Providers::Base
-        include Merb::Global::Providers::Base::Importer
-        include Merb::Global::Providers::Base::Exporter
+        include Merb::Global::MessageProviders::Base
+        include Merb::Global::MessageProviders::Base::Importer
+        include Merb::Global::MessageProviders::Base::Exporter
 
         def translate_to(singular, plural, opts)
           language = Language.find :first,
@@ -86,7 +86,7 @@ module Merb
               Language.delete_all
               data.each do |lang_name, lang|
                 lang_id = Language.create!(:name => lang_name,
-                                           :plural => lang[:plural]
+                                           :plural => lang[:plural],
                                            :nplural => lang[:nplural]).id
                 lang.each do |msgid, msgstr|
                   Translation.create! :language_id => lang_id,
@@ -104,7 +104,7 @@ module Merb
           set_table_name :merb_global_languages
           has_many :translations,
             :class_name =>
-              "::Merb::Global::Providers::ActiveRecord::Translation"
+              "::Merb::Global::MessageProviders::ActiveRecord::Translation"
         end
 
         class Translation < ::ActiveRecord::Base

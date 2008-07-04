@@ -6,17 +6,17 @@ require 'pathname'
 # As far it seems to be simpler.
 class Thread #:nodoc:
   def gettext_context
-    @gettext_context ||= Merb::Global::Providers::Gettext::GettextContext.new
+    @gettext_context ||= Merb::Global::MessageProviders::Gettext::GettextContext.new
   end
 end
 
 module Merb
   module Global
-    module Providers
+    module MessageProviders
       class Gettext #:nodoc: all
-        include Merb::Global::Providers::Base
-        include Merb::Global::Providers::Base::Importer
-        include Merb::Global::Providers::Base::Exporter
+        include Merb::Global::MessageProviders::Base
+        include Merb::Global::MessageProviders::Base::Importer
+        include Merb::Global::MessageProviders::Base::Exporter
 
         def translate_to(singular, plural, opts)
           context = Thread.current.gettext_context
@@ -30,15 +30,15 @@ module Merb
 
         def support?(lang)
           lang == 'en' ||
-            File.exist?(File.join(Merb::Global::Providers.localedir, lang))
+            File.exist?(File.join(Merb::Global::MessageProviders.localedir, lang))
         end
 
         def create!
-          File.mkdirs Merb::Global::Providers.localedir
+          File.mkdirs Merb::Global::MessageProviders.localedir
         end
 
         def choose(except)
-          dir = Dir[Merb::Global::Providers.localedir + '/*/']
+          dir = Dir[Merb::Global::MessageProviders.localedir + '/*/']
           dir.collect! {|p| File.basename p}
           dir << 'en'
           dir.reject! {|lang| except.include? lang}
@@ -48,9 +48,10 @@ module Merb
         def import
           Treetop.load(Pathname(__FILE__).dirname.expand_path.to_s +
                        '/gettext')
-          parser = Merb::Global::Providers::GetTextParser.new
+          parser = Merb::Global::MessageProviders::GetTextParser.new
           data = {}
-          Dir[Merb::Global::Providers.localedir + '/*.po'].each do |file|
+          Dir[Merb::Global::MessageProviders.localedir +
+              '/*.po'].each do |file|
             lang_name = File.basename file, '.po'
             lang_tree = nil
             open file do |data|
@@ -76,7 +77,7 @@ module Merb
 
         def export(data)
           data.each do |lang_name, lang|
-            lang_file = File.join(Merb::Global::Providers.localedir,
+            lang_file = File.join(Merb::Global::MessageProviders.localedir,
                                   lang_name + '.po')
             open(lang_file, 'w') do |po|
               po.puts <<EOF
@@ -105,7 +106,7 @@ EOF
                   po.puts "msgstr \"#{msgstr_hash[nil]}\""
                 end
               end
-              lang_dir = File.join(Merb::Global::Providers.localedir,
+              lang_dir = File.join(Merb::Global::MessageProviders.localedir,
                                    lang, 'LC_MESSAGES')
               FileUtils.mkdir_p lang_dir
               domain = Merb::Global.config([:gettext, :domain], 'merbapp')
@@ -117,7 +118,7 @@ EOF
         class GettextContext
           include ::GetText
           bindtextdomain Merb::Global.config([:gettext, :domain], 'merbapp'),
-                         Merb::Global::Providers.localedir
+                         Merb::Global::MessageProviders.localedir
           public :set_locale, :ngettext, :gettext
         end
       end

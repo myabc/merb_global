@@ -1,14 +1,14 @@
-require 'data_mapper'
+require 'dm-core'
 require 'dm-aggregates'
 require 'merb_global/plural'
 
 module Merb
   module Global
-    module Providers
+    module MessageProviders
       class DataMapper #:nodoc: all
-        include Merb::Global::Providers
-        include Merb::Global::Providers::Base::Importer
-        include Merb::Global::Providers::Base::Exporter
+        include Merb::Global::MessageProviders
+        include Merb::Global::MessageProviders::Base::Importer
+        include Merb::Global::MessageProviders::Base::Exporter
 
         def translate_to(singular, plural, opts)
           # I hope it's from MemCache
@@ -68,7 +68,7 @@ module Merb
             Language.all.each {|language| language.destroy}
             data.each do |lang_name, lang|
               lang_obj = Language.new(:name => lang_name,
-                                      :plural => lang[:plural]
+                                      :plural => lang[:plural],
                                       :nplural => lang[:nplural])
               lang_obj.save or raise
               lang.each do |msgid, msgstr|
@@ -92,7 +92,7 @@ module Merb
           property :plural, Text, :lazy => false
           # validates_is_unique :name
           has n, :translations,
-            :class_name => "Merb::Global::Providers::DataMapper::Translation",
+            :class_name => "Merb::Global::MessageProviders::DataMapper::Translation",
             :child_key => [:language_id]
         end
 

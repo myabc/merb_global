@@ -1,6 +1,6 @@
 require 'merb_global/config'
 require 'merb_global/plural'
-require 'merb_global/providers'
+require 'merb_global/message_providers'
 
 module Merb
   module Global
@@ -10,8 +10,8 @@ module Merb
       @lang ||= 'en'
     end
 
-    def provider #:nodoc:
-      @provider ||= Merb::Global::Providers.provider
+    def message_provider #:nodoc:
+      @provider ||= Merb::Global::MessageProviders.provider
     end
 
     # call-seq:

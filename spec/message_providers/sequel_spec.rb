@@ -1,54 +1,46 @@
 require 'spec_helper'
 
-if HAS_AR
+if HAS_SEQUEL
 
-  ActiveRecord::Base.establish_connection(:adapter => 'sqlite3',
-                                          :database => ':memory:')
-  ActiveRecord::Migration.verbose = false
+  DB = Sequel.open 'sqlite:///'
 
-  require 'merb_global/providers/active_record'
-
+  require 'merb_global/message_providers/sequel'
   load    Pathname(__FILE__).dirname.parent.parent.expand_path +
-          'activerecord_generators/translations_migration/templates/' +
+          'sequel_generators/translations_migration/templates/' +
           'translations_migration.erb'
 
-  describe Merb::Global::Providers::ActiveRecord::AddTranslationsMigration do
+  describe Merb::Global::MessageProviders::Sequel::AddTranslationsMigration do
     before do
-      @migration =
-          Merb::Global::Providers::ActiveRecord::AddTranslationsMigration
+      migration =
+        Merb::Global::MessageProviders::Sequel::AddTranslationsMigration
+      @migration = migration.new DB
     end
 
     describe '.up' do
-      after do
-        @migration.down
-      end
-
-      it 'should run the migration' do
-       @migration.up
+      it 'should migrate the database' do
+        @migration.up
       end
     end
 
     describe '.down' do
-      before do
-        @migration.up
-      end
-
-      it 'should revert the migration' do
+      it 'should remove the effects' do
         @migration.down
       end
     end
   end
 
-  describe Merb::Global::Providers::ActiveRecord do
+  describe Merb::Global::MessageProviders::Sequel do
     before do
-      @provider = Merb::Global::Providers::ActiveRecord.new
-      @migration =
-          Merb::Global::Providers::ActiveRecord::AddTranslationsMigration
-      @migration.up
+      @provider = Merb::Global::MessageProviders::Sequel.new
+      migration =
+        Merb::Global::MessageProviders::Sequel::AddTranslationsMigration
+      migration.new(DB).up rescue nil
     end
 
     after do
-      @migration.down
+      migration =
+        Merb::Global::MessageProviders::Sequel::AddTranslationsMigration
+      migration.new(DB).down rescue nil
     end
 
     describe '.create!' do
@@ -60,9 +52,7 @@ if HAS_AR
         dir_mock = mock do |dir_mock|
           dir_mock.expects(:detect).yields(file).returns(true)
         end
-        Merb::Global::Providers::ActiveRecord::Dir = mock do |dir_class|
-          dir_class.expects(:[]).with(dir).returns(dir_mock)
-        end
+        Dir.expects(:[]).with(dir).returns(dir_mock)
         @provider.expects(:puts)
         @provider.create!
       end
@@ -75,9 +65,7 @@ if HAS_AR
         dir_mock = mock do |dir_mock|
           dir_mock.expects(:detect).yields(file).returns(false)
         end
-        Merb::Global::Providers::ActiveRecord::Dir = mock do |dir_class|
-          dir_class.stubs(:[]).with(dir).returns(dir_mock)
-        end
+        Dir.expects(:[]).with(dir).returns(dir_mock)
         @provider.expects(:sh).with(%{merb-gen translations_migration})
         @provider.create!
       end
@@ -85,8 +73,8 @@ if HAS_AR
 
     describe '.support?' do
       before do
-        lang = Merb::Global::Providers::ActiveRecord::Language
-        lang.create! :name => 'en', :plural => 'n==1?0:1'
+        lang = Merb::Global::MessageProviders::Sequel::Language
+        lang.create :name => 'en', :plural => 'n==1?1:0'
       end
 
       it 'should return true if language has entry in database' do
@@ -100,15 +88,15 @@ if HAS_AR
 
     describe '.translate_to' do
       before do
-        lang = Merb::Global::Providers::ActiveRecord::Language
-        trans = Merb::Global::Providers::ActiveRecord::Translation
-        en = lang.create! :name => 'en', :nplural => 2, :plural => 'n==1?0:1'
-        trans.create! :language_id => en.id,
-                      :msgid => 'Test', :msgid_plural => 'Tests',
-                      :msgstr => 'One test', :msgstr_index => 0
-        trans.create! :language_id => en.id,
-                      :msgid => 'Test', :msgid_plural => 'Tests',
-                      :msgstr => 'Many tests', :msgstr_index => 1
+        lang = Merb::Global::MessageProviders::Sequel::Language
+        trans = Merb::Global::MessageProviders::Sequel::Translation
+        en = lang.create :name => 'en', :plural => 'n==1?0:1'
+        trans.create :language_id => en.id,
+                     :msgid => 'Test', :msgid_plural => 'Tests',
+                     :msgstr => 'One test', :msgstr_index => 0
+        trans.create :language_id => en.id,
+                     :msgid => 'Test', :msgid_plural => 'Tests',
+                     :msgstr => 'Many tests', :msgstr_index => 1
       end
 
       it 'should find it in database and return proper translation' do
@@ -128,9 +116,9 @@ if HAS_AR
 
     describe '.choose' do
       before do
-        lang = Merb::Global::Providers::ActiveRecord::Language
-        en = lang.create! :name => 'en', :plural => 'n==1?0:1'
-        fr = lang.create! :name => 'fr', :plural => 'n>1?1:0'
+        lang = Merb::Global::MessageProviders::Sequel::Language
+        en = lang.create :name => 'en', :plural => 'n==1?0:1'
+        fr = lang.create :name => 'fr', :plural => 'n>1?1:0'
       end
 
       it 'should choose the first language if list is empty' do

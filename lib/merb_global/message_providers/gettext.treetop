@@ -1,6 +1,6 @@
 module Merb
   module Global
-    module Providers
+    module MessageProviders
       grammar GetText
         rule po_file
 	      entry* {

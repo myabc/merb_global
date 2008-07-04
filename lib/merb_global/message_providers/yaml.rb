@@ -3,11 +3,11 @@ require 'fileutils'
 
 module Merb
   module Global
-    module Providers
+    module MessageProviders
       class Yaml #:nodoc:
-        include Merb::Global::Providers::Base
-        include Merb::Global::Providers::Base::Importer
-        include Merb::Global::Providers::Base::Exporter
+        include Merb::Global::MessageProviders::Base
+        include Merb::Global::MessageProviders::Base::Importer
+        include Merb::Global::MessageProviders::Base::Exporter
 
         def initialize
           # Not synchronized - make GC do it's work (may be not optimal
@@ -18,7 +18,7 @@ module Merb
 
         def translate_to(singular, plural, opts)
           unless @lang.include? opts[:lang]
-            file = File.join Merb::Global::Providers.localedir,
+            file = File.join Merb::Global::MessageProviders.localedir,
                              opts[:lang] + '.yaml'
             if File.exist? file
               @lang[opts[:lang]] = YAML.load_file file
@@ -43,18 +43,19 @@ module Merb
 
         def support?(lang)
           unless @lang.include? lang
-            file = File.join Merb::Global::Providers.localedir, lang + '.yaml'
+            file = File.join Merb::Global::MessageProviders.localedir,
+                             lang + '.yaml'
             @lang[lang] = YAML.load_file file if File.exist? file
           end
           not @lang[lang].nil?
         end
 
         def create!
-          FileUtils.mkdir_p Merb::Global::Providers.localedir
+          FileUtils.mkdir_p Merb::Global::MessageProviders.localedir
         end
 
         def choose(except)
-          dir = Dir[Merb::Global::Providers.localedir + '/*.yaml']
+          dir = Dir[Merb::Global::MessageProviders.localedir + '/*.yaml']
           dir.collect! {|p| File.basename p, '.yaml'}
           dir.reject! {|lang| except.include? lang}
           dir.first
@@ -62,7 +63,8 @@ module Merb
 
         def import
           data = {}
-          Dir[Merb::Global::Providers.localedir + '/*.yaml'].each do |file|
+          Dir[Merb::Global::MessageProviders.localedir +
+              '/*.yaml'].each do |file|
             lang_name = File.basename file, '.yaml'
             data[lang_name] = lang = YAML.load_file file
             lang.each do |msgid, msgstr|
@@ -75,7 +77,8 @@ module Merb
         end
         
         def export(data)
-          File.unlink *Dir[Merb::Global::Providers.localedir + '/*.yaml']
+          File.unlink *Dir[Merb::Global::MessageProviders.localedir +
+                           '/*.yaml']
           data.each do |lang_name, lang_orig|
             lang = {}
             lang_orig.each do |msgid, msgstr_hash|
@@ -88,7 +91,7 @@ module Merb
                 end
               end
             end
-            YAML.dump File.join(Merb::Global::Providers.localedir,
+            YAML.dump File.join(Merb::Global::MessageProviders.localedir,
                                 lang_name + '.yaml')
           end
         end

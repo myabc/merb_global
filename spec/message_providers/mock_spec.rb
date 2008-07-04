@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'merb_global/providers/mock'
+require 'merb_global/message_providers/mock'
 
-describe Merb::Global::Providers::Mock do
+describe Merb::Global::MessageProviders::Mock do
   before do
-    @provider = Merb::Global::Providers::Mock.new
+    @provider = Merb::Global::MessageProviders::Mock.new
   end
 
   describe '.translate_to' do

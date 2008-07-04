@@ -1,13 +1,13 @@
 require 'spec_helper'
-require 'merb_global/providers/yaml'
+require 'merb_global/message_providers/yaml'
 
-class Merb::Global::Providers::Yaml
+class Merb::Global::MessageProviders::Yaml
   attr_reader :lang
 end
 
-describe Merb::Global::Providers::Yaml do
+describe Merb::Global::MessageProviders::Yaml do
   before do
-    @provider = Merb::Global::Providers::Yaml.new
+    @provider = Merb::Global::MessageProviders::Yaml.new
   end
 
   describe '._support?' do
@@ -41,7 +41,7 @@ describe Merb::Global::Providers::Yaml do
 
   describe '.create!' do
     it 'should create app/locale firectory' do
-      file = Merb::Global::Providers.localedir
+      file = Merb::Global::MessageProviders.localedir
       FileUtils.expects(:mkdir_p).with(file)
       @provider.create!
     end

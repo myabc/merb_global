@@ -2,16 +2,16 @@ require 'spec_helper'
 
 if HAS_GETTEXT
 
-  require 'merb_global/providers/gettext'
+  require 'merb_global/message_providers/gettext'
 
-  describe Merb::Global::Providers::Gettext do
+  describe Merb::Global::MessageProviders::Gettext do
     before do
-      @provider = Merb::Global::Providers::Gettext.new
+      @provider = Merb::Global::MessageProviders::Gettext.new
     end
 
     describe '.create!' do
       it 'should create directory' do
-        File.expects(:mkdirs).with(Merb::Global::Providers.localedir)
+        File.expects(:mkdirs).with(Merb::Global::MessageProviders.localedir)
         @provider.create!
       end
     end
