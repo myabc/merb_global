@@ -21,7 +21,7 @@ describe Merb::Global do
     it 'should return the default provider' do
       provider = mock 'provider'
       Merb::Global::MessageProviders.expects(:provider).returns(provider)
-      TestBase.new.provider.should == provider
+      TestBase.new.message_provider.should == provider
     end
   end
 
