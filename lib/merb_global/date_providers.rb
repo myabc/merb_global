@@ -1,0 +1,44 @@
+module Merb
+  module Global
+    module DateProviders
+      include Providers
+      # call-seq:
+      #     provider => provider
+      #
+      # Returns the provider of required type
+      #
+      # ==== Returns
+      # provider<Provider>:: Returns provider
+      def self.provider
+        @@provider ||= self[Merb::Global.config(:date_provider, 'cli')]
+      end
+      # Merb-global is able to handle localization in different ways.
+      # Providers are the interface.
+      #
+      # Please note that it is not required to include this module - despite it
+      # is recomended both as a documentation part and the more customized
+      # error messages.
+      module Base
+        ##
+        # 
+        # Locaize date using format as in strftime
+        def localize(date, format)
+          raise NoMethodError.new 'method localize has not been implemented'
+        end
+      end
+    end
+    # Perform the registration
+    #
+    # ==== Parameters
+    # name<~to_sym>:: Name under which it is registred
+    def self.DateProvider(name)
+      Module.new do
+        include Base
+        
+        def self.included(klass)
+          Merb::Global::MessageProviders.register name, klass
+        end
+      end
+    end
+  end
+end
