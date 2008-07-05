@@ -62,28 +62,7 @@ module Merb
       def self.register(name, klass)
         @@provider_classes[name.to_sym] = klass
       end
-
-      # Perform the registration
-      #
-      # ==== Parameters
-      # name<~to_sym>:: Name under which it is registred
-      # opts<Array[Symbol]>:: Additional imformations
-      #
-      # ==== Options
-      # importer:: Can perform import
-      # exporter:: Can perform export
-      def self.Provider(name, *opts)
-        Module.new do
-          include Base
-          include Base::Importer if opts.include? :importer
-          include Base::Exporter if opts.include? :exporter
-          
-          def self.included(klass)
-            Merb::Global::MessageProviders.register name, klass
-          end
-        end
-      end
-            # Merb-global is able to store the translations in different types of
+      # Merb-global is able to store the translations in different types of
       # storage. An interface betwean merb-global and those storages are
       # providers.
       #
@@ -201,6 +180,26 @@ module Merb
           def export(data) # TODO: Describe the format
             raise NoMethodError.new('method import has not been implemented')
           end
+        end
+      end
+    end
+    # Perform the registration
+    #
+    # ==== Parameters
+    # name<~to_sym>:: Name under which it is registred
+    # opts<Array[Symbol]>:: Additional imformations
+    #
+    # ==== Options
+    # importer:: Can perform import
+    # exporter:: Can perform export
+    def self.MessageProvider(name, *opts)
+      Module.new do
+        include Base
+        include Base::Importer if opts.include? :importer
+        include Base::Exporter if opts.include? :exporter
+        
+        def self.included(klass)
+          Merb::Global::MessageProviders.register name, klass
         end
       end
     end
