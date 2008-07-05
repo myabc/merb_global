@@ -21,7 +21,7 @@ describe Merb::Global::MessageProviders do
   describe '.provider' do
     it 'should return gettext as default' do
       provider = mock
-      Merb::Global.expects(:config).with(:provider, 'gettext').
+      Merb::Global.expects(:config).with(:message_provider, 'gettext').
                    returns('gettext')
       Merb::Global::MessageProviders.expects(:[]).with('gettext').returns(provider)
       Merb::Global::MessageProviders.provider.should == provider
@@ -29,8 +29,10 @@ describe Merb::Global::MessageProviders do
 
     it 'should return the name of the provider in config' do
       provider = mock
-      Merb::Global.expects(:config).with(:provider, 'gettext').returns('name')
-      Merb::Global::MessageProviders.expects(:[]).with('name').returns(provider)
+      Merb::Global.expects(:config).with(:message_provider, 'gettext').
+                   returns('name')
+      Merb::Global::MessageProviders.expects(:[]).with('name').
+                                     returns(provider)
       Merb::Global::MessageProviders.provider.should == provider
     end
 
@@ -41,9 +43,10 @@ describe Merb::Global::MessageProviders do
     end
   end
   describe '.[]' do
+    it 'should lookup classes'
     it 'should load the provider' do
       provider = 'test'
-      provider_path = 'merb_global/providers/test'
+      provider_path = 'merb_global/message_providers/test'
       Merb::Global::MessageProviders.expects(:require).with(provider_path)
       Merb::Global::MessageProviders.stubs(:eval)
       Merb::Global::MessageProviders[provider]

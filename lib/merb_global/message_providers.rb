@@ -1,30 +1,9 @@
+require 'merb_global/providers'
+
 module Merb
   module Global
     module MessageProviders
-      @@providers = {}
-      @@providers_classes = {}
-      ##
-      # Creates a provider and/or returns already created one
-      #
-      # ==== Parames
-      # provider<~to_s,~to_sym>:: A name of provider
-      #
-      # ==== Returns
-      # provider<Provider>:: A new provider
-      def self.[](provider)
-        unless @@providers.include? provider.to_sym
-          if @@providers_classes[provider.to_sym]
-            @@providers[provider.to_sym] =
-              @@providers_classes[provider.to_sym].new
-          else
-            require 'merb_global/providers/' + provider
-            klass = "Merb::Global::MessageProviders::#{provider.camel_case}"
-            @@providers[provider.to_sym] = eval "#{klass}.new"
-          end
-        end
-        @@providers[provider.to_sym]
-      end
-
+      include Providers
       # call-seq:
       #     localedir => localdir
       #
@@ -42,7 +21,6 @@ module Merb
           end
         File.join Merb.root, localedir
       end
-
       # call-seq:
       #     provider => provider
       #
@@ -51,16 +29,7 @@ module Merb
       # ==== Returns
       # provider<Provider>:: Returns provider
       def self.provider
-        @@provider ||= self[Merb::Global.config(:provider, 'gettext')]
-      end
-
-      # Registers the class under the given name
-      # 
-      # ==== Parameters
-      # name<~to_sym>:: Name under which it is registered
-      # klass<Class>:: Class of the provider
-      def self.register(name, klass)
-        @@provider_classes[name.to_sym] = klass
+        @@provider ||= self[Merb::Global.config(:message_provider, 'gettext')]
       end
       # Merb-global is able to store the translations in different types of
       # storage. An interface betwean merb-global and those storages are
@@ -96,7 +65,6 @@ module Merb
           raise NoMethodError.new
                                  'method translate_to has not been implemented'
         end
-        
         # call-seq:
         #     support?(lang) => supported
         #
@@ -117,7 +85,6 @@ module Merb
         def support?(lang)
           raise NoMethodError.new('method support? has not been implemented')
         end
-        
         # This method creates basic files and/or directory structures
         # (for example it adds migration) needed for provider to work.
         #
@@ -125,18 +92,14 @@ module Merb
         def create!
           raise NoMethodError.new('method create! has not been implemented')
         end
-        
         # This method choos an supported language except those form the list
         # given. It may fallback to english if none language can be found
         # which agree with those criteria
         def choose(except)
           raise NoMethodError.new('method choose has not been implemented')
         end
-
         ##
         # Transfer data from importer into exporter
-        #
-        #
         #
         # ==== Parameters
         # importer<Importer>:: The provider providing the information
@@ -144,7 +107,6 @@ module Merb
         def self.transfer(importer, exporter)
           exporter.export importer.import
         end
-        
         ##
         # Importer is a provider through which one can iterate.
         # Therefore it is possible to import data from this source
