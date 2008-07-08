@@ -21,8 +21,8 @@ module Merb
       module Base
         ##
         # 
-        # Locaize date using format as in strftime
-        def localize(date, format)
+        # Localize date using format as in strftime
+        def localize(lang, date, format)
           raise NoMethodError.new 'method localize has not been implemented'
         end
       end
