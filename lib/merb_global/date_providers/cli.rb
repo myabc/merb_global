@@ -7,7 +7,8 @@ module Merb
         def localize(lang, date, format)
           # TODO: Implement escaping - potential security issue here!!!
           date = date.strftime('%F %X')
-          `LANG=#{lang} LC_ALL=#{lang}  date -d '#{date}' '+#{format}'`
+          date = `LANG=#{lang} LC_ALL=#{lang}  date -d '#{date}' '+#{format}'`
+          date[0...date.length - 1] # The newline removed
         end
       end
     end
