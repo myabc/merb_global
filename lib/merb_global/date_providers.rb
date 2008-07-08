@@ -10,7 +10,7 @@ module Merb
       # ==== Returns
       # provider<Provider>:: Returns provider
       def self.provider
-        @@provider ||= self[Merb::Global.config(:date_provider, 'cli')]
+        @@provider ||= self[Merb::Global.config(:date_provider, 'fork')]
       end
       # Merb-global is able to handle localization in different ways.
       # Providers are the interface.
