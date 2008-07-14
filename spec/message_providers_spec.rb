@@ -159,3 +159,42 @@ describe Merb::Global::MessageProviders::Base::Exporter do
     end
   end
 end
+
+describe 'Merb::Global.MessageProvider' do
+  it 'should create a module' do
+    mod = Module.new
+    Module.expects(:new).returns(mod)
+    Merb::Global.MessageProvider(:test).should == mod
+  end
+
+  # How to test it?
+  it 'should include base only' #do
+  #  mod = Module.new
+  #  mod.expects(:include).with(Merb::Global::MessageProviders::Base)
+  #  Module.stubs(:new).returns(mod)
+  #  Merb::Global.MessageProvider(:test).should == mod
+  #end
+  
+  it 'should include importer if option given' #do
+  #  mod = Module.new
+  #  mod.stubs(:include).with(Merb::Global::MessageProviders::Base)
+  #  mod.expects(:include).with(Merb::Global::MessageProviders::Base::Importer)
+  #  Module.stubs(:new).returns(mod)
+  #  Merb::Global.MessageProvider(:test, :importer).should == mod
+  #end
+
+  it 'should include exporter if option given' #do
+  #  mod = Module.new
+  #  mod.stubs(:include).with(Merb::Global::MessageProviders::Base)
+  #  mod.expects(:include).with(Merb::Global::MessageProviders::Base::Exporter)
+  #  Module.stubs(:new).returns(mod)
+  #  Merb::Global.MessageProvider(:test, :exporter).should == mod
+  #end
+
+  it 'should register when include' #do
+  #  Merb::Global.MessageProviders.expects(:register).with(:test, anything)
+  #  Class.new do
+  #    include Merb::Global.MessageProvider(:test)
+  #  end
+  #end
+end
