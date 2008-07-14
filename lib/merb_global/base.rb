@@ -1,6 +1,8 @@
 require 'merb_global/config'
 require 'merb_global/plural'
+require 'merb_global/date_providers'
 require 'merb_global/message_providers'
+require 'merb_global/numeric_providers'
 
 module Merb
   module Global
@@ -15,11 +17,11 @@ module Merb
     end
 
     def date_provider #:nodoc:
-      @date_provider ||= Merb::Global::DateProvider.provider
+      @date_provider ||= Merb::Global::DateProviders.provider
     end
 
     def numeric_provider #:nodoc:
-      @numeric_provider ||= Merb::Global::NumericProvider.provider
+      @numeric_provider ||= Merb::Global::NumericProviders.provider
     end
 
     # call-seq:

@@ -1,3 +1,5 @@
+require 'merb_global/providers'
+
 module Merb
   module Global
     module DateProviders
@@ -23,7 +25,7 @@ module Merb
         # 
         # Localize date using format as in strftime
         def localize(lang, date, format)
-          raise NoMethodError.new 'method localize has not been implemented'
+          raise NoMethodError.new('method localize has not been implemented')
         end
       end
     end

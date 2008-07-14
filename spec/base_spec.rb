@@ -24,6 +24,23 @@ describe Merb::Global do
       TestBase.new.message_provider.should == provider
     end
   end
+  
+  describe '.date_provider' do
+    it 'should return the default provider' do
+      provider = mock 'provider'
+      Merb::Global::DateProviders.expects(:provider).returns(provider)
+      TestBase.new.date_provider.should == provider
+    end
+  end
+  
+  describe '.numeric_provider' do
+    it 'should return the default provider' do
+      provider = mock 'provider'
+      Merb::Global::NumericProviders.expects(:provider).returns(provider)
+      TestBase.new.numeric_provider.should == provider
+    end
+  end
+  
 
   describe '._' do
     it 'should send singular and nil if plural not given' do
