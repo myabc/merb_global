@@ -1,6 +1,7 @@
 === 0.0.5
  * Handles lang_REGION as lang
  * Renamed providers into message providers
+ * Added support for localization of dates and numbers
 
 === 0.0.4
  * Changed database format (to allow importing/exporting)
