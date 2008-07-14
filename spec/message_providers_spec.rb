@@ -133,3 +133,29 @@ describe Merb::Global::MessageProviders::Base do
     end
   end
 end
+
+class MyImporter
+  include Merb::Global::MessageProviders::Base
+  include Merb::Global::MessageProviders::Base::Importer
+end
+
+describe Merb::Global::MessageProviders::Base::Importer do
+  describe '.import' do
+    it 'should raise error' do
+      lambda {MyImporter.new.import}.should raise_error(NoMethodError)
+    end
+  end
+end
+
+class MyExporter
+  include Merb::Global::MessageProviders::Base
+  include Merb::Global::MessageProviders::Base::Exporter
+end
+
+describe Merb::Global::MessageProviders::Base::Exporter do
+  describe '.export' do
+    it 'should raise error' do
+      lambda {MyExporter.new.export({})}.should raise_error(NoMethodError)
+    end
+  end
+end
