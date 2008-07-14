@@ -32,7 +32,7 @@ describe Merb::Controller do
   it 'should set language according to the preferences' do
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'fr'
-      controller.provider = provider = stub(:support? => true)
+      controller.message_provider = provider = stub(:support? => true)
     end
     controller.lang.should == 'fr'
   end
@@ -41,7 +41,7 @@ describe Merb::Controller do
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] =
         'de;q=0.8,en;q=1.0,es;q=0.6'
-      controller.provider = mock 'provider' do |provider|
+      controller.message_provider = mock 'provider' do |provider|
         provider.expects(:support?).with('de').returns(true)
         provider.expects(:support?).with('en').returns(false)
         provider.stubs(:support?).with('es').returns(true)
@@ -53,7 +53,7 @@ describe Merb::Controller do
   it 'should assume 1.0 as default weight' do
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'it,en;q=0.7'
-      provider = controller.provider = stub(:support? => true)
+      provider = controller.message_provider = stub(:support? => true)
     end
     controller.lang.should == 'it'
   end
@@ -61,7 +61,7 @@ describe Merb::Controller do
   it 'should choose language if \'*\' given' do
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = '*,en;q=0.7'
-      provider = controller.provider = stub(:support? => true)
+      provider = controller.message_provider = stub(:support? => true)
       provider.stubs(:support?).with('en').returns(true)
       provider.expects(:choose).with(['en']).returns('fr')
     end
@@ -86,7 +86,7 @@ describe Merb::Controller do
   it 'Should fallback to lang if lang_REGION is not supported' do
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'pt-BR'
-      provider = controller.provider = mock
+      provider = controller.message_provider = mock
       provider.expects(:support?).with('pt-BR').returns(false)
       provider.expects(:support?).with('pt').returns(true)
     end

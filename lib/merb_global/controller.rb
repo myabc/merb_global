@@ -29,11 +29,11 @@ module Merb
             accept_language.collect! do |lang|
               if lang == '*'
                 '*'
-              elsif self.provider.support? lang
+              elsif self.message_provider.support? lang
                 lang
               elsif lang.include? '-'
                 lang = lang.split('-')[0]
-                if self.provider.support? lang
+                if self.message_provider.support? lang
                   lang
                 else
                   nil
@@ -48,7 +48,7 @@ module Merb
                 accept_language.last
               else
                 accept_language.pop
-                self.provider.choose accept_language
+                self.message_provider.choose accept_language
               end
             end
           end

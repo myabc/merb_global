@@ -17,7 +17,7 @@ describe Merb::Global do
     end
   end
 
-  describe '.provider' do
+  describe '.message_provider' do
     it 'should return the default provider' do
       provider = mock 'provider'
       Merb::Global::MessageProviders.expects(:provider).returns(provider)
@@ -28,7 +28,7 @@ describe Merb::Global do
   describe '._' do
     it 'should send singular and nil if plural not given' do
       test_base = TestBase.new
-      test_base.provider = mock do |provider|
+      test_base.message_provider = mock do |provider|
         expected_args = ['a', nil, {:n => 1, :lang => 'en'}]
         provider.expects(:translate_to).with(*expected_args).returns('b')
       end
@@ -37,7 +37,7 @@ describe Merb::Global do
 
     it 'should send singular and plural if both given' do
       test_base = TestBase.new
-      test_base.provider = mock do |provider|
+      test_base.message_provider = mock do |provider|
         expected_args = ['a', 'b', {:n => 1, :lang => 'en'}]
         provider.expects(:translate_to).with(*expected_args).returns('a')
       end
@@ -46,7 +46,7 @@ describe Merb::Global do
 
     it 'should send the proper number if given' do
       test_base = TestBase.new
-      test_base.provider = mock do |provider|
+      test_base.message_provider = mock do |provider|
         expected_args = ['a', 'b', {:n => 2, :lang => 'en'}]
         provider.expects(:translate_to).with(*expected_args).returns('b')
       end
