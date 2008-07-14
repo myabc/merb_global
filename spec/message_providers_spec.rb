@@ -119,4 +119,17 @@ describe Merb::Global::MessageProviders::Base do
       end.should raise_error(NoMethodError)
     end
   end
+
+  describe '.transfer' do
+    it 'should transfer data' do
+      data = mock
+      importer = mock do |importer|
+        importer.expects(:import).returns(data)
+      end
+      exporter = mock do |exporter|
+        exporter.expects(:export).with(data)
+      end
+      Merb::Global::MessageProviders::Base.transfer importer, exporter
+    end
+  end
 end
