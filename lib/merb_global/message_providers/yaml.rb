@@ -16,7 +16,7 @@ module Merb
           @lang = Hash.new
         end
 
-        def translate_to(singular, plural, opts)
+        def localize(singular, plural, opts)
           unless @lang.include? opts[:lang]
             file = File.join Merb::Global::MessageProviders.localedir,
                              opts[:lang] + '.yaml'

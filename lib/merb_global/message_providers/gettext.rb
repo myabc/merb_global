@@ -18,7 +18,7 @@ module Merb
         include Merb::Global::MessageProviders::Base::Importer
         include Merb::Global::MessageProviders::Base::Exporter
 
-        def translate_to(singular, plural, opts)
+        def localize(singular, plural, opts)
           context = Thread.current.gettext_context
           context.set_locale opts[:lang], true
           unless plural.nil?

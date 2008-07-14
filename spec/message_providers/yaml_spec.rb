@@ -20,21 +20,21 @@ describe Merb::Global::MessageProviders::Yaml do
     end
   end
 
-  describe '.translate_to' do
+  describe '.localize' do
     it 'should mark nil if file do not exists' do
-      @provider.translate_to 'Test', 'Tests', :lang => 'fr', :n => 1
+      @provider.localize 'Test', 'Tests', :lang => 'fr', :n => 1
       @provider.lang.should include('fr')
       @provider.lang['fr'].should be_nil
     end
 
     it 'should check appropiete form' do
-      translated = @provider.translate_to 'Test', 'Tests',
+      translated = @provider.localize 'Test', 'Tests',
                                           :lang => 'pl', :n => 2
       translated.should == 'Testy'
     end
 
     it 'should translate for singular only also' do
-      trans = @provider.translate_to('Hello', nil, :n => 1, :lang => 'pl')
+      trans = @provider.localize('Hello', nil, :n => 1, :lang => 'pl')
       trans.should == 'Cześć'
     end
   end

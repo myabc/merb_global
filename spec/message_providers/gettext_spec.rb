@@ -26,32 +26,32 @@ if HAS_GETTEXT
       end
     end
 
-    describe '.translate_to' do
+    describe '.localize' do
       it 'should translate the string' do
-        trans = @provider.translate_to 'Test', 'Tests', :n => 1, :lang => 'pl'
+        trans = @provider.localize 'Test', 'Tests', :n => 1, :lang => 'pl'
         trans.should == 'Test'
-        trans = @provider.translate_to 'Test', 'Tests', :n => 2, :lang => 'pl'
+        trans = @provider.localize 'Test', 'Tests', :n => 2, :lang => 'pl'
         trans.should == 'Testy'
-        trans = @provider.translate_to 'Test', 'Tests', :n => 5, :lang => 'pl'
+        trans = @provider.localize 'Test', 'Tests', :n => 5, :lang => 'pl'
         trans.should == 'Testów'
       end
 
       it 'should fallback if not present' do
-        trans = @provider.translate_to 'Car', 'Cars', :n => 1, :lang => 'pl'
+        trans = @provider.localize 'Car', 'Cars', :n => 1, :lang => 'pl'
         trans.should == 'Car'
-        trans = @provider.translate_to 'Car', 'Cars', :n => 2, :lang => 'pl'
+        trans = @provider.localize 'Car', 'Cars', :n => 2, :lang => 'pl'
         trans.should == 'Cars'
       end
 
       it 'should fallback if language is not supported' do
-        trans = @provider.translate_to 'Test', 'Tests', :n => 1, :lang => 'fr'
+        trans = @provider.localize 'Test', 'Tests', :n => 1, :lang => 'fr'
         trans.should == 'Test'
-        trans = @provider.translate_to 'Test', 'Tests', :n => 2, :lang => 'fr'
+        trans = @provider.localize 'Test', 'Tests', :n => 2, :lang => 'fr'
         trans.should == 'Tests'
       end
 
       it 'should translate for singular only also' do
-        trans = @provider.translate_to('Hello', nil, :n => 1, :lang => 'pl')
+        trans = @provider.localize('Hello', nil, :n => 1, :lang => 'pl')
         trans.should == 'Cześć'
       end
     end

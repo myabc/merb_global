@@ -13,7 +13,7 @@ module Merb
         include Merb::Global::MessageProviders::Base::Importer
         include Merb::Global::MessageProviders::Base::Exporter
 
-        def translate_to(singular, plural, opts)
+        def localize(singular, plural, opts)
           language = Language.find :first,
                                    :conditions => {:name => opts[:lang]}
           unless language.nil?

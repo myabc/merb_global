@@ -4,7 +4,7 @@ module Merb
       class Mock #:nodoc:
         include Merb::Global::MessageProviders::Base
 
-        def translate_to(singular, plural, opts)
+        def localize(singular, plural, opts)
           opts[:n] > 1 ? plural : singular
         end
 

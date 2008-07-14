@@ -33,7 +33,7 @@ if HAS_DM
       end
     end
 
-    describe '.translate_to' do
+    describe '.localize' do
       before do
         lang = Merb::Global::MessageProviders::DataMapper::Language
         en = lang.create! :name => 'en', :plural => 'n==1?0:1'
@@ -47,12 +47,12 @@ if HAS_DM
       end
 
       it 'should fetch the correct translation from database if avaible' do
-        trans = @provider.translate_to('Test', 'Tests', :lang => 'en', :n => 1)
+        trans = @provider.localize('Test', 'Tests', :lang => 'en', :n => 1)
         trans.should == 'One test'
       end
 
       it 'should fallback to default if needed' do
-        trans = @provider.translate_to('Test', 'Tests', :lang => 'fr', :n => 2)
+        trans = @provider.localize('Test', 'Tests', :lang => 'fr', :n => 2)
         trans.should == 'Tests'
       end
     end

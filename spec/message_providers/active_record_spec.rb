@@ -98,7 +98,7 @@ if HAS_AR
       end
     end
 
-    describe '.translate_to' do
+    describe '.localize' do
       before do
         lang = Merb::Global::MessageProviders::ActiveRecord::Language
         trans = Merb::Global::MessageProviders::ActiveRecord::Translation
@@ -112,16 +112,16 @@ if HAS_AR
       end
 
       it 'should find it in database and return proper translation' do
-        trans = @provider.translate_to 'Test', 'Tests', :n => 1, :lang => 'en'
+        trans = @provider.localize 'Test', 'Tests', :n => 1, :lang => 'en'
         trans.should == 'One test'
-        trans = @provider.translate_to 'Test', 'Tests', :n => 2, :lang => 'en'
+        trans = @provider.localize 'Test', 'Tests', :n => 2, :lang => 'en'
         trans.should == 'Many tests'
       end
 
       it 'should fallback if not' do
-        trans = @provider.translate_to 'Test', 'Tests', :n => 1,:lang => 'fr'
+        trans = @provider.localize 'Test', 'Tests', :n => 1,:lang => 'fr'
         trans.should == 'Test'
-        trans = @provider.translate_to 'Car', 'Cars', :n => 2, :lang => 'en'
+        trans = @provider.localize 'Car', 'Cars', :n => 2, :lang => 'en'
         trans.should == 'Cars'
       end
     end

@@ -9,7 +9,7 @@ module Merb
         include Merb::Global::MessageProviders::Base::Importer
         include Merb::Global::MessageProviders::Base::Exporter
 
-        def translate_to(singular, plural, opts)
+        def localize(singular, plural, opts)
           language = Language[:name => opts[:lang]] # I hope it's from MemCache
           unless language.nil?
             unless plural.nil?

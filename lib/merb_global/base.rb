@@ -65,9 +65,9 @@ module Merb
         end
       elsif args.first.is_a? String
         if args.size == 1
-          self.message_provider.translate_to args[0], nil, opts
+          self.message_provider.localize args[0], nil, opts
         elsif args.size == 2
-          self.message_provider.translate_to args[0], args[1], opts
+          self.message_provider.localize args[0], args[1], opts
         else
           raise ArgumentError,
                 "wrong number of arguments (#{args.size} for 1-2)"

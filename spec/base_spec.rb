@@ -48,7 +48,7 @@ describe Merb::Global do
         test_base = TestBase.new
         test_base.message_provider = mock do |provider|
           expected_args = ['a', nil, {:n => 1, :lang => 'en'}]
-          provider.expects(:translate_to).with(*expected_args).returns('b')
+          provider.expects(:localize).with(*expected_args).returns('b')
         end
         test_base._('a').should == 'b'
       end
@@ -57,7 +57,7 @@ describe Merb::Global do
         test_base = TestBase.new
         test_base.message_provider = mock do |provider|
           expected_args = ['a', 'b', {:n => 1, :lang => 'en'}]
-          provider.expects(:translate_to).with(*expected_args).returns('a')
+          provider.expects(:localize).with(*expected_args).returns('a')
         end
         test_base._('a', 'b').should == 'a'
       end
@@ -66,7 +66,7 @@ describe Merb::Global do
         test_base = TestBase.new
         test_base.message_provider = mock do |provider|
           expected_args = ['a', 'b', {:n => 2, :lang => 'en'}]
-          provider.expects(:translate_to).with(*expected_args).returns('b')
+          provider.expects(:localize).with(*expected_args).returns('b')
         end
         test_base._('a', 'b', :n => 2).should == 'b'
       end

@@ -88,10 +88,10 @@ describe Merb::Global::MessageProviders::Base do
     @provider = Provider.new
   end
 
-  describe '.translate_to' do
+  describe '.localize' do
     it 'should raise NoMethodError' do
       lambda do
-        @provider.translate_to 'test', 'tests', :n => 1, :lang => 'en'
+        @provider.localize 'test', 'tests', :n => 1, :lang => 'en'
       end.should raise_error(NoMethodError)
     end
   end

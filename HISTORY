@@ -1,6 +1,6 @@
 === 0.0.5
  * Handles lang_REGION as lang
- * Renamed providers into message providers
+ * Renamed providers into message providers and translate_to into localize
  * Added support for localization of dates and numbers
 
 === 0.0.4
