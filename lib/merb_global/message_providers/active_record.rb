@@ -88,12 +88,19 @@ module Merb
                 lang_id = Language.create!(:name => lang_name,
                                            :plural => lang[:plural],
                                            :nplural => lang[:nplural]).id
-                lang.each do |msgid, msgstr|
-                  Translation.create! :language_id => lang_id,
-                                      :msgid => msgid,
-                                      :msgid_plural => nil,
-                                      :msgstr => msgstr,
-                                      :msgstr_index => nil
+                lang.each do |msgid, msgstrs|
+                  if msgid.is_a? String
+                    plural = msgstrs[:plural]
+                    msgstrs.each do |index, msgstr|
+                      if index.is_a? Fixnum
+                        Translation.create! :language_id => lang_id,
+                                            :msgid => msgid,
+                                            :msgid_plural => plural,
+                                            :msgstr => msgstr,
+                                            :msgstr_index => index
+                      end
+                    end
+                  end
                 end
               end
             end
