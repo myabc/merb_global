@@ -92,7 +92,7 @@ module Merb
                   if msgid.is_a? String
                     plural = msgstrs[:plural]
                     msgstrs.each do |index, msgstr|
-                      if index.is_a? Fixnum
+                      if index.nil? or index.is_a? Fixnum
                         Translation.create! :language_id => lang_id,
                                             :msgid => msgid,
                                             :msgid_plural => plural,
