@@ -47,9 +47,9 @@ module Merb
           data = {}
           ::DataMapper::Transaction.new(Language, Translation) do
             Language.all.each do |language|
-              data[lang.name] = lang_hash = {
-                :plural => lang.plural,
-                :nplural => lang.nplural
+              data[language.name] = lang_hash = {
+                :plural => language.plural,
+                :nplural => language.nplural
               }
               language.translations.each do |translation|
                 lang_hash[translation.msgid] ||= {
@@ -60,6 +60,7 @@ module Merb
               end
             end
           end
+          data
         end
 
         def export(data)
