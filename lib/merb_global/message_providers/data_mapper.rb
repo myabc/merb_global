@@ -52,9 +52,7 @@ module Merb
                 :nplural => language.nplural
               }
               language.translations.each do |translation|
-                # Something is wrong in the following line
-                # If present the loop is broken under certain circumstances
-                # but no exception is raised
+                # The translation.msgid_plural breaks the loop. What's wrong?
                 lang_hash[translation.msgid] ||= {
                   :plural => translation.msgid_plural
                 }
