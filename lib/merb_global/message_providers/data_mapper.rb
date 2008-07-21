@@ -51,8 +51,8 @@ module Merb
                 :plural => language.plural,
                 :nplural => language.nplural
               }
-              language.translations.each do |translation|
-                # The translation.msgid_plural breaks the loop. What's wrong?
+              language.translations(:fields => Translation.properties.to_a).
+                       each do |translation|
                 lang_hash[translation.msgid] ||= {
                   :plural => translation.msgid_plural
                 }
@@ -69,16 +69,23 @@ module Merb
             Translation.all.each {|translation| translation.destroy}
             Language.all.each {|language| language.destroy}
             data.each do |lang_name, lang|
-              lang_obj = Language.new(:name => lang_name,
-                                      :plural => lang[:plural],
-                                      :nplural => lang[:nplural])
-              lang_obj.save or raise
-              lang.each do |msgid, msgstr|
-                Translation.new(:language_id => lang_obj.id,
-                                :msgid => msgid,
-                                :msgid_plural => nil,
-                                :msgstr => msgstr,
-                                :msgstr_index => nil).save or raise
+              lang_obj = Language.create!(:name => lang_name,
+                                          :plural => lang[:plural],
+                                          :nplural => lang[:nplural])
+              lang.each do |msgid, msgstr_hash|
+                if msgstr_hash.is_a? Hash
+                  plural = msgstr_hash[:plural]
+                  msgstr_hash.each do |msgstr_index, msgstr|
+                    if msgstr_index.nil? or msgstr_index.is_a? Fixnum
+                      Translation.create!(:language_id => lang_obj.id,
+                                          :msgid => msgid,
+                                          :msgid_plural => plural,
+                                          :msgstr => msgstr,
+                                          :msgstr_index => msgstr_index) or
+                                                                          raise
+                    end
+                  end
+                end
               end
             end
           end

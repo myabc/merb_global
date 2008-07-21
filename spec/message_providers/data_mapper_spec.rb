@@ -36,7 +36,7 @@ if HAS_DM
     describe '.localize' do
       before do
         lang = Merb::Global::MessageProviders::DataMapper::Language
-        en = lang.create! :name => 'en', :plural => 'n==1?0:1'
+        en = lang.create! :name => 'en', :plural => 'n==1?0:1', :nplural => 2
         trans = Merb::Global::MessageProviders::DataMapper::Translation
         trans.create! :language_id => en.id,
                       :msgid => 'Test', :msgid_plural => 'Tests',
@@ -60,8 +60,8 @@ if HAS_DM
     describe '.choose' do
       before do
         lang = Merb::Global::MessageProviders::DataMapper::Language
-        en = lang.create! :name => 'en', :plural => 'n==1?0:1'
-        fr = lang.create! :name => 'fr', :plural => 'n>1?1:0'
+        en = lang.create! :name => 'en', :plural => 'n==1?0:1', :nplural => 2
+        fr = lang.create! :name => 'fr', :plural => 'n>1?1:0', :nplural => 2
       end
 
       it 'should choose the first language if list is empty' do
@@ -76,7 +76,7 @@ if HAS_DM
     describe '.import' do
       before do
         lang = Merb::Global::MessageProviders::DataMapper::Language
-        en = lang.create! :name => 'en', :plural => 'n==1?0:1'
+        en = lang.create! :name => 'en', :plural => 'n==1?0:1', :nplural => 2
         trans = Merb::Global::MessageProviders::DataMapper::Translation
         trans.create! :language_id => en.id,
                       :msgid => 'Test', :msgid_plural => 'Tests',
