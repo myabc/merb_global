@@ -109,8 +109,8 @@ if HAS_DM
 
     describe '.export' do
       it 'should transform data from hash into the database' do
-        lang = Merb::Global::MessageProviders::ActiveRecord::Language
-        trans = Merb::Global::MessageProviders::ActiveRecord::Translation
+        lang = Merb::Global::MessageProviders::DataMapper::Language
+        trans = Merb::Global::MessageProviders::DataMapper::Translation
         en = mock do |en|
           en.stubs(:id).returns(1)
         end
@@ -120,15 +120,18 @@ if HAS_DM
         trans.expects(:create!).
               with(:language_id => en.id,
                    :msgid => 'Test', :msgid_plural => 'Tests',
-                   :msgstr => 'One test', :msgstr_index => 0)
+                   :msgstr => 'One test', :msgstr_index => 0).
+              returns(mock)
         trans.expects(:create!).
               with(:language_id => en.id,
                    :msgid => 'Test', :msgid_plural => 'Tests',
-                   :msgstr => 'Many tests', :msgstr_index => 1)
+                   :msgstr => 'Many tests', :msgstr_index => 1).
+              returns(mock)
         trans.expects(:create!).
               with(:language_id => en.id,
                    :msgid => 'Hello', :msgid_plural => nil,
-                   :msgstr => 'Hello world!', :msgstr_index => nil)
+                   :msgstr => 'Hello world!', :msgstr_index => nil).
+              returns(mock)
         @provider.export("en" => {
                            :nplural => 2, :plural => 'n==1?0:1',
                            'Hello' => {
