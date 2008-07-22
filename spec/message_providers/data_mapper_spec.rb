@@ -44,11 +44,16 @@ if HAS_DM
         trans.create! :language_id => en.id,
                       :msgid => 'Test', :msgid_plural => 'Tests',
                       :msgstr => 'Many tests', :msgstr_index => 1
+        trans.create! :language_id => en.id,
+                      :msgid => 'Hello', :msgid_plural => nil,
+                      :msgstr => 'Hello world!', :msgstr_index => nil
       end
 
       it 'should fetch the correct translation from database if avaible' do
         trans = @provider.localize('Test', 'Tests', :lang => 'en', :n => 1)
         trans.should == 'One test'
+        trans = @provider.localize('Hello', nil, :lang => 'en', :n => 1)
+        trans.should == 'Hello world!'
       end
 
       it 'should fallback to default if needed' do
