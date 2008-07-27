@@ -17,7 +17,7 @@ module Merb
           "msgid" whitespaces msgid:strings
           "msgstr" whitespaces msgstr:strings {
            def to_hash
-	           {msgid.to_string => {nil => msgstr.to_string}}
+	           {msgid.to_string => {:plural => nil, nil => msgstr.to_string}}
 	         end
 	        }
 	        /

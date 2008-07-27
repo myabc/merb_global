@@ -54,11 +54,14 @@ module Merb
               '/*.po'].each do |file|
             lang_name = File.basename file, '.po'
             lang_tree = nil
-            open file do |data|
-              lang_tree = parser.parse data.read
+            open file do |f|
+              lang_tree = parser.parse f.read
             end
+            # Put the parsed file in data
             data[lang_name] = lang_tree.to_hash
-            opts = data[lang_name][''].split("\n")
+            # Remove the metadata to futher managing
+            opts = data[lang_name].delete('')[nil].split("\n")
+            # Find the line about plural line
             plural_line = nil
             for l in opts
               if l[0..."Plural-Forms:".length] == "Plural-Forms:"
@@ -66,10 +69,18 @@ module Merb
                 break
               end
             end
+            # Remove the "Plural-Forms:" from the beginning...
             plural_line =
               plural_line["Plural-Forms:".length...plural_line.length]
+            # and ; from end
             plural_line = plural_line[0...plural_line.length-1]
+            # Split the line and build the hash
             plural_line = plural_line.gsub(/[[:space:]]/, '').split(/[=;]/, 4)
+            # And change the plural and nplurals into :plural and :nplurals
+            plural_line[2] = :plural
+            plural_line[0] = :nplural
+            # Adn the nplural value into integer
+            plural_line[1] = plural_line[1].to_i
             data[lang_name].merge! Hash[*plural_line]
           end
           data
