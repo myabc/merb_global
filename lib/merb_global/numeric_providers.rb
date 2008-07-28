@@ -33,12 +33,14 @@ module Merb
     #
     # ==== Parameters
     # name<~to_sym>:: Name under which it is registred
-    def self.NumericProvider(name)
+    def self.NumericProvider(provider_name)
       Module.new do
-        include Base
+        @@rb_numeric_provider_name = provider_name
+        include Merb::Global::NumericProviders::Base
         
         def self.included(klass)
-          Merb::Global::MessageProviders.register name, klass
+          Merb::Global::NumericProviders.register @@rb_numeric_provider_name,
+                                                  klass
         end
       end
     end
