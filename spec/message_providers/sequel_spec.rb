@@ -52,8 +52,10 @@ if HAS_SEQUEL
         dir_mock = mock do |dir_mock|
           dir_mock.expects(:detect).yields(file).returns(true)
         end
+        Dir.stubs(:[]).returns([])
         Dir.expects(:[]).with(dir).returns(dir_mock)
         @provider.expects(:puts)
+        @provider.stubs(:sh)
         @provider.create!
       end
 
