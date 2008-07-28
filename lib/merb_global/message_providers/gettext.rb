@@ -117,12 +117,12 @@ EOF
                   po.puts "msgstr \"#{msgstr_hash[nil]}\""
                 end
               end
-              lang_dir = File.join(Merb::Global::MessageProviders.localedir,
-                                   lang, 'LC_MESSAGES')
-              FileUtils.mkdir_p lang_dir
-              domain = Merb::Global.config([:gettext, :domain], 'merbapp')
-              `msgfmt #{lang_file} -o #{lang_dir}/#{domain}.mo`
             end
+            lang_dir = File.join(Merb::Global::MessageProviders.localedir,
+                                 lang, 'LC_MESSAGES')
+            FileUtils.mkdir_p lang_dir
+            domain = Merb::Global.config([:gettext, :domain], 'merbapp')
+            `msgfmt #{lang_file} -o #{lang_dir}/#{domain}.mo`
           end
         end
 

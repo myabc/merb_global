@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'stringio'
 
 if HAS_GETTEXT
 
@@ -85,7 +86,7 @@ if HAS_GETTEXT
     end
 
     describe '.export' do
-      it 'should transform data from hash into the database'
+      it 'should transform data from hash into po files'
     end
   end
 end
