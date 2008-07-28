@@ -147,20 +147,27 @@ module Merb
     # Perform the registration
     #
     # ==== Parameters
-    # name<~to_sym>:: Name under which it is registred
+    # provider_name<~to_sym>:: Name under which it is registred
     # opts<Array[Symbol]>:: Additional imformations
     #
     # ==== Options
     # importer:: Can perform import
     # exporter:: Can perform export
-    def self.MessageProvider(name, *opts)
+    def self.MessageProvider(provider_name, *opts)
       Module.new do
-        include Base
-        include Base::Importer if opts.include? :importer
-        include Base::Exporter if opts.include? :exporter
+        @@mg_message_provider_name = provider_name
+        
+        include Merb::Global::MessageProviders::Base
+        if opts.include? :importer
+          include Merb::Global::MessageProviders::Base::Importer
+        end
+        if opts.include? :exporter
+          include Merb::Global::MessageProviders::Base::Exporter
+        end
         
         def self.included(klass)
-          Merb::Global::MessageProviders.register name, klass
+          Merb::Global::MessageProviders.register @@mg_message_provider_name,
+                                                  klass
         end
       end
     end
