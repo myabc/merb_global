@@ -42,24 +42,6 @@ describe Merb::Global::MessageProviders do
       Merb::Global::MessageProviders.provider.should == provider
     end
   end
-  describe '.[]' do
-    it 'should lookup classes'
-    it 'should load the provider' do
-      provider = 'test'
-      provider_path = 'merb_global/message_providers/test'
-      Merb::Global::MessageProviders.expects(:require).with(provider_path)
-      Merb::Global::MessageProviders.stubs(:eval)
-      Merb::Global::MessageProviders[provider]
-    end
-
-    it 'should create the provider' do
-      provider = 'test'
-      provider_class = 'Merb::Global::MessageProviders::Test'
-      Merb::Global::MessageProviders.stubs(:require)
-      Merb::Global::MessageProviders.expects(:eval).with(provider_class + '.new')
-      Merb::Global::MessageProviders[provider]
-    end
-  end
 
   describe '.localedir' do
     it 'should return app/locale by default' do
