@@ -148,8 +148,7 @@ describe 'Merb::Global.MessageProvider' do
     Module.expects(:new).returns(mod)
     Merb::Global.MessageProvider(:test).should == mod
   end
-
-  # How to test it?
+  
   it 'should include base only' do
     Module.any_instance.expects(:include).
                         with(Merb::Global::MessageProviders::Base)
