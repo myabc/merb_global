@@ -33,12 +33,13 @@ module Merb
     #
     # ==== Parameters
     # name<~to_sym>:: Name under which it is registred
-    def self.DateProvider(name)
+    def self.DateProvider(provider_name)
       Module.new do
-        include Base
+        @@rb_date_provider_name = provider_name
+        include Merb::Global::DateProviders::Base
         
         def self.included(klass)
-          Merb::Global::MessageProviders.register name, klass
+          Merb::Global::DateProviders.register @@rb_date_provider_name, klass
         end
       end
     end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-class Provider
+class TestMessageProvider
   include Merb::Global::MessageProviders::Base
 end
 
@@ -68,7 +68,7 @@ end
 
 describe Merb::Global::MessageProviders::Base do
   before do
-    @provider = Provider.new
+    @provider = TestMessageProvider.new
   end
 
   describe '.localize' do
