@@ -3,8 +3,15 @@ require 'spec_helper'
 module TestProviders
   include Merb::Global::Providers
   
+  def self.providers_classes
+    @@providers_classes
+  end
+  
+  def self.providers_classes=(providers_classes)
+    @@providers_classes = providers_classes
+  end
+  
   def self.clear
-    @@provider = nil
     @@providers = {}
     @@providers_classes = {}
   end
@@ -17,7 +24,12 @@ describe Merb::Global::Providers do
   
   describe '.[]' do
     it 'should lookup classes' do
-      
+      provider = mock
+      provider_klass = mock do |klass|
+        klass.expects(:new).returns(provider)
+      end
+      TestProviders.providers_classes = {:test => provider_klass}
+      TestProviders[:test].should == provider
     end
     
     it 'should load the provider' do
@@ -38,7 +50,11 @@ describe Merb::Global::Providers do
   end
   
   describe '.register' do
-    it 'should add the provider to hash'
+    it 'should add the provider to hash' do
+      provider_class = mock
+      TestProviders.register(:test, provider_class)
+      TestProviders.providers_classes.should == {:test => provider_class}
+    end
   end
 end
 

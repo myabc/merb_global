@@ -31,7 +31,7 @@ module Merb
           # name<~to_sym>:: Name under which it is registered
           # klass<Class>:: Class of the provider
           def self.register(name, klass)
-            @@provider_classes[name.to_sym] = klass
+            @@providers_classes[name.to_sym] = klass
           end
         end
       end
