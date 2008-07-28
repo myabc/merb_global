@@ -131,11 +131,74 @@ if HAS_SEQUEL
     end
 
     describe '.import' do
-      it 'should put data in the hash'
+      before do
+        lang = Merb::Global::MessageProviders::Sequel::Language
+        trans = Merb::Global::MessageProviders::Sequel::Translation
+        en = lang.create :name => 'en', :nplural => 2, :plural => 'n==1?0:1'
+        trans.create :language_id => en.id,
+                     :msgid => 'Test', :msgid_plural => 'Tests',
+                     :msgstr => 'One test', :msgstr_index => 0
+        trans.create :language_id => en.id,
+                     :msgid => 'Test', :msgid_plural => 'Tests',
+                     :msgstr => 'Many tests', :msgstr_index => 1
+        trans.create :language_id => en.id,
+                     :msgid => 'Hello', :msgid_plural => nil,
+                     :msgstr => 'Hello world!', :msgstr_index => nil
+      end
+      
+      it 'should put data in the hash' do
+        @provider.import.should == {
+          "en" => {
+            :nplural => 2, :plural => 'n==1?0:1',
+            'Hello' => {
+              :plural => nil,
+              nil => 'Hello world!'
+            },
+            'Test' => {
+              :plural => 'Tests',
+              0 => 'One test',
+              1 => 'Many tests'
+            }
+          }
+        }
+      end
     end
 
     describe '.export' do
-      it 'should transform data from hash into the database'
+      it 'should transform data from hash into the database' do
+        lang = Merb::Global::MessageProviders::Sequel::Language
+        trans = Merb::Global::MessageProviders::Sequel::Translation
+        en = mock do |en|
+          en.stubs(:[]).with(:id).returns(1)
+        end
+        lang.expects(:create).
+             with(:name => 'en', :nplural => 2, :plural => 'n==1?0:1').
+             returns(en)
+        trans.expects(:create).
+              with(:language_id => en[:id],
+                   :msgid => 'Test', :msgid_plural => 'Tests',
+                   :msgstr => 'One test', :msgstr_index => 0).returns(1)
+        trans.expects(:create).
+              with(:language_id => en[:id],
+                   :msgid => 'Test', :msgid_plural => 'Tests',
+                   :msgstr => 'Many tests', :msgstr_index => 1).returns(2)
+        trans.expects(:create).
+              with(:language_id => en[:id],
+                   :msgid => 'Hello', :msgid_plural => nil,
+                   :msgstr => 'Hello world!', :msgstr_index => nil).returns(3)
+        @provider.export("en" => {
+                           :nplural => 2, :plural => 'n==1?0:1',
+                           'Hello' => {
+                             :plural => nil,
+                             nil => 'Hello world!'
+                           },
+                           'Test' => {
+                             :plural => 'Tests',
+                             0 => 'One test',
+                             1 => 'Many tests'
+                           }
+                         })
+      end
     end
   end
 end

@@ -46,23 +46,24 @@ module Merb
         def import
           data = {}
           DB.transaction do
-            Language.each do |language|
-              exporter.export_language export_data, language[:name],
-                                                    language[:nplural],
-                                                    language[:plural] do |lang|
-                language.translations.each do |translation|
-                  exporter.export_string lang,
-                                         translation[:msgid],
-                                         translation[:msgid_plural],
-                                         translation[:msgstr_index],
-                                         translation[:msgstr]
-                end
+            Language.each do |lang|
+              data[lang[:name]] = lang_hash = {
+                :plural => lang[:plural],
+                :nplural => lang[:nplural]
+              }
+              lang.translations.each do |translation|
+                lang_hash[translation[:msgid]] ||= {
+                  :plural => translation[:msgid_plural]
+                }
+                lang_hash[translation[:msgid]][translation[:msgstr_index]] =
+                  translation[:msgstr]
               end
             end
           end
+          data
         end
 
-        def export
+        def export(data)
           DB.transaction do
             Language.delete_all
             Translation.delete_all
@@ -70,12 +71,20 @@ module Merb
               lang_obj = Language.create(:name => lang_name,
                                          :plural => lang[:plural],
                                          :nplural => lang[:nplural]) or raise
-              lang.each do |msgid, msgstr|
-                Translation.create(:language_id => lang_obj.id,
-                                  :msgid => msgid,
-                                  :msgid_plural => nil,
-                                  :msgstr => msgstr,
-                                  :msgstr_index => nil) or raise
+              lang_id = lang_obj[:id]
+              lang.each do |msgid, msgstrs|
+                if msgid.is_a? String
+                  plural = msgstrs[:plural]
+                  msgstrs.each do |index, msgstr|
+                    if index.nil? or index.is_a? Fixnum
+                      Translation.create(:language_id => lang_id,
+                                         :msgid => msgid,
+                                         :msgid_plural => plural,
+                                         :msgstr => msgstr,
+                                         :msgstr_index => index) or raise
+                    end
+                  end
+                end
               end
             end
           end
