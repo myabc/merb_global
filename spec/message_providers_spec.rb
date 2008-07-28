@@ -8,6 +8,7 @@ module Merb::Global::MessageProviders
   def self.clear
     @@provider = nil
     @@providers = {}
+    @@providers_classes = {}
   end
   def self.provider= provider
     @@provider = provider

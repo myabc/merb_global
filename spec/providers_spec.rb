@@ -6,6 +6,7 @@ module TestProviders
   def self.clear
     @@provider = nil
     @@providers = {}
+    @@providers_classes = {}
   end
 end
 
@@ -15,7 +16,10 @@ describe Merb::Global::Providers do
   end
   
   describe '.[]' do
-    it 'should lookup classes'
+    it 'should lookup classes' do
+      
+    end
+    
     it 'should load the provider' do
       provider = 'test'
       provider_path = 'merb_global/test_providers/test'
