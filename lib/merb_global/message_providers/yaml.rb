@@ -69,7 +69,7 @@ module Merb
             data[lang_name] = lang = YAML.load_file(file)
             lang.each do |msgid, msgstr|
               if msgstr.is_a? String and msgid.is_a? String
-                lang[msgid] = {nil => msgstr}
+                lang[msgid] = {nil => msgstr, :plural => nil}
               end
             end
           end
