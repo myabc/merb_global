@@ -97,6 +97,9 @@ if HAS_SEQUEL
         trans.create :language_id => en.id,
                      :msgid => 'Test', :msgid_plural => 'Tests',
                      :msgstr => 'Many tests', :msgstr_index => 1
+        trans.create :language_id => en.id,
+                     :msgid => 'Hello', :msgid_plural => nil,
+                     :msgstr => 'Hello world!', :msgstr_index => nil
       end
 
       it 'should find it in database and return proper translation' do
@@ -104,6 +107,8 @@ if HAS_SEQUEL
         trans.should == 'One test'
         trans = @provider.localize 'Test', 'Tests', :n => 2, :lang => 'en'
         trans.should == 'Many tests'
+        trans = @provider.localize 'Hello', nil, :n => 1, :lang => 'en'
+        trans.should == 'Hello world!'
       end
 
       it 'should fallback if not' do
