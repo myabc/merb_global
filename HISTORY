@@ -2,6 +2,7 @@
  * Handles lang_REGION as lang
  * Renamed providers into message providers and translate_to into localize
  * Added support for localization of dates and numbers
+ * Updated specs
 
 === 0.0.4
  * Changed database format (to allow importing/exporting)
