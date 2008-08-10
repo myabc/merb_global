@@ -21,7 +21,13 @@ module Merb
               n = Plural.which_form opts[:n], language.plural
               translation = Translation.find [language.id, singular, n]
             else
-              translation = Translation.find [language.id, singular, nil]
+              # Bug of composite_primary_keys?
+              conditions = {
+                :language_id  => language.id,
+                :msgid => singular,
+                :msgstr_index => nil
+              }
+              translation = Translation.find(:first, conditions)
             end
             return translation.msgstr
           end rescue nil
