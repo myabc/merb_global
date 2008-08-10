@@ -1,2 +1,2 @@
 :merb_global:
-  :provider: mock
+  :message_provider: mock

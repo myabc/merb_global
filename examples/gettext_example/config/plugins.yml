@@ -1,3 +1,3 @@
 :merb_global:
-  :provider: gettext
+  :message_provider: gettext
   :flat: true

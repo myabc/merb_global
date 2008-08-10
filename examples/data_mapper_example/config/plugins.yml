@@ -1,2 +1,2 @@
 :merb_global:
-  :provider: data_mapper
+  :message_provider: data_mapper

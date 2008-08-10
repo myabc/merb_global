@@ -1,2 +1,2 @@
 :merb_global:
-  :provider: sequel
+  :message_provider: sequel

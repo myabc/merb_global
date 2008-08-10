@@ -1,2 +1,2 @@
 :merb_global:
-  :provider: active_record
+  :message_provider: active_record
