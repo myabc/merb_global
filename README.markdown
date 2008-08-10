@@ -26,11 +26,11 @@ merb\_global will have the following feature set:
     - choice of providers (po, yaml, database)
         
             Merb::Plugins.config[:merb_global] = {
-              #:provider => "po",   # default
-              :provider => 'yaml'
-              #:provider => active_record
-              #:provider => data_mapper
-              #:provider => sequel
+              #:message_provider => "po",   # default
+              :message_provider => 'yaml'
+              #:message_provider => active_record
+              #:message_provider => data_mapper
+              #:message_provider => sequel
             }
             
     - for JRuby, wrapper allowing use of .properties files.
@@ -80,24 +80,38 @@ Configuration options
 MerbGlobal is possible to configure with:
 
     Merb::Plugins.config[:merb_global] = {
-        :provider => 'gettext'
+        :message_provider => 'gettext'
         ...
      }
 
 in init.rb or using plugins.yml file:
 
     :merb_global:
-        :provider: gettext
+        :message_provider: gettext
         ...
 
 Configuration options:
  
- * :provider
+ * :message_provider
    
-   What provider we want to use.
+   What message provider we want to use.
 
    Values: gettext, yaml, sequel, active\_record, data\_mapper
    Default: gettext
+
+ * :date_provider
+ 
+   What date provider we want to use.
+ 
+   Values: fork
+   Default: fork
+
+ * :numeric_providers
+
+   What numeric provider we want to use.
+
+   Values: fork
+   Default: fork
 
  * :flat
 
@@ -112,7 +126,7 @@ Configuration options:
 
    If :flat is set to true than MerbGlobal will search in #{Merb.root}+'locale'. If :flat is false than in #{Merb.root}+:localedir. When :flat is false and :localedir configuration is not defined the default will be #{Merb.root}+'app/locale'.
 
- * :domain
+ * :gettext => :domain
    
    Name of the text domain. Which is basically name of the GetText MO file without .mo extension.
 
@@ -126,7 +140,8 @@ Follwing configuraiton in plugins.yml:
         :provider:  gettext
         :flat:      false
         :localedir: locale
-        :domain:    messages
+	:gettext:
+	    :domain:    messages
 
 will make MerbGlobal to search translations in following places:
 
