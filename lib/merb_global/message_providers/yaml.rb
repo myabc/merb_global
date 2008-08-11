@@ -17,18 +17,24 @@ module Merb
         end
 
         def localize(singular, plural, opts)
-          unless @lang.include? opts[:lang]
+          unless Merb.environment == "development"
+            lang = @lang
+          else
+            lang = {}
+          end
+          
+          unless lang.include? opts[:lang]
             file = File.join Merb::Global::MessageProviders.localedir,
                              opts[:lang] + '.yaml'
             if File.exist? file
-              @lang[opts[:lang]] = YAML.load_file file
+              lang[opts[:lang]] = YAML.load_file file
             else
-              @lang[opts[:lang]] = nil
+              lang[opts[:lang]] = nil
             end
           end
 
-          unless @lang[opts[:lang]].nil?
-            lang = @lang[opts[:lang]]
+          unless lang[opts[:lang]].nil?
+            lang = lang[opts[:lang]]
             unless lang[singular].nil?
               unless plural.nil?
                 n = Merb::Global::Plural.which_form opts[:n], lang[:plural]
