@@ -6,7 +6,7 @@ require 'fileutils'
 
 PLUGIN = "merb_global"
 NAME = "merb_global"
-GEM_VERSION = "0.0.5"
+GEM_VERSION = "0.0.5.1"
 AUTHORS = ["Alex Coles", "Maciej Piechotka"]
 EMAIL = "alex@alexcolesportfolio.com"
 HOMEPAGE = "http://trac.ikonoklastik.com/merb_global/"
