@@ -40,7 +40,11 @@ module Merb
         end
 
         def choose(except)
-          Language.filter(~{:name => except}).first[:name]
+          if except.empty?
+            Language.first[:name]
+          else
+            Language.filter(~{:name => except}).first[:name]
+          end
         end
 
         def import
