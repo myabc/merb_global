@@ -23,7 +23,7 @@ describe Merb::Global::MessageProviders::Yaml do
   describe '.localize' do
     it 'should mark nil if file do not exists' do
       @provider.localize 'Test', 'Tests', :lang => 'fr', :n => 1
-      @provider.lang.should include('fr')
+      @provider.lang.should include({'fr' => nil})
       @provider.lang['fr'].should be_nil
     end
 
