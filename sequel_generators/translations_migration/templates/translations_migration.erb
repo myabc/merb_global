@@ -11,12 +11,13 @@ class AddTranslationsMigration < Sequel::Migration
       varchar	  :plural,       :size => 128
     end
     create_table :merb_global_translations do
-      # primary_key [:language_id, :msgid_hash, :msgstr_index]
+      # primary_key [:language_id, :msgid, :msgstr_index]
       foreign_key :language_id,  :null => false
       text   	  :msgid,        :null => false
       text        :msgid_plural
       text	  :msgstr,       :null => false
       integer	  :msgstr_index, :null => true
+      primary_key [:language_id, :msgid, :msgstr_index]
     end
   end
   def down
