@@ -32,15 +32,17 @@ if HAS_SEQUEL
   describe Merb::Global::MessageProviders::Sequel do
     before do
       @provider = Merb::Global::MessageProviders::Sequel.new
+      DB.disconnect
+      DB.connect ":memory"
       migration =
         Merb::Global::MessageProviders::Sequel::AddTranslationsMigration
-      migration.new(DB).up rescue nil
+      migration.new(DB).up
     end
 
     after do
       migration =
         Merb::Global::MessageProviders::Sequel::AddTranslationsMigration
-      migration.new(DB).down rescue nil
+      migration.new(DB).down
     end
 
     describe '.create!' do
