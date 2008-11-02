@@ -10,7 +10,7 @@ module Merb
           pipe_rd, pipe_wr = IO.pipe
           pid = fork do
             pipe_rd.close
-            setlocale(lang)
+            setlocale(lang.to_s)
             pipe_wr.write(date.strftime(format))
             pipe_wr.flush
           end

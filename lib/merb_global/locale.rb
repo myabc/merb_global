@@ -10,8 +10,9 @@ module Merb
       attr_reader :language, :country
       
       def initialize(name)
+        puts name.inspect
         # TODO: Understend RFC 1766 fully
-        language, country = name.split('-')
+        @language, @country = name.split('-')
       end
 
       def any?
@@ -24,9 +25,9 @@ module Merb
 
       def to_s
         if country.nil?
-          "#{language}"
+          "#{@language.downcase}"
         else
-          "#{language}-#{country}"
+          "#{@language.downcase}_#{@country.upcase}"
         end
       end
       

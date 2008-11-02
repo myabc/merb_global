@@ -1,5 +1,6 @@
 require 'merb_global/config'
 require 'merb_global/plural'
+require 'merb_global/locale'
 require 'merb_global/date_providers'
 require 'merb_global/message_providers'
 require 'merb_global/numeric_providers'
@@ -7,10 +8,6 @@ require 'merb_global/numeric_providers'
 module Merb
   module Global
     attr_accessor :lang, :message_provider, :date_provider, :numeric_provider
-
-    def lang #:nodoc:
-      @lang ||= 'en'
-    end
 
     def message_provider #:nodoc:
       @message_provider ||= Merb::Global::MessageProviders.provider
@@ -49,7 +46,7 @@ module Merb
     # ==== Example
     # <tt>render _('%d file deleted', '%d files deleted', :n => del) % del</tt>
     def _(*args)
-      opts = {:lang => self.lang, :n => 1}
+      opts = {:lang => Merb::Global::Locale.current, :n => 1}
       opts.merge! args.pop if args.last.is_a? Hash
       if args.first.respond_to? :strftime
         if args.size == 2
@@ -64,6 +61,7 @@ module Merb
           raise ArgumentError, "wrong number of arguments (#{args.size} for 1)"
         end
       elsif args.first.is_a? String
+        opts[:lang] = opts[:lang].to_s
         if args.size == 1
           self.message_provider.localize args[0], nil, opts
         elsif args.size == 2
