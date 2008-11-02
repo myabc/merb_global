@@ -5,18 +5,6 @@ class TestBase
 end
 
 describe Merb::Global do
-  describe '.lang' do
-    it 'should return \'en\' by default' do
-      TestBase.new.lang.should == 'en'
-    end
-
-    it 'should return the setted language' do
-      test_base = TestBase.new
-      test_base.lang = lang = mock('lang')
-      test_base.lang.should == lang
-    end
-  end
-
   describe '.message_provider' do
     it 'should return the default provider' do
       provider = mock 'provider'
@@ -43,6 +31,10 @@ describe Merb::Global do
   
 
   describe '._' do
+    before do
+      Merb::Global::Locale.current = Merb::Global::Locale.new('en')
+    end
+    
     describe 'message' do
       it 'should send singular and nil if plural not given' do
         test_base = TestBase.new
@@ -82,7 +74,7 @@ describe Merb::Global do
         time = Time.new
         result = mock
         test_base.date_provider = mock do |provider|
-          expected_args = ['en', time, '%A']
+          expected_args = [Merb::Global::Locale.new('en'), time, '%A']
           provider.expects(:localize).with(*expected_args).returns(result)
         end
         test_base._(time, '%A').should == result
@@ -93,10 +85,10 @@ describe Merb::Global do
         time = Time.new
         result = mock
         test_base.date_provider = mock do |provider|
-          expected_args = ['fr', time, '%A']
+          expected_args = [Merb::Global::Locale.new('fr'), time, '%A']
           provider.expects(:localize).with(*expected_args).returns(result)
         end
-        test_base._(time, '%A', :lang => 'fr').should == result
+        test_base._(time, '%A', :lang => Merb::Global::Locale.new('fr')).should == result
       end
       
       it 'should raise an error on wrong arguments' do
@@ -110,7 +102,7 @@ describe Merb::Global do
       it 'should send the number' do
         test_base = TestBase.new
         test_base.numeric_provider = mock do |provider|
-          expected_args = ['en', 1.0]
+          expected_args = [Merb::Global::Locale.new('en'), 1.0]
           provider.expects(:localize).with(*expected_args).returns('1,0')
         end
         test_base._(1.0).should == '1,0'
@@ -119,10 +111,10 @@ describe Merb::Global do
       it 'should send the number and language if given' do
         test_base = TestBase.new
         test_base.numeric_provider = mock do |provider|
-          expected_args = ['pl', 1.0]
+          expected_args = [Merb::Global::Locale.new('pl'), 1.0]
           provider.expects(:localize).with(*expected_args).returns('1,0')
         end
-        test_base._(1.0, :lang => 'pl').should == '1,0'
+        test_base._(1.0, :lang => Merb::Global::Locale.new('pl')).should == '1,0'
       end
 
       it 'should raise an error on wrong arguments' do

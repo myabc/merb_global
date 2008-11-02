@@ -1,4 +1,6 @@
 require 'merb_global/base'
+require 'thread'
+require 'weakref'
 
 class Thread
   attr_accessor :mg_locale
@@ -10,7 +12,6 @@ module Merb
       attr_reader :language, :country
       
       def initialize(name)
-        puts name.inspect
         # TODO: Understend RFC 1766 fully
         @language, @country = name.split('-')
       end
@@ -20,7 +21,11 @@ module Merb
       end
 
       def base_locale
-        Locale.new(language)
+        if not @country.nil?
+          Locale.new(@language)
+        else
+          nil
+        end
       end
 
       def to_s
@@ -54,6 +59,37 @@ module Merb
 
       def self.current=(new_locale)
         Thread.current.mg_locale = new_locale
+      end
+
+      class << self
+        alias_method :pure_new, :new
+        private :pure_new
+      end
+
+      @@current = {}
+      @@current_mutex = Mutex.new
+      # Create new locale object and returns it.
+      # 
+      # Please note that this method is cached.
+      def self.new(name)
+        return nil if name.nil?
+        return name if name.is_a? Locale
+        @@current_mutex.synchronize do
+          begin
+            n = @@current[name]
+            if n.nil?
+              n = pure_new(name)
+              @@current[name] = WeakRef.new(n)
+            else
+              n = n.__getobj__
+            end
+            n
+          rescue WeakRef::RefError
+            n = pure_new(name)
+            @@current[name] = WeakRef.new(n)
+            n
+          end
+        end
       end
     end
   end

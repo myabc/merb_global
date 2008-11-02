@@ -9,8 +9,10 @@ module Merb
     before do
       # Set up the language
       accept_language = self.request.env['HTTP_ACCEPT_LANGUAGE']
-      self.lang = Merb::Global::Locale.new(params[:locale]) ||
-        self._mg_get_locale() ||
+      Merb::Global::Locale.current =
+        Merb::Global::Locale.new(params[:locale]) ||
+        (self._mg_locale &&
+         Merb::Global::Locale.new(self.instance_eval(&self._mg_locale))) ||
         begin
           unless accept_language.nil?
             accept_language = Merb::Global::Locale.parse(accept_language)
@@ -21,7 +23,7 @@ module Merb
                 lang
               else
                 lang = lang.base_locale
-                if self.message_provider.support? lang
+                if not lang.nil? and self.message_provider.support? lang
                   lang
                 else
                   nil
@@ -31,7 +33,7 @@ module Merb
             accept_language.reject! {|lang| lang.nil?}
             unless accept_language.empty?
               unless accept_language.last.any?
-                accept_language.any?
+                accept_language.last
               else
                 accept_language.pop
                 self.message_provider.choose accept_language
@@ -57,17 +59,6 @@ module Merb
     # to determine the language
     def self.locale(&block)
       self._mg_locale = block
-    end
-    private :_mg_get_locale
-    def _mg_get_locale #:nodoc:
-      if not _mg_locale.nil?
-        locale = self.instance_eval(_mg_locale)
-        if locale.is_a? Merb::Global::Locale
-          locale
-        else
-          Merb::Global::Locale.new(locale)
-        end
-      end
     end
   end
 end
