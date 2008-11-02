@@ -2,11 +2,9 @@ require 'gettext'
 require 'treetop'
 require 'pathname'
 
-# I'm not sure if it is the correct way of doing it.
-# As far it seems to be simpler.
-class Thread #:nodoc:
-  def gettext_context
-    @gettext_context ||= Merb::Global::MessageProviders::Gettext::GettextContext.new
+class Merb::Global::Locale #:nodoc:
+  def _mg_gettext
+    @mg_gettext ||= Merb::Global::MessageProviders::Gettext::GettextContext.new
   end
 end
 
@@ -19,8 +17,8 @@ module Merb
         include Merb::Global::MessageProviders::Base::Exporter
 
         def localize(singular, plural, opts)
-          context = Thread.current.gettext_context
-          context.set_locale opts[:lang], true
+          context = opts[:lang]._mg_gettext
+          context.set_locale opts[:lang].to_s, true
           unless plural.nil?
             context.ngettext singular, plural, opts[:n]
           else
@@ -29,6 +27,7 @@ module Merb
         end
 
         def support?(lang)
+          lang = lang.to_s
           lang == 'en' ||
             File.exist?(File.join(Merb::Global::MessageProviders.localedir, lang))
         end
@@ -38,6 +37,7 @@ module Merb
         end
 
         def choose(except)
+          except = except.collect {|locale| locale.to_s}
           dir = Dir[Merb::Global::MessageProviders.localedir + '/*/']
           dir.collect! {|p| File.basename p}
           dir << 'en'

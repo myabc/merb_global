@@ -12,7 +12,7 @@ module Merb
 
         def localize(singular, plural, opts)
           # I hope it's from MemCache
-          language = Language.first :name => opts[:lang]
+          language = Language.first :name => opts[:lang].to_s
           unless language.nil?
             unless plural.nil?
               n = Plural.which_form opts[:n], language.plural
@@ -31,7 +31,7 @@ module Merb
         end
 
         def support?(lang)
-          not Language.first(:name => lang).nil?
+          not Language.first(:name => lang.to_s).nil?
         end
 
         def create!
@@ -40,6 +40,7 @@ module Merb
         end
 
         def choose(except)
+          except = except.collect {|locale| except.to_s}
           Language.first(:name.not => except).name
         end
 

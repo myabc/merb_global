@@ -10,7 +10,8 @@ module Merb
         include Merb::Global::MessageProviders::Base::Exporter
 
         def localize(singular, plural, opts)
-          language = Language[:name => opts[:lang]] # I hope it's from MemCache
+          # I hope it's from MemCache
+          language = Language[:name => opts[:lang].to_s]
           unless language.nil?
             unless plural.nil?
               n = Plural.which_form opts[:n], language[:plural]
@@ -24,7 +25,7 @@ module Merb
         end
 
         def support?(lang)
-          Language.filter(:name => lang).count != 0
+          Language.filter(:name => lang.to_s).count != 0
         end
 
         def create!
@@ -43,6 +44,7 @@ module Merb
           if except.empty?
             Language.first[:name]
           else
+            except = except.collect {|locale| locale.to_s}
             Language.filter(~{:name => except}).first[:name]
           end
         end

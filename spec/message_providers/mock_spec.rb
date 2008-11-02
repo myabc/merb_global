@@ -31,7 +31,7 @@ describe Merb::Global::MessageProviders::Mock do
 
   describe '.choose' do
     it 'should return \'en\'' do
-      @provider.choose.should == 'en'
+      @provider.choose([]).should == 'en'
     end
   end
 end

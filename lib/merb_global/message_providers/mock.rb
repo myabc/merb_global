@@ -16,7 +16,7 @@ module Merb
           nil # It's mock after all ;)
         end
 
-        def choose
+        def choose(except)
           'en'
         end
       end

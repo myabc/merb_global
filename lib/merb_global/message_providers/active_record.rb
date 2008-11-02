@@ -15,7 +15,7 @@ module Merb
 
         def localize(singular, plural, opts)
           language = Language.find :first,
-                                   :conditions => {:name => opts[:lang]}
+                                   :conditions => {:name => opts[:lang].to_s}
           unless language.nil?
             unless plural.nil?
               n = Plural.which_form opts[:n], language.plural
@@ -35,7 +35,7 @@ module Merb
         end
 
         def support?(lang)
-          Language.count(:conditions => {:name => lang}) != 0
+          Language.count(:conditions => {:name => lang.to_s}) != 0
         end
 
         def create!
@@ -54,6 +54,7 @@ module Merb
           if except.empty?
             Language.find(:first).name
           else
+            except = except.collect {|locale| locale.to_s}
             condition = 'name NOT IN (' + '?, ' * (except.length - 1) + '?)'
             Language.find(:first, :conditions => [condition, *except]).name
           end

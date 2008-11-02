@@ -19,40 +19,44 @@ if HAS_GETTEXT
 
     describe '.support?' do
       it 'should return true if directory exists' do
-        @provider.support?('pl').should == true
+        @provider.support?(Merb::Global::Locale.new('pl')).should == true
       end
 
       it 'should return false otherwise' do
-        @provider.support?('fr').should == false
+        @provider.support?(Merb::Global::Locale.new('fr')).should == false
       end
     end
 
     describe '.localize' do
       it 'should translate the string' do
-        trans = @provider.localize 'Test', 'Tests', :n => 1, :lang => 'pl'
+        pl = Merb::Global::Locale.new('pl')
+        trans = @provider.localize 'Test', 'Tests', :n => 1, :lang => pl
         trans.should == 'Test'
-        trans = @provider.localize 'Test', 'Tests', :n => 2, :lang => 'pl'
+        trans = @provider.localize 'Test', 'Tests', :n => 2, :lang => pl
         trans.should == 'Testy'
-        trans = @provider.localize 'Test', 'Tests', :n => 5, :lang => 'pl'
+        trans = @provider.localize 'Test', 'Tests', :n => 5, :lang => pl
         trans.should == 'Testów'
       end
 
       it 'should fallback if not present' do
-        trans = @provider.localize 'Car', 'Cars', :n => 1, :lang => 'pl'
+        pl = Merb::Global::Locale.new('pl')
+        trans = @provider.localize 'Car', 'Cars', :n => 1, :lang => pl
         trans.should == 'Car'
-        trans = @provider.localize 'Car', 'Cars', :n => 2, :lang => 'pl'
+        trans = @provider.localize 'Car', 'Cars', :n => 2, :lang => pl
         trans.should == 'Cars'
       end
 
       it 'should fallback if language is not supported' do
-        trans = @provider.localize 'Test', 'Tests', :n => 1, :lang => 'fr'
+        fr = Merb::Global::Locale.new('fr')
+        trans = @provider.localize 'Test', 'Tests', :n => 1, :lang => fr
         trans.should == 'Test'
-        trans = @provider.localize 'Test', 'Tests', :n => 2, :lang => 'fr'
+        trans = @provider.localize 'Test', 'Tests', :n => 2, :lang => fr
         trans.should == 'Tests'
       end
 
       it 'should translate for singular only also' do
-        trans = @provider.localize('Hello', nil, :n => 1, :lang => 'pl')
+        pl = Merb::Global::Locale.new('pl')
+        trans = @provider.localize('Hello', nil, :n => 1, :lang => pl)
         trans.should == 'Cześć'
       end
     end

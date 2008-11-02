@@ -7,7 +7,7 @@ require 'merb_global/numeric_providers'
 
 module Merb
   module Global
-    attr_accessor :lang, :message_provider, :date_provider, :numeric_provider
+    attr_accessor :message_provider, :date_provider, :numeric_provider
 
     def message_provider #:nodoc:
       @message_provider ||= Merb::Global::MessageProviders.provider
@@ -61,7 +61,6 @@ module Merb
           raise ArgumentError, "wrong number of arguments (#{args.size} for 1)"
         end
       elsif args.first.is_a? String
-        opts[:lang] = opts[:lang].to_s
         if args.size == 1
           self.message_provider.localize args[0], nil, opts
         elsif args.size == 2

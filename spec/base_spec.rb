@@ -37,27 +37,30 @@ describe Merb::Global do
     
     describe 'message' do
       it 'should send singular and nil if plural not given' do
+        en = Merb::Global::Locale.new('en')
         test_base = TestBase.new
         test_base.message_provider = mock do |provider|
-          expected_args = ['a', nil, {:n => 1, :lang => 'en'}]
+          expected_args = ['a', nil, {:n => 1, :lang => en}]
           provider.expects(:localize).with(*expected_args).returns('b')
         end
         test_base._('a').should == 'b'
       end
       
       it 'should send singular and plural if both given' do
+        en = Merb::Global::Locale.new('en')
         test_base = TestBase.new
         test_base.message_provider = mock do |provider|
-          expected_args = ['a', 'b', {:n => 1, :lang => 'en'}]
+          expected_args = ['a', 'b', {:n => 1, :lang => en}]
           provider.expects(:localize).with(*expected_args).returns('a')
         end
         test_base._('a', 'b').should == 'a'
       end
       
       it 'should send the proper number if given' do
+        en = Merb::Global::Locale.new('en')
         test_base = TestBase.new
         test_base.message_provider = mock do |provider|
-          expected_args = ['a', 'b', {:n => 2, :lang => 'en'}]
+          expected_args = ['a', 'b', {:n => 2, :lang => en}]
           provider.expects(:localize).with(*expected_args).returns('b')
         end
         test_base._('a', 'b', :n => 2).should == 'b'
