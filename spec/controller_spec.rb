@@ -30,9 +30,10 @@ describe Merb::Controller do
   end
 
   it 'should set language according to the preferences' do
+    message_provider = stub(:support? => true)
+    Merb::Global::MessageProviders.stubs(:provider).returns(message_provider)
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'fr'
-      controller.message_provider = provider = stub(:support? => true)
     end
     Merb::Global::Locale.current.should == Merb::Global::Locale.new('fr')
   end
@@ -41,23 +42,25 @@ describe Merb::Controller do
     de = Merb::Global::Locale.new('de')
     en = Merb::Global::Locale.new('en')
     es = Merb::Global::Locale.new('es')
+    message_provider = mock 'provider' do |provider|
+      provider.expects(:support?).with(de).returns(true)
+      provider.expects(:support?).with(en).returns(false)
+      provider.stubs(:support?).with(es).returns(true)
+    end
+    Merb::Global::MessageProviders.stubs(:provider).returns(message_provider)
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] =
         'de;q=0.8,en;q=1.0,es;q=0.6'
-      controller.message_provider = mock 'provider' do |provider|
-        provider.expects(:support?).with(de).returns(true)
-        provider.expects(:support?).with(en).returns(false)
-        provider.stubs(:support?).with(es).returns(true)
-      end
     end
     Merb::Global::Locale.current.should == de
   end
 
   it 'should assume 1.0 as default weight' do
     it = Merb::Global::Locale.new('it')
+    message_provider = stub(:support? => true)
+    Merb::Global::MessageProviders.stubs(:provider).returns(message_provider)
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'it,en;q=0.7'
-      provider = controller.message_provider = stub(:support? => true)
     end
     Merb::Global::Locale.current.should == it
   end
@@ -65,11 +68,14 @@ describe Merb::Controller do
   it 'should choose language if \'*\' given' do
     en = Merb::Global::Locale.new('en')
     fr = Merb::Global::Locale.new('fr')
-    controller = dispatch_to(TestController, :index) do |controller|
-      controller.request.env['HTTP_ACCEPT_LANGUAGE'] = '*,en;q=0.7'
-      provider = controller.message_provider = stub(:support? => true)
+    message_provider = stub do |provider|
+      provider.stubs(:support?).returns(true)
       provider.stubs(:support?).with(en).returns(true)
       provider.expects(:choose).with([en]).returns(fr)
+    end
+    Merb::Global::MessageProviders.stubs(:provider).returns(message_provider)
+    controller = dispatch_to(TestController, :index) do |controller|
+      controller.request.env['HTTP_ACCEPT_LANGUAGE'] = '*,en;q=0.7'
     end
     Merb::Global::Locale.current.should == fr
   end
@@ -97,13 +103,15 @@ describe Merb::Controller do
     es = Merb::Global::Locale.new('es')
     pt_BR = Merb::Global::Locale.new('pt-BR')
     pt = Merb::Global::Locale.new('pt')
-    controller = dispatch_to(TestController, :index) do |controller|
-      controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'es-ES,pt-BR;q=0.7'
-      provider = controller.message_provider = mock
+    message_provider = mock do |provider|
       provider.expects(:support?).with(es_ES).returns(false)
       provider.expects(:support?).with(es).returns(false)
       provider.expects(:support?).with(pt_BR).returns(false)
       provider.expects(:support?).with(pt).returns(true)
+    end
+    Merb::Global::MessageProviders.stubs(:provider).returns(message_provider)
+    controller = dispatch_to(TestController, :index) do |controller|
+      controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'es-ES,pt-BR;q=0.7'
     end
     Merb::Global::Locale.current.should == pt
   end
