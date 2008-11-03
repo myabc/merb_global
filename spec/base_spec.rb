@@ -80,7 +80,7 @@ describe Merb::Global do
         end
         Merb::Global::DateProviders.expects(:provider).
                                     returns(date_provider)
-        test_base._(time, '%A', :lang => Merb::Global::Locale.new('fr')).should == result
+        test_base._(time, '%A', :locale => Merb::Global::Locale.new('fr')).should == result
       end
       
       it 'should raise an error on wrong arguments' do
@@ -110,7 +110,7 @@ describe Merb::Global do
         end
         Merb::Global::NumericProviders.expects(:provider).
                                        returns(numeric_provider)
-        test_base._(1.0, :lang => Merb::Global::Locale.new('pl')).should == '1,0'
+        test_base._(1.0, :locale => Merb::Global::Locale.new('pl')).should == '1,0'
       end
 
       it 'should raise an error on wrong arguments' do
