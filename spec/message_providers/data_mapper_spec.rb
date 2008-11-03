@@ -25,11 +25,13 @@ if HAS_DM
       end
 
       it 'should return true for language in database' do
-        @provider.support?('en').should == true
+        en = Merb::Global::Locale.new('en')
+        @provider.support?(en).should == true
       end
 
       it 'should return false otherwise' do
-        @provider.support?('fr').should == false
+        fr = Merb::Global::Locale.new('fr')
+        @provider.support?(fr).should == false
       end
     end
 
@@ -50,14 +52,14 @@ if HAS_DM
       end
 
       it 'should fetch the correct translation from database if avaible' do
-        trans = @provider.localize('Test', 'Tests', :lang => 'en', :n => 1)
+        trans = @provider.localize('Test', 'Tests', 1, 'en')
         trans.should == 'One test'
-        trans = @provider.localize('Hello', nil, :lang => 'en', :n => 1)
+        trans = @provider.localize('Hello', nil, 1, 'en')
         trans.should == 'Hello world!'
       end
 
       it 'should fallback to default if needed' do
-        trans = @provider.localize('Test', 'Tests', :lang => 'fr', :n => 2)
+        trans = @provider.localize('Test', 'Tests', 2, 'fr')
         trans.should == 'Tests'
       end
     end

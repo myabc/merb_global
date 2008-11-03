@@ -16,35 +16,36 @@ module Merb
           @lang = Hash.new
         end
 
-        def localize(singular, plural, opts)
+        def localize(singular, plural, n, locale)
           unless Merb.environment == "development"
             lang = @lang
           else
             lang = {}
           end
           
-          unless lang.include? opts[:lang]
+          unless lang.include? locale
             file = File.join Merb::Global::MessageProviders.localedir,
-                             opts[:lang].to_s + '.yaml'
+                             locale.to_s + '.yaml'
             if File.exist? file
-              lang[opts[:lang]] = YAML.load_file file
+              lang[locale] = YAML.load_file file
             else
-              lang[opts[:lang]] = nil
+              # TODO: Check if it not opens security risk
+              lang[locale] = nil
             end
           end
 
-          unless lang[opts[:lang]].nil?
-            lang = lang[opts[:lang]]
+          unless lang[locale].nil?
+            lang = lang[locale]
             unless lang[singular].nil?
               unless plural.nil?
-                n = Merb::Global::Plural.which_form opts[:n], lang[:plural]
+                n = Merb::Global::Plural.which_form n, lang[:plural]
                 return lang[singular][n] unless lang[singular][n].nil?
               else
                 return lang[singular] unless lang[singular].nil?
               end
             end
           end
-          return opts[:n] > 1 ? plural : singular
+          return n > 1 ? plural : singular
         end
 
         def support?(lang)

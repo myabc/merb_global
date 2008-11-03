@@ -50,18 +50,15 @@ module Merb
         # ==== Parameters
         # singular<String>:: A string to translate
         # plural<String>:: A plural form of string (nil if only singular)
-        # opts<Hash>:: An options hash (see below)
-        #
-        # ==== Options (opts)
-        # :lang<String>:: A language to translate on
-        # :n<Fixnum>:: A number of objects
+        # n<Fixnum>:: A number of objects
+        # locale<Locale>:: A locale to which translate
         #
         # ==== Returns
         # translated<String>:: A translated string
         #
         # ==== Raises
         # NoMethodError:: Raised by default implementation. Should not be thrown.
-        def localize(singular, plural, opts)
+        def localize(singular, plural, n, locale)
           raise NoMethodError.new 'method localize has not been implemented'
         end
         # call-seq:

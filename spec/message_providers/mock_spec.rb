@@ -8,12 +8,14 @@ describe Merb::Global::MessageProviders::Mock do
 
   describe '.localize' do
     it 'should return plural for n > 1' do
-      @provider.localize('test', 'tests', :n => 2).should == 'tests'
+      pl = Merb::Global::Locale.new(pl)
+      @provider.localize('test', 'tests', 2, pl).should == 'tests'
     end
 
     it 'should return singular for n <= 1' do
-      @provider.localize('test', 'tests', :n => 0).should == 'test'
-      @provider.localize('test', 'tests', :n => 1).should == 'test'
+      pl = Merb::Global::Locale.new(pl)
+      @provider.localize('test', 'tests', 0, pl).should == 'test'
+      @provider.localize('test', 'tests', 1, pl).should == 'test'
     end
   end
 

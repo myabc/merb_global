@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 require 'stringio'
 
@@ -30,33 +31,33 @@ if HAS_GETTEXT
     describe '.localize' do
       it 'should translate the string' do
         pl = Merb::Global::Locale.new('pl')
-        trans = @provider.localize 'Test', 'Tests', :n => 1, :lang => pl
+        trans = @provider.localize 'Test', 'Tests', 1, pl
         trans.should == 'Test'
-        trans = @provider.localize 'Test', 'Tests', :n => 2, :lang => pl
+        trans = @provider.localize 'Test', 'Tests', 2, pl
         trans.should == 'Testy'
-        trans = @provider.localize 'Test', 'Tests', :n => 5, :lang => pl
+        trans = @provider.localize 'Test', 'Tests', 5, pl
         trans.should == 'Testów'
       end
 
       it 'should fallback if not present' do
         pl = Merb::Global::Locale.new('pl')
-        trans = @provider.localize 'Car', 'Cars', :n => 1, :lang => pl
+        trans = @provider.localize 'Car', 'Cars', 1, pl
         trans.should == 'Car'
-        trans = @provider.localize 'Car', 'Cars', :n => 2, :lang => pl
+        trans = @provider.localize 'Car', 'Cars', 2, pl
         trans.should == 'Cars'
       end
 
       it 'should fallback if language is not supported' do
         fr = Merb::Global::Locale.new('fr')
-        trans = @provider.localize 'Test', 'Tests', :n => 1, :lang => fr
+        trans = @provider.localize 'Test', 'Tests', 1, fr
         trans.should == 'Test'
-        trans = @provider.localize 'Test', 'Tests', :n => 2, :lang => fr
+        trans = @provider.localize 'Test', 'Tests', 2, fr
         trans.should == 'Tests'
       end
 
       it 'should translate for singular only also' do
         pl = Merb::Global::Locale.new('pl')
-        trans = @provider.localize('Hello', nil, :n => 1, :lang => pl)
+        trans = @provider.localize('Hello', nil, 1, pl)
         trans.should == 'Cześć'
       end
     end

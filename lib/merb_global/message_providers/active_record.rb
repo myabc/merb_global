@@ -13,12 +13,12 @@ module Merb
         include Merb::Global::MessageProviders::Base::Importer
         include Merb::Global::MessageProviders::Base::Exporter
 
-        def localize(singular, plural, opts)
+        def localize(singular, plural, n, locale)
           language = Language.find :first,
-                                   :conditions => {:name => opts[:lang].to_s}
+                                   :conditions => {:name => locale.to_s}
           unless language.nil?
             unless plural.nil?
-              n = Plural.which_form opts[:n], language.plural
+              n = Plural.which_form n, language.plural
               translation = Translation.find [language.id, singular, n]
             else
               # Bug of composite_primary_keys?
@@ -31,7 +31,7 @@ module Merb
             end
             return translation.msgstr
           end rescue nil
-          return opts[:n] > 1 ? plural : singular # Fallback if not in database
+          return n > 1 ? plural : singular # Fallback if not in database
         end
 
         def support?(lang)

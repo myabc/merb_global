@@ -74,7 +74,7 @@ describe Merb::Global::MessageProviders::Base do
   describe '.localize' do
     it 'should raise NoMethodError' do
       lambda do
-        @provider.localize 'test', 'tests', :n => 1, :lang => 'en'
+        @provider.localize 'test', 'tests', 1, Merb::Global::Locale.new('en')
       end.should raise_error(NoMethodError)
     end
   end
@@ -82,7 +82,7 @@ describe Merb::Global::MessageProviders::Base do
   describe '.support?' do
     it 'should raise NoMethodError' do
       lambda do
-        @provider.support? 'en'
+        @provider.support? Merb::Global::Locale.new('en')
       end.should raise_error(NoMethodError)
     end
   end
@@ -98,7 +98,7 @@ describe Merb::Global::MessageProviders::Base do
   describe '.choose' do
     it 'should raise NoMethodError' do
       lambda do
-        @provider.choose ['en']
+        @provider.choose [Merb::Global::Locale.new('en')]
       end.should raise_error(NoMethodError)
     end
   end

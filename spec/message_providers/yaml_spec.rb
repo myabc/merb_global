@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 require 'merb_global/message_providers/yaml'
 
@@ -22,19 +23,21 @@ describe Merb::Global::MessageProviders::Yaml do
 
   describe '.localize' do
     it 'should mark nil if file do not exists' do
-      @provider.localize 'Test', 'Tests', :lang => 'fr', :n => 1
-      @provider.lang.should include({'fr' => nil})
-      @provider.lang['fr'].should be_nil
+      fr = Merb::Global::Locale.new('fr')
+      @provider.localize 'Test', 'Tests', 2, fr
+      @provider.lang.should include({fr => nil})
+      @provider.lang[fr].should be_nil
     end
 
     it 'should check appropiete form' do
-      translated = @provider.localize 'Test', 'Tests',
-                                          :lang => 'pl', :n => 2
+      pl = Merb::Global::Locale.new('pl')
+      translated = @provider.localize 'Test', 'Tests', 2, pl
       translated.should == 'Testy'
     end
 
     it 'should translate for singular only also' do
-      trans = @provider.localize('Hello', nil, :n => 1, :lang => 'pl')
+      pl = Merb::Global::Locale.new('pl')
+      trans = @provider.localize('Hello', nil, 1, pl)
       trans.should == 'Cześć'
     end
   end

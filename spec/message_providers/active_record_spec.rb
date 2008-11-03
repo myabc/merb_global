@@ -115,17 +115,20 @@ if HAS_AR
       end
 
       it 'should find it in database and return proper translation' do
-        trans = @provider.localize 'Test', 'Tests', :n => 1, :lang => 'en'
+        en = Merb::Global::Locale.new('en')
+        trans = @provider.localize 'Test', 'Tests', 1, en
         trans.should == 'One test'
-        trans = @provider.localize 'Test', 'Tests', :n => 2, :lang => 'en'
+        trans = @provider.localize 'Test', 'Tests', 2, en
         trans.should == 'Many tests'
-        trans = @provider.localize 'Hello', nil, :n => 1, :lang => 'en'
+        trans = @provider.localize 'Hello', nil, 1, en
       end
 
       it 'should fallback if not' do
-        trans = @provider.localize 'Test', 'Tests', :n => 1,:lang => 'fr'
+        fr = Merb::Global::Locale.new('fr')
+        en = Merb::Global::Locale.new('en')
+        trans = @provider.localize 'Test', 'Tests', 1, fr
         trans.should == 'Test'
-        trans = @provider.localize 'Car', 'Cars', :n => 2, :lang => 'en'
+        trans = @provider.localize 'Car', 'Cars', 2, en
         trans.should == 'Cars'
       end
     end

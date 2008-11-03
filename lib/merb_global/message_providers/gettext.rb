@@ -16,11 +16,11 @@ module Merb
         include Merb::Global::MessageProviders::Base::Importer
         include Merb::Global::MessageProviders::Base::Exporter
 
-        def localize(singular, plural, opts)
-          context = opts[:lang]._mg_gettext
-          context.set_locale opts[:lang].to_s, true
+        def localize(singular, plural, n, locale)
+          context = locale._mg_gettext
+          context.set_locale locale.to_s, true
           unless plural.nil?
-            context.ngettext singular, plural, opts[:n]
+            context.ngettext singular, plural, n
           else
             context.gettext singular
           end

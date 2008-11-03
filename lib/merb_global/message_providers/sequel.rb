@@ -9,19 +9,19 @@ module Merb
         include Merb::Global::MessageProviders::Base::Importer
         include Merb::Global::MessageProviders::Base::Exporter
 
-        def localize(singular, plural, opts)
+        def localize(singular, plural, n, locale)
           # I hope it's from MemCache
-          language = Language[:name => opts[:lang].to_s]
+          language = Language[:name => locale.to_s]
           unless language.nil?
             unless plural.nil?
-              n = Plural.which_form opts[:n], language[:plural]
+              n = Plural.which_form n, language[:plural]
               translation = Translation[language.pk, singular, n]
             else
               translation = Translation[language.pk, singular, nil]
             end
             return translation[:msgstr] unless translation.nil?
           end
-          return opts[:n] > 1 ? plural : singular # Fallback if not in database
+          return n > 1 ? plural : singular # Fallback if not in database
         end
 
         def support?(lang)

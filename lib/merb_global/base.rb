@@ -23,7 +23,7 @@ module Merb
     # number<Numeric>:: A numeber to localize
     #
     # ==== Options (opts)
-    # :lang<String>:: A language to translate on
+    # :locale<Locale>:: A language to translate on
     # :n<Fixnum>:: A number of objects (for messages)
     #
     # ==== Returns
@@ -32,25 +32,25 @@ module Merb
     # ==== Example
     # <tt>render _('%d file deleted', '%d files deleted', :n => del) % del</tt>
     def _(*args)
-      opts = {:lang => Merb::Global::Locale.current, :n => 1}
+      opts = {:locale => Merb::Global::Locale.current, :n => 1}
       opts.merge! args.pop if args.last.is_a? Hash
       if args.first.respond_to? :strftime
         if args.size == 2
-          Merb::Global::DateProviders.provider.localize opts[:lang], args[0], args[1]
+          Merb::Global::DateProviders.provider.localize opts[:locale], args[0], args[1]
         else
           raise ArgumentError, "wrong number of arguments (#{args.size} for 2)"
         end
       elsif args.first.is_a? Numeric
         if args.size == 1
-          Merb::Global::NumericProviders.provider.localize opts[:lang], args.first
+          Merb::Global::NumericProviders.provider.localize opts[:locale], args.first
         else
           raise ArgumentError, "wrong number of arguments (#{args.size} for 1)"
         end
       elsif args.first.is_a? String
         if args.size == 1
-          Merb::Global::MessageProviders.provider.localize args[0], nil, opts
+          Merb::Global::MessageProviders.provider.localize args[0], nil, opts[:n], opts[:locale]
         elsif args.size == 2
-          Merb::Global::MessageProviders.provider.localize args[0], args[1], opts
+          Merb::Global::MessageProviders.provider.localize args[0], args[1], opts[:n], opts[:locale]
         else
           raise ArgumentError,
                 "wrong number of arguments (#{args.size} for 1-2)"

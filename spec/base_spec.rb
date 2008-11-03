@@ -15,7 +15,7 @@ describe Merb::Global do
         en = Merb::Global::Locale.new('en')
         test_base = TestBase.new
         message_provider = mock do |provider|
-          expected_args = ['a', nil, {:n => 1, :lang => en}]
+          expected_args = ['a', nil, 1, en]
           provider.expects(:localize).with(*expected_args).returns('b')
         end
         Merb::Global::MessageProviders.expects(:provider).
@@ -27,7 +27,7 @@ describe Merb::Global do
         en = Merb::Global::Locale.new('en')
         test_base = TestBase.new
         message_provider = mock do |provider|
-          expected_args = ['a', 'b', {:n => 1, :lang => en}]
+          expected_args = ['a', 'b', 1, en]
           provider.expects(:localize).with(*expected_args).returns('a')
         end
         Merb::Global::MessageProviders.expects(:provider).
@@ -39,7 +39,7 @@ describe Merb::Global do
         en = Merb::Global::Locale.new('en')
         test_base = TestBase.new
         message_provider = mock do |provider|
-          expected_args = ['a', 'b', {:n => 2, :lang => en}]
+          expected_args = ['a', 'b', 2, en]
           provider.expects(:localize).with(*expected_args).returns('b')
         end
         Merb::Global::MessageProviders.expects(:provider).
@@ -53,6 +53,10 @@ describe Merb::Global do
     end
     
     describe 'with date' do
+      before do
+        Merb::Global::Locale.current = Merb::Global::Locale.new('en')
+      end
+      
       it 'should send the date and format' do
         test_base = TestBase.new
         time = Time.new
