@@ -1,3 +1,7 @@
+=== 0.0.6
+ * Introduction of Locale object
+ * Change of MessageProviders interface
+
 === 0.0.5
  * Handles lang_REGION as lang
  * Renamed providers into message providers and translate_to into localize
