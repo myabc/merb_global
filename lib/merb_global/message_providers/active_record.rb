@@ -18,8 +18,8 @@ module Merb
                                    :conditions => {:name => locale.to_s}
           unless language.nil?
             unless plural.nil?
-              n = Plural.which_form n, language.plural
-              translation = Translation.find [language.id, singular, n]
+              pn = Plural.which_form n, language.plural
+              translation = Translation.find [language.id, singular, pn]
             else
               # Bug of composite_primary_keys?
               conditions = {

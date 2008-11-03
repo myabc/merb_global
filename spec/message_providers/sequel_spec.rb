@@ -107,7 +107,7 @@ if HAS_SEQUEL
       end
 
       it 'should find it in database and return proper translation' do
-        en = Merb::Global::Locale.new('pl')
+        en = Merb::Global::Locale.new('en')
         trans = @provider.localize 'Test', 'Tests', 1, en
         trans.should == 'One test'
         trans = @provider.localize 'Test', 'Tests', 2, en

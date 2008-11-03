@@ -14,8 +14,8 @@ module Merb
           language = Language[:name => locale.to_s]
           unless language.nil?
             unless plural.nil?
-              n = Plural.which_form n, language[:plural]
-              translation = Translation[language.pk, singular, n]
+              pn = Plural.which_form n, language[:plural]
+              translation = Translation[language.pk, singular, pn]
             else
               translation = Translation[language.pk, singular, nil]
             end

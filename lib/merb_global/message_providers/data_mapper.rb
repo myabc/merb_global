@@ -15,10 +15,10 @@ module Merb
           language = Language.first :name => locale.to_s
           unless language.nil?
             unless plural.nil?
-              n = Plural.which_form n, language.plural
+              pn = Plural.which_form n, language.plural
               translation = Translation.first :language_id => language.id,
                                               :msgid => singular,
-                                              :msgstr_index => n
+                                              :msgstr_index => pn
             else
               translation = Translation.first :language_id => language.id,
                                               :msgid => singular,
