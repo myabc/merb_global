@@ -46,20 +46,24 @@ describe Merb::Global::MessageProviders do
 
   describe '.localedir' do
     it 'should return app/locale by default' do
-      Merb::Plugins.stubs(:config).returns({})
+      Merb::Global.expects(:config).with(:flat).returns(nil)
+      Merb::Global.expects(:config).with(:localedir, 'app/locale').returns('app/locale')
       expected = File.join Merb.root, 'app', 'locale'
       Merb::Global::MessageProviders.localedir.should == expected
     end
 
     it 'should return locale when flat option setted' do
-      Merb::Plugins.stubs(:config).returns({:merb_global => {:flat => true}})
+      Merb::Global.expects(:config).with(:flat).returns(nil)
+      Merb::Global.expects(:config).with(:localedir, 'app/locale').returns('locale')
       expected = File.join Merb.root, 'locale'
       Merb::Global::MessageProviders.localedir.should == expected
     end
 
     it 'should return user setted path' do
       config = {:merb_global => {:localedir => 'test'}}
-      Merb::Plugins.stubs(:config).returns(config)
+      Merb::Global.stubs(:config).returns(config)
+      Merb::Global.stubs(:config).with(:flat).returns(nil)
+      Merb::Global.expects(:config).with(:localedir, 'app/locale').returns('test')
       expected = File.join Merb.root, 'test'
       Merb::Global::MessageProviders.localedir.should == expected
     end

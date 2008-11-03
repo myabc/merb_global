@@ -1,5 +1,6 @@
 module Merb
   module Global
+    @@config = nil
     # call-seq:
     #    config(key)                        => value
     #    config([key1, key2, ...])          => value
@@ -19,7 +20,13 @@ module Merb
     # <tt>Merb::Global.config [:gettext, :domain], 'merbapp'</tt>
     def self.config(keys, default = nil)
       keys = [keys] unless keys.is_a? Array
-      current = Merb::Plugins.config[:merb_global]
+      #if @@config.nil?
+        @@config = Merb::Plugins.config[:merb_global].dup
+        unless Merb::Plugins.config[:merb_global][Merb.env].nil?
+          @@config.merge! Merb::Plugins.config[:merb_global][Merb.env]
+        end
+      #end
+      current = @@config
       while current.respond_to?(:[]) and not keys.empty?
         current = current[keys.shift]
       end
