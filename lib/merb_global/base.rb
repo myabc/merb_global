@@ -5,6 +5,47 @@ require 'merb_global/date_providers'
 require 'merb_global/message_providers'
 require 'merb_global/numeric_providers'
 
+class String
+  def localize(args = {})
+    opts = {:locale => Merb::Global::Locale.current, :n => 1, :plural => nil}
+    opts.merge!(args)
+    Merb::Global::MessageProviders.provider.localize self, opts[:plural],
+                                                     opts[:n], opts[:locale]
+  end
+end
+
+class Numeric
+  def localize(args = {})
+    opts = {:locale => Merb::Global::Locale.current}
+    opts.merge!(args)
+    Merb::Global::NumericProviders.provider.localize opts[:locale], self
+  end
+end
+
+class Date
+  def localize(format, args = {})
+    opts = {:locale => Merb::Global::Locale.current}
+    opts.merge!(args)
+    Merb::Global::DateProviders.provider.localize opts[:locale], self, format
+  end
+end
+
+class DateTime
+  def localize(format, args = {})
+    opts = {:locale => Merb::Global::Locale.current}
+    opts.merge!(args)
+    Merb::Global::DateProviders.provider.localize opts[:locale], self, format
+  end
+end
+
+class Time
+  def localize(format, args = {})
+    opts = {:locale => Merb::Global::Locale.current}
+    opts.merge!(args)
+    Merb::Global::DateProviders.provider.localize opts[:locale], self, format
+  end
+end
+
 module Merb
   module Global
     # call-seq:
