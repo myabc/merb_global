@@ -1,8 +1,8 @@
 require 'activerecord'
-# As far as I understend we need it to have compostie keys
+# As far as I understand, we need it to have composite keys.
 # However it may be better idea to drop them.
-# As far I implement it in this way - then we will see
-require 'composite_primary_keys' # As far as I understend we need
+# So far I implement it in this way - then we will see
+require 'composite_primary_keys' # As far as I understand we need
 require 'merb_global/plural'
 
 module Merb

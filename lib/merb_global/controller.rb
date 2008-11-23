@@ -48,7 +48,7 @@ module Merb
     # The block should return language or nil if other method should be used
     # to determine the language
     #
-    # Please note that this method is deprecated and the prefereed method is
+    # Please note that this method is deprecated and the preferred method is
     # locale.
     def self.language(&block)
       self._mg_locale = block

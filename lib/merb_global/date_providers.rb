@@ -32,7 +32,7 @@ module Merb
     # Perform the registration
     #
     # ==== Parameters
-    # name<~to_sym>:: Name under which it is registred
+    # name<~to_sym>:: Name under which it is registered
     def self.DateProvider(provider_name)
       Module.new do
         @@rb_date_provider_name = provider_name

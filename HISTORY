@@ -1,7 +1,7 @@
 === 0.0.6
  * Introduction of Locale object
  * Change of MessageProviders interface
- * Per-enviroment configuration
+ * Per-environment configuration
 
 === 0.0.5
  * Handles lang_REGION as lang

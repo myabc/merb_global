@@ -7,7 +7,7 @@ module Merb
       # call-seq:
       #     localedir => localdir
       #
-      # Returns the directory where locales are stored for file-backended
+      # Returns the directory where locales are stored for file-backed
       # providers (such as gettext or yaml)
       #
       # ==== Returns
@@ -32,7 +32,7 @@ module Merb
         @@provider ||= self[Merb::Global.config(:message_provider, 'gettext')]
       end
       # Merb-global is able to store the translations in different types of
-      # storage. An interface betwean merb-global and those storages are
+      # storage. An interface between merb_global and those storages are
       # providers.
       #
       # Please note that it is not required to include this module - despite it
@@ -43,7 +43,7 @@ module Merb
         #     localize(singular, plural, opts) => translated
         #
         # Translate string using specific provider.
-        # It should be overloaded by the implementator.
+        # It should be overloaded by the implementor.
         #
         # Do not use this method directly - use Merb::Global._ instead
         #

@@ -12,7 +12,7 @@ module Merb
       attr_reader :language, :country
       
       def initialize(name)
-        # TODO: Understend RFC 1766 fully
+        # TODO: Understand RFC 1766 fully
         @language, @country = name.split('-')
       end
 
