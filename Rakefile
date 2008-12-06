@@ -8,7 +8,7 @@ PLUGIN = "merb_global"
 NAME = "merb_global"
 GEM_VERSION = "0.0.6"
 AUTHORS = ["Alex Coles", "Maciej Piechotka"]
-EMAIL = "alex@alexcolesportfolio.com"
+EMAIL = "merb_global@googlegroups.com"
 HOMEPAGE = "http://trac.ikonoklastik.com/merb_global/"
 SUMMARY = "Localization (L10n) and Internationalization (i18n) support for the Merb MVC Framework"
 
