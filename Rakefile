@@ -87,7 +87,7 @@ namespace :cldr do
   end
 
   desc "Process CLDR"
-  task :process do
+  task :process => [:download] do
     # TODO: Implement
   end
 end
