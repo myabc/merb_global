@@ -1,2 +1,3 @@
 :merb_global:
   :message_provider: active_record
+  :locales: ['en', 'pl']
