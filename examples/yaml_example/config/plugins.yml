@@ -1,3 +1,4 @@
 :merb_global:
   :message_provider: yaml
   :flat: true
+  :locales: [en, pl]

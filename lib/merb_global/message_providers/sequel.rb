@@ -24,10 +24,6 @@ module Merb
           return n > 1 ? plural : singular # Fallback if not in database
         end
 
-        def support?(lang)
-          Language.filter(:name => lang.to_s).count != 0
-        end
-
         def create!
           migration_exists = Dir[File.join(Merb.root, 'schema',
                                            'migrations', "*.rb")].detect do |f|
@@ -37,15 +33,6 @@ module Merb
             puts "\nThe Translation Migration File already exists\n\n"
           else
             sh %{merb-gen translations_migration}
-          end
-        end
-
-        def choose(except)
-          if except.empty?
-            Language.first[:name]
-          else
-            except = except.collect {|locale| locale.to_s}
-            Language.filter(~{:name => except}).first[:name]
           end
         end
 

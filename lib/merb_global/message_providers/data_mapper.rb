@@ -30,18 +30,9 @@ module Merb
           return n != 1 ? plural : singular
         end
 
-        def support?(lang)
-          not Language.first(:name => lang.to_s).nil?
-        end
-
         def create!
           Language.auto_migrate!
           Translation.auto_migrate!
-        end
-
-        def choose(except)
-          except = except.collect {|locale| except.to_s}
-          Language.first(:name.not => except).name
         end
 
         def import

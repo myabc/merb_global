@@ -8,16 +8,8 @@ module Merb
           n > 1 ? plural : singular
         end
 
-        def support?(lang)
-          true
-        end
-
         def create!
           nil # It's mock after all ;)
-        end
-
-        def choose(except)
-          'en'
         end
       end
     end

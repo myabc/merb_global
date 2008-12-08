@@ -1,2 +1,3 @@
 :merb_global:
   :message_provider: data_mapper
+  :locales: ['en', 'pl']

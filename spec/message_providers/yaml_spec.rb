@@ -11,16 +11,6 @@ describe Merb::Global::MessageProviders::Yaml do
     @provider = Merb::Global::MessageProviders::Yaml.new
   end
 
-  describe '._support?' do
-    it 'should return true if file exists' do
-      @provider.support?('pl').should == true
-    end
-
-    it 'should return false if file doesn\'t exist' do
-      @provider.support?('fr').should == false
-    end
-  end
-
   describe '.localize' do
     it 'should mark nil if file do not exists' do
       fr = Merb::Global::Locale.new('fr')
@@ -47,16 +37,6 @@ describe Merb::Global::MessageProviders::Yaml do
       file = Merb::Global::MessageProviders.localedir
       FileUtils.expects(:mkdir_p).with(file)
       @provider.create!
-    end
-  end
-
-  describe '.choose' do
-    it 'should choose first language if given list is empty' do
-      @provider.choose([]).should == 'pl'
-    end
-
-    it 'should choose first language not from list' do
-      @provider.choose(['pl']).should be_nil
     end
   end
 

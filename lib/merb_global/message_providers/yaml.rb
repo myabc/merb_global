@@ -48,25 +48,8 @@ module Merb
           return n > 1 ? plural : singular
         end
 
-        def support?(lang)
-          unless @lang.include? lang
-            file = File.join Merb::Global::MessageProviders.localedir,
-                             lang.to_s + '.yaml'
-            @lang[lang] = YAML.load_file file if File.exist? file
-          end
-          not @lang[lang].nil?
-        end
-
         def create!
           FileUtils.mkdir_p Merb::Global::MessageProviders.localedir
-        end
-
-        def choose(except)
-          except = except.collect {|locale| locale.to_s}
-          dir = Dir[Merb::Global::MessageProviders.localedir + '/*.yaml']
-          dir.collect! {|p| File.basename p, '.yaml'}
-          dir.reject! {|lang| except.include? lang}
-          dir.first
         end
 
         def import

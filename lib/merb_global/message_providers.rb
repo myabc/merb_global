@@ -61,38 +61,12 @@ module Merb
         def localize(singular, plural, n, locale)
           raise NoMethodError.new 'method localize has not been implemented'
         end
-        # call-seq:
-        #     support?(lang) => supported
-        #
-        # Checks if the language is supported (i.e. if the translation exists).
-        #
-        # In normal merb app the language is checked automatically in controller
-        # so probably you don't have to use this method
-        #
-        # ==== Parameters
-        # lang<String>:: A code of language
-        #
-        # ==== Returns
-        # supported<Boolean>:: Is a program translated to this language
-        #
-        # ==== Raises
-        # NoMethodError:: Raised by default implementation.
-        #                 Should not be thrown.
-        def support?(lang)
-          raise NoMethodError.new('method support? has not been implemented')
-        end
         # This method creates basic files and/or directory structures
         # (for example it adds migration) needed for provider to work.
         #
         # It is called from Rakefile.
         def create!
           raise NoMethodError.new('method create! has not been implemented')
-        end
-        # This method choos an supported language except those form the list
-        # given. It may fallback to english if none language can be found
-        # which agree with those criteria
-        def choose(except)
-          raise NoMethodError.new('method choose has not been implemented')
         end
         ##
         # Transfer data from importer into exporter

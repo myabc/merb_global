@@ -19,21 +19,9 @@ describe Merb::Global::MessageProviders::Mock do
     end
   end
 
-  describe '.support?' do
-    it 'should return true' do
-      @provider.support?(mock) == true
-    end
-  end
-
   describe '.create!' do
     it 'should do nothing' do
       @provider.create!.should be_nil
-    end
-  end
-
-  describe '.choose' do
-    it 'should return \'en\'' do
-      @provider.choose([]).should == 'en'
     end
   end
 end

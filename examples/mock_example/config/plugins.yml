@@ -1,2 +1,3 @@
 :merb_global:
   :message_provider: mock
+  :locales: ['en', 'pl']
