@@ -18,23 +18,6 @@ if HAS_DM
       end
     end
 
-    describe '.support?' do
-      before do
-        lang = Merb::Global::MessageProviders::DataMapper::Language
-        lang.create! :name => 'en', :plural => 'n==1?1:0'
-      end
-
-      it 'should return true for language in database' do
-        en = Merb::Global::Locale.new('en')
-        @provider.support?(en).should == true
-      end
-
-      it 'should return false otherwise' do
-        fr = Merb::Global::Locale.new('fr')
-        @provider.support?(fr).should == false
-      end
-    end
-
     describe '.localize' do
       before do
         lang = Merb::Global::MessageProviders::DataMapper::Language
@@ -61,22 +44,6 @@ if HAS_DM
       it 'should fallback to default if needed' do
         trans = @provider.localize('Test', 'Tests', 2, 'fr')
         trans.should == 'Tests'
-      end
-    end
-
-    describe '.choose' do
-      before do
-        lang = Merb::Global::MessageProviders::DataMapper::Language
-        en = lang.create! :name => 'en', :plural => 'n==1?0:1', :nplural => 2
-        fr = lang.create! :name => 'fr', :plural => 'n>1?1:0', :nplural => 2
-      end
-
-      it 'should choose the first language if list is empty' do
-        @provider.choose([]).should == 'en'
-      end
-
-      it 'should choose the first language except from the list' do
-        @provider.choose(['en']).should == 'fr'
       end
     end
 

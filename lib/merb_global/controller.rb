@@ -19,11 +19,11 @@ module Merb
             accept_language.collect! do |lang|
               if lang.any?
                 lang
-              elsif Merb::Global::MessageProviders.provider.support? lang
+              elsif Merb::Global::Locale.support? lang
                 lang
               else
                 lang = lang.base_locale
-                if not lang.nil? and Merb::Global::MessageProviders.provider.support? lang
+                if not lang.nil? and Merb::Global::Locale.support? lang
                   lang
                 else
                   nil
@@ -36,7 +36,7 @@ module Merb
                 accept_language.last
               else
                 accept_language.pop
-                Merb::Global::MessageProviders.provider.choose accept_language
+                Merb::Global::Locale.choose accept_language
               end
             end
           end

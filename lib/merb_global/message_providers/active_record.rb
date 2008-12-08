@@ -34,10 +34,6 @@ module Merb
           return n > 1 ? plural : singular # Fallback if not in database
         end
 
-        def support?(lang)
-          Language.count(:conditions => {:name => lang.to_s}) != 0
-        end
-
         def create!
           migration_exists = Dir[File.join(Merb.root, 'schema',
                                            'migrations', '*.rb')].detect do |f|
@@ -48,20 +44,6 @@ module Merb
           else
             sh %{merb-gen translations_migration}
           end
-        end
-
-        def choose(except)
-          if except.empty?
-            Language.find(:first).name
-          else
-            except = except.collect {|locale| locale.to_s}
-            condition = 'name NOT IN (' + '?, ' * (except.length - 1) + '?)'
-            Language.find(:first, :conditions => [condition, *except]).name
-          end
-          # On #rubyonrails the following method was given. However I do not
-          # trust it. Please change if the validity is confirmed
-          # Language.find(:first, :conditions => ['name NOT IN ?',
-          #                                       "(#{except.join(',')})"])
         end
 
         def import

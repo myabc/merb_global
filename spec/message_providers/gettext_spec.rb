@@ -18,16 +18,6 @@ if HAS_GETTEXT
       end
     end
 
-    describe '.support?' do
-      it 'should return true if directory exists' do
-        @provider.support?(Merb::Global::Locale.new('pl')).should == true
-      end
-
-      it 'should return false otherwise' do
-        @provider.support?(Merb::Global::Locale.new('fr')).should == false
-      end
-    end
-
     describe '.localize' do
       it 'should translate the string' do
         pl = Merb::Global::Locale.new('pl')
@@ -59,16 +49,6 @@ if HAS_GETTEXT
         pl = Merb::Global::Locale.new('pl')
         trans = @provider.localize('Hello', nil, 1, pl)
         trans.should == 'Cześć'
-      end
-    end
-
-    describe '.choose' do
-      it 'should choose first language if given list is empty' do
-        @provider.choose([]).should == 'pl'
-      end
-
-      it 'should choose first language not from list' do
-        @provider.choose(['en', 'pl']).should be_nil
       end
     end
 

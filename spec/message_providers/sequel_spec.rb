@@ -75,21 +75,6 @@ if HAS_SEQUEL
       end
     end
 
-    describe '.support?' do
-      before do
-        lang = Merb::Global::MessageProviders::Sequel::Language
-        lang.create :name => 'en', :plural => 'n==1?1:0'
-      end
-
-      it 'should return true if language has entry in database' do
-        @provider.support?('en').should == true
-      end
-
-      it 'should otherwise return false' do
-        @provider.support?('fr').should == false
-      end
-    end
-
     describe '.localize' do
       before do
         lang = Merb::Global::MessageProviders::Sequel::Language
@@ -123,22 +108,6 @@ if HAS_SEQUEL
         trans.should == 'Test'
         trans = @provider.localize 'Car', 'Cars', 2, en
         trans.should == 'Cars'
-      end
-    end
-
-    describe '.choose' do
-      before do
-        lang = Merb::Global::MessageProviders::Sequel::Language
-        en = lang.create :name => 'en', :plural => 'n==1?0:1'
-        fr = lang.create :name => 'fr', :plural => 'n>1?1:0'
-      end
-
-      it 'should choose the first language if list is empty' do
-        @provider.choose([]).should == 'en'
-      end
-
-      it 'should choose the first language except from the list' do
-        @provider.choose(['en']).should == 'fr'
       end
     end
 
