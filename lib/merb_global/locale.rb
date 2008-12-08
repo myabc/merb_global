@@ -10,7 +10,7 @@ module Merb
   module Global
     class Locale
       attr_reader :language, :country
-      
+
       def initialize(name)
         # TODO: Understand RFC 1766 fully
         @language, @country = name.split('-')
@@ -33,6 +33,23 @@ module Merb
           "#{@language.downcase}"
         else
           "#{@language.downcase}_#{@country.upcase}"
+        end
+      end
+
+      if defined? RUBY_ENGINE and RUBY_ENGINE == "jruby"
+        def java_locale
+          require 'java'
+          @java_locale ||= do
+            if @country.nil?
+              java.util.Locale.new(@language.downcase)
+            else
+              java.util.Locale.new(@language.downcase, @country.upcase)
+            end
+          end
+        end
+      else
+        def java_locale
+          nil
         end
       end
       
