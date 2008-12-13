@@ -39,11 +39,7 @@ describe Merb::Controller do
 
   it 'should take the weights into account' do
     de = Merb::Global::Locale.new('de')
-    en = Merb::Global::Locale.new('en')
-    es = Merb::Global::Locale.new('es')
-    Merb::Global::Locale.expects(:support?).with(de).returns(true)
-    Merb::Global::Locale.expects(:support?).with(en).returns(false)
-    Merb::Global::Locale.stubs(:support?).with(es).returns(true)
+    Merb::Global.stubs(:config).with('locales', ['en']).returns(['de', 'es'])
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] =
         'de;q=0.8,en;q=1.0,es;q=0.6'
@@ -61,11 +57,9 @@ describe Merb::Controller do
   end
 
   it 'should choose language if \'*\' given' do
-    en = Merb::Global::Locale.new('en')
     fr = Merb::Global::Locale.new('fr')
-    Merb::Global::Locale.stubs(:support?).returns(true)
-    Merb::Global::Locale.stubs(:support?).with(en).returns(true)
-    Merb::Global::Locale.expects(:choose).with([en]).returns(fr)
+    en = Merb::Global::Locale.new('en')
+    Merb::Global.stubs(:config).with('locales', ['en']).returns(['en','fr'])
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = '*,en;q=0.7'
     end
@@ -91,14 +85,8 @@ describe Merb::Controller do
   end
 
   it 'should fallback to lang if lang_REGION is not supported' do
-    es_ES = Merb::Global::Locale.new('es-ES')
-    es = Merb::Global::Locale.new('es')
-    pt_BR = Merb::Global::Locale.new('pt-BR')
     pt = Merb::Global::Locale.new('pt')
-    Merb::Global::Locale.expects(:support?).with(es_ES).returns(false)
-    Merb::Global::Locale.expects(:support?).with(es).returns(false)
-    Merb::Global::Locale.expects(:support?).with(pt_BR).returns(false)
-    Merb::Global::Locale.expects(:support?).with(pt).returns(true)
+    Merb::Global.stubs(:config).with('locales', ['en']).returns(['pt'])    
     controller = dispatch_to(TestController, :index) do |controller|
       controller.request.env['HTTP_ACCEPT_LANGUAGE'] = 'es-ES,pt-BR;q=0.7'
     end
