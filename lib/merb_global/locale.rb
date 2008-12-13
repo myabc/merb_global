@@ -17,7 +17,7 @@ module Merb
       end
 
       def any?
-        language == '*' && country.nil?\
+        language == '*' && country.nil?
       end
 
       def base_locale
@@ -64,11 +64,26 @@ module Merb
             [lang[0], lang[1].to_f]
           end
         end
-        header.sort! {|lang_a, lang_b| lang_a[1] <=> lang_b[1]}
-        header.collect! {|lang| lang[0]}
-        return header.collect! {|lang| Locale.new(lang)}
+        header.sort! {|lang_a, lang_b| lang_b[1] <=> lang_a[1]} # sorting by decreasing quality
+        header.collect! {|lang| Locale.new(lang[0])}
       end
-      
+
+      def self.from_accept_language(accept_language)
+        unless accept_language.nil?
+          accept_language = Merb::Global::Locale.parse(accept_language)
+          accept_language.each_with_index do |lang, i|
+            if lang.any?
+              # In this case we need to choose a locale that is not in accept_language[i+1..-1]
+              return Merb::Global::Locale.choose(accept_language[i+1..-1])
+            elsif Merb::Global::Locale.support? lang
+              return lang
+            end
+            lang = lang.base_locale
+            return lang if lang && Merb::Global::Locale.support?(lang)
+          end
+        end
+      end
+
       def self.current
         Thread.current.mg_locale
       end

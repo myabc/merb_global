@@ -13,34 +13,8 @@ module Merb
         Merb::Global::Locale.new(params[:locale]) ||
         (self._mg_locale &&
          Merb::Global::Locale.new(self.instance_eval(&self._mg_locale))) ||
-        begin
-          unless accept_language.nil?
-            accept_language = Merb::Global::Locale.parse(accept_language)
-            accept_language.collect! do |lang|
-              if lang.any?
-                lang
-              elsif Merb::Global::Locale.support? lang
-                lang
-              else
-                lang = lang.base_locale
-                if not lang.nil? and Merb::Global::Locale.support? lang
-                  lang
-                else
-                  nil
-                end
-              end
-            end
-            accept_language.reject! {|lang| lang.nil?}
-            unless accept_language.empty?
-              unless accept_language.last.any?
-                accept_language.last
-              else
-                accept_language.pop
-                Merb::Global::Locale.choose accept_language
-              end
-            end
-          end
-        end || Merb::Global::Locale.new('en')
+         Merb::Global::Locale.from_accept_language(accept_language) || 
+         Merb::Global::Locale.new('en')
     end
 
     # Sets the language of block.
