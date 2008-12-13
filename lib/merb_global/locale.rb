@@ -124,11 +124,15 @@ module Merb
       end
 
       def self.support?(locale)
-        Merb::Global.config('locales', ['en']).include? locale.to_s
+        supported_locales.include? locale.to_s
+      end
+      
+      def self.supported_locales
+        Merb::Global::config('locales', ['en'])
       end
       
       def self.choose(except)
-        new((Merb::Global.config('locales', ['en']) - except.map{|e| e.to_s}).first)
+        new((supported_locales - except.map{|e| e.to_s}).first)
       end
     end
   end
