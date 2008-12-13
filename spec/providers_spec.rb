@@ -36,16 +36,16 @@ describe Merb::Global::Providers do
       provider = 'test'
       provider_path = 'merb_global/test_providers/test'
       TestProviders.expects(:require).with(provider_path)
-      TestProviders.stubs(:eval)
-      TestProviders[provider]
+      class TestProviders::Test; end
+      TestProviders[provider] === TestProviders::Test
     end
 
     it 'should create the provider' do
       provider = 'test'
-      provider_class = 'TestProviders::Test'
       TestProviders.stubs(:require)
-      TestProviders.expects(:eval).with(provider_class + '.new')
-      TestProviders[provider]
+      class TestProviders::Test; end
+      TestProviders::Test.expects(:new)
+      TestProviders[provider] === TestProviders::Test
     end
   end
   

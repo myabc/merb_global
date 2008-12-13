@@ -20,7 +20,7 @@ module Merb
                   @@providers_classes[provider.to_sym].new
               else
                 require "merb_global/#{self.name.split("::").last.snake_case}/#{provider.to_s}"
-                @@providers[provider.to_sym] = eval "#{self.name}::#{provider.camel_case}.new"
+                @@providers[provider.to_sym] = self.const_get(provider.camel_case).new
               end
             end
             @@providers[provider.to_sym]
