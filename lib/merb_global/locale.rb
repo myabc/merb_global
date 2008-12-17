@@ -109,11 +109,11 @@ module Merb
         end
       end
       def self.supported?(locale)
-        config('locales', ['en']).include? locale.to_s
+        Merb::Global.config('locales', ['en']).include? locale.to_s
       end
       
       def self.choose(except)
-        (config('locales', ['en']) - except).first
+        (Merb::Global.config('locales', ['en']) - except).first
       end
     end
   end

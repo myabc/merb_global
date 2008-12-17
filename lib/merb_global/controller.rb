@@ -19,11 +19,11 @@ module Merb
             accept_language.collect! do |lang|
               if lang.any?
                 lang
-              elsif Merb::Global::Locale.support? lang
+              elsif Merb::Global::Locale.supported? lang
                 lang
               else
                 lang = lang.base_locale
-                if not lang.nil? and Merb::Global::Locale.support? lang
+                if not lang.nil? and Merb::Global::Locale.supported? lang
                   lang
                 else
                   nil
