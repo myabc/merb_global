@@ -39,13 +39,12 @@ module Merb
       if defined? RUBY_ENGINE and RUBY_ENGINE == "jruby"
         def java_locale
           require 'java'
-          @java_locale ||= do
+          @java_locale ||=
             if @country.nil?
               java.util.Locale.new(@language.downcase)
             else
               java.util.Locale.new(@language.downcase, @country.upcase)
             end
-          end
         end
       else
         def java_locale
