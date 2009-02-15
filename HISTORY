@@ -1,3 +1,8 @@
+=== 0.0.7
+ * More consistent configuration of supported languages
+ * JRuby Numeric provider
+ * Some small fixes
+
 === 0.0.6
  * Introduction of Locale object
  * Change of MessageProviders interface

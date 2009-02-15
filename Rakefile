@@ -4,7 +4,7 @@ require 'rake/rdoctask'
 
 PLUGIN = "merb_global"
 NAME = "merb_global"
-GEM_VERSION = "0.0.6"
+GEM_VERSION = "0.0.7"
 AUTHORS = ["Alex Coles", "Maciej Piechotka"]
 EMAIL = "merb_global@googlegroups.com"
 HOMEPAGE = "http://trac.ikonoklastik.com/merb_global/"
