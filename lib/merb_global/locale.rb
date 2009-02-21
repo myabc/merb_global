@@ -16,10 +16,18 @@ module Merb
         @language, @country = name.split('-')
       end
 
+      #
+      # This method checks if the locale is 'wildcard' locale. I.e.
+      # if any locale will suit
+      #
       def any?
         language == '*' && country.nil?
       end
 
+      #
+      # This method returns the parent locale - for locales for countries
+      # (such as en_GB) it returns language(en). For languages it returns nil.
+      #
       def base_locale
         if not @country.nil?
           Locale.new(@language)
@@ -37,6 +45,9 @@ module Merb
       end
 
       if defined? RUBY_ENGINE and RUBY_ENGINE == "jruby"
+        #
+        # This method return corresponding java locales caching the result.
+        # Please note that if used outside jruby it returns nil.
         def java_locale
           require 'java'
           @java_locale ||=
@@ -52,7 +63,7 @@ module Merb
         end
       end
       
-      def self.parse(header)
+      def self.parse(header) #:nodoc:
         header = header.split(',')
         header.collect! {|lang| lang.delete ' ' "\n" "\r" "\t"}
         header.reject! {|lang| lang.empty?}
@@ -68,7 +79,7 @@ module Merb
         header.collect! {|lang| Locale.new(lang[0])}
       end
 
-      def self.from_accept_language(accept_language)
+      def self.from_accept_language(accept_language) #:nodoc:
         unless accept_language.nil?
           accept_language = Merb::Global::Locale.parse(accept_language)
           accept_language.each_with_index do |lang, i|
@@ -84,10 +95,12 @@ module Merb
         end
       end
 
+      # Returns current locale
       def self.current
         Thread.current.mg_locale
       end
 
+      # Sets the current locale
       def self.current=(new_locale)
         Thread.current.mg_locale = new_locale
       end
@@ -123,14 +136,18 @@ module Merb
         end
       end
 
+      # Checks if the locale is supported
       def self.support?(locale)
         supported_locales.include? locale.to_s
       end
       
+      # Lists the supported locale
       def self.supported_locales
         Merb::Global::config('locales', ['en'])
       end
       
+      # Chooses one of the supported locales which is not in array given as
+      # argument
       def self.choose(except)
         new((supported_locales - except.map{|e| e.to_s}).first)
       end
