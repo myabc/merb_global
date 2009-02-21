@@ -6,15 +6,37 @@ require 'merb_global/message_providers'
 require 'merb_global/numeric_providers'
 
 class String
-  def localize(args = {})
-    opts = {:locale => Merb::Global::Locale.current, :n => 1, :plural => nil}
-    opts.merge!(args)
-    Merb::Global::MessageProviders.provider.localize self, opts[:plural],
-                                                     opts[:n], opts[:locale]
+  # call-seq:
+  #     localize => localized string
+  #
+  # Translate the string withing the current locales by default. 
+  # ==== Parameters
+  # opts<Hash>:: Options of translations
+  #
+  # ==== Options (opts)
+  # locale<Locale>:: The translation in other locale
+  # n<Fixnum>:: A number of objects. Please note that it should be used with
+  #             plural
+  # plural<String>:: Plural form
+  #
+  def localize(opts = {})
+    _opts = {:locale => Merb::Global::Locale.current, :n => 1, :plural => nil}
+    _opts.merge!(opts)
+    Merb::Global::MessageProviders.provider.localize self, _opts[:plural],
+                                                     _opts[:n], _opts[:locale]
   end
 end
 
 class Numeric
+  # call-seq:
+  #     localize => localized number
+  #
+  # Format the string using the current locale
+  # ==== Parameters
+  # opts<Hash>:: Options of translations
+  #
+  # ==== Options (opts)
+  # locale<Locale>:: The translation in other locale
   def localize(args = {})
     opts = {:locale => Merb::Global::Locale.current}
     opts.merge!(args)
@@ -23,6 +45,16 @@ class Numeric
 end
 
 class Date
+  # call-seq:
+  #     localize(format) => localized date
+  #
+  # Format the string using the current locale
+  # ==== Parameters
+  # format<String>:: The format - in similar format to Date.to_s
+  # opts<Hash>:: Options of translations
+  #
+  # ==== Options (opts)
+  # locale<Locale>:: The translation in other locale
   def localize(format, args = {})
     opts = {:locale => Merb::Global::Locale.current}
     opts.merge!(args)
@@ -31,6 +63,16 @@ class Date
 end
 
 class DateTime
+  # call-seq:
+  #     localize(format) => localized date
+  #
+  # Format the string using the current locale
+  # ==== Parameters
+  # format<String>:: The format - in similar format to DateTime.to_s
+  # opts<Hash>:: Options of translations
+  #
+  # ==== Options (opts)
+  # locale<Locale>:: The translation in other locale
   def localize(format, args = {})
     opts = {:locale => Merb::Global::Locale.current}
     opts.merge!(args)
@@ -39,6 +81,16 @@ class DateTime
 end
 
 class Time
+  # call-seq:
+  #     localize(format) => localized date
+  #
+  # Format the string using the current locale
+  # ==== Parameters
+  # format<String>:: The format - in similar format to Time.to_s
+  # opts<Hash>:: Options of translations
+  #
+  # ==== Options (opts)
+  # locale<Locale>:: The translation in other locale
   def localize(format, args = {})
     opts = {:locale => Merb::Global::Locale.current}
     opts.merge!(args)
