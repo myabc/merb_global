@@ -8,6 +8,8 @@ module Merb
 
         def localize(lang, date, format)
           pipe_rd, pipe_wr = IO.pipe
+          # setlocale have no guarantee of being thread-safe so for safty
+          # we fork the process.
           pid = fork do
             pipe_rd.close
             setlocale(lang.to_s)
