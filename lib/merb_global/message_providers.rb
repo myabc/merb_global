@@ -59,7 +59,7 @@ module Merb
         # ==== Raises
         # NoMethodError:: Raised by default implementation. Should not be thrown.
         def localize(singular, plural, n, locale)
-          raise NoMethodError.new 'method localize has not been implemented'
+          raise NoMethodError.new('method localize has not been implemented')
         end
         # This method creates basic files and/or directory structures
         # (for example it adds migration) needed for provider to work.
