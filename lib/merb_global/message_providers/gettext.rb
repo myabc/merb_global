@@ -18,7 +18,7 @@ module Merb
 
         def localize(singular, plural, n, locale)
           context = locale._mg_gettext
-          context.set_locale locale.to_s, true
+          context.set_locale locale.to_s
           unless plural.nil?
             context.ngettext singular, plural, n
           else
