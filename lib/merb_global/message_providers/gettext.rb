@@ -27,7 +27,9 @@ module Merb
         end
 
         def create!
-          File.mkdirs Merb::Global::MessageProviders.localedir
+          for d in Merb::Global::MessageProviders.localedir
+            Dir.mkdir d
+          end
         end
 
         def import
